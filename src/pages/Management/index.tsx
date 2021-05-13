@@ -1,6 +1,9 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './index.css';
 
+// @ts-ignore
+import { TestText } from "@/components/test";
+
 const Management: React.FC = () => {
   return (
     <IonPage>
@@ -10,6 +13,7 @@ const Management: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <TestText />
       </IonContent>
     </IonPage>
   );
