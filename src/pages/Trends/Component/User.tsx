@@ -1,16 +1,35 @@
 import React from 'react';
+import {IonAvatar, IonIcon, IonLabel, IonText} from "@ionic/react";
+import {checkmarkOutline} from "ionicons/icons";
 
-function User(props: { imageHeight: any; }) {
+export interface UserInfo {
+  userAvatar: string
+  username: string
+  userTitle: string
+  authed?: boolean
+}
+
+export interface UserProps {
+  info: UserInfo
+}
+
+// Must be wrapped in IonItem tag
+function User({ info: { userAvatar, username, userTitle, authed } }: UserProps) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: "flex-start",
-        height: props.imageHeight,
-      }}
-    >
-
-    </div>
+    <React.Fragment>
+      <IonAvatar style={{ marginRight: 12 }} slot="start">
+        <img src={ userAvatar } alt="" />
+      </IonAvatar>
+      <IonLabel>
+        <h3>{ username }</h3>
+        <p>
+          { userTitle }
+          <IonText color="primary">
+            { authed ? <IonIcon icon={checkmarkOutline} /> : undefined }
+          </IonText>
+        </p>
+      </IonLabel>
+    </React.Fragment>
   )
 }
 
