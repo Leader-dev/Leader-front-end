@@ -40,21 +40,11 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/trends">
-            <Trends />
-          </Route>
-          <Route exact path="/eca-display">
-            <ECADisplay />
-          </Route>
-          <Route exact path="/eca-management">
-            <Management />
-          </Route>
-          <Route exact path="/coop">
-            <Coop />
-          </Route>
-          <Route exact path="/person">
-            <Personal />
-          </Route>
+          <Route exact path="/trends" component={Trends}/>
+          <Route exact path="/eca-display" component={ECADisplay}/>
+          <Route exact path="/eca-management" component={Management}/>
+          <Route exact path="/coop" component={Coop}/>
+          <Route exact path="/person" component={Personal}/>
           <Route exact path="/">
             <Redirect to="/trends" />
           </Route>
