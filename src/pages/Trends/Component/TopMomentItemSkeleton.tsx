@@ -1,5 +1,11 @@
-import {IonIcon, IonItem, IonLabel, IonSkeletonText, IonText} from "@ionic/react";
-import {arrowUp} from "ionicons/icons";
+import {
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonSkeletonText,
+  IonText,
+} from "@ionic/react";
+import { arrowUp } from "ionicons/icons";
 import User from "./User";
 import React from "react";
 import UserSkeleton from "./UserSkeleton";
@@ -11,13 +17,12 @@ export default ({ rank }: { rank: number }) => {
         <IonLabel>
           <IonText color="primary">
             <p>
-              <IonIcon slot="end" icon={arrowUp} />
-              #{ rank }
+              <IonIcon slot="end" icon={arrowUp} />#{rank}
             </p>
           </IonText>
         </IonLabel>
       </div>
-      <UserSkeleton/>
+      <UserSkeleton />
       <IonLabel>
         <p>
           <IonSkeletonText animated style={{ width: "60px" }} />
@@ -33,5 +38,5 @@ export default ({ rank }: { rank: number }) => {
         </IonLabel>
       </div>
     </IonItem>
-  )
-}
+  );
+};

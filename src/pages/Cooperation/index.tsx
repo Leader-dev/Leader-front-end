@@ -1,5 +1,11 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import './index.css';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import "./index.css";
 
 const Coop: React.FC = () => {
   return (
@@ -9,8 +15,7 @@ const Coop: React.FC = () => {
           <IonTitle>合作</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-      </IonContent>
+      <IonContent fullscreen></IonContent>
     </IonPage>
   );
 };
