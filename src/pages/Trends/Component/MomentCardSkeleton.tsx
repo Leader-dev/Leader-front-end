@@ -1,14 +1,22 @@
-import {IonCard, IonCardContent, IonIcon, IonItem, IonLabel, IonSkeletonText, IonText} from "@ionic/react";
+import {
+  IonCard,
+  IonCardContent,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonSkeletonText,
+  IonText,
+} from "@ionic/react";
 import User from "./User";
-import {arrowUp, ellipsisHorizontal} from "ionicons/icons";
+import { arrowUp, ellipsisHorizontal } from "ionicons/icons";
 import React from "react";
 import UserSkeleton from "./UserSkeleton";
 
 export default () => {
   return (
     <IonCard>
-      <IonItem style={{ marginTop: 8 }} onClick={() => { }} lines="none">
-        <UserSkeleton/>
+      <IonItem style={{ marginTop: 8 }} onClick={() => {}} lines="none">
+        <UserSkeleton />
       </IonItem>
       <IonCardContent>
         <IonSkeletonText animated style={{ width: "100%" }} />
@@ -30,5 +38,5 @@ export default () => {
         </div>
       </IonItem>
     </IonCard>
-  )
-}
+  );
+};

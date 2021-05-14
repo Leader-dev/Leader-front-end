@@ -1,11 +1,11 @@
-import {IonIcon, IonItem, IonLabel, IonText} from "@ionic/react";
-import {arrowUp} from "ionicons/icons";
+import { IonIcon, IonItem, IonLabel, IonText } from "@ionic/react";
+import { arrowUp } from "ionicons/icons";
 import User from "./User";
 import React from "react";
-import {MomentInfo} from "./MomentCard";
+import { MomentInfo } from "./MomentCard";
 
-export interface TopMomentInfo extends MomentInfo{
-  upRank: number
+export interface TopMomentInfo extends MomentInfo {
+  upRank: number;
 }
 
 export default ({ info }: { info: TopMomentInfo }) => {
@@ -15,28 +15,25 @@ export default ({ info }: { info: TopMomentInfo }) => {
         <IonLabel>
           <IonText color="primary">
             <p>
-              <IonIcon slot="end" icon={arrowUp} />
-              #{ info.upRank }
+              <IonIcon slot="end" icon={arrowUp} />#{info.upRank}
             </p>
           </IonText>
         </IonLabel>
       </div>
       <User info={info} />
       <IonLabel>
-        <p>
-          { info.content }
-        </p>
+        <p>{info.content}</p>
       </IonLabel>
       <div slot="end">
         <IonLabel>
           <IonText color="primary">
             <p>
               <IonIcon slot="end" icon={arrowUp} />
-              { info.upCount }
+              {info.upCount}
             </p>
           </IonText>
         </IonLabel>
       </div>
     </IonItem>
-  )
-}
+  );
+};
