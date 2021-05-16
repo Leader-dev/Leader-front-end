@@ -44,7 +44,8 @@
     "test": "craco test",
     "ionic:build": "craco build",
     "ionic:serve": "craco start",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -65,7 +66,13 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.7"
+    "@capacitor/cli": "2.4.7",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "lint-staged": {
+    "*.{ts,tsx,js,css,md}": "prettier --write"
+  }
 }
