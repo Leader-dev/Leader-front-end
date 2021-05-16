@@ -1,5 +1,11 @@
-import {IonAvatar, IonIcon, IonLabel, IonSkeletonText, IonText} from "@ionic/react";
-import {checkmarkOutline} from "ionicons/icons";
+import {
+  IonAvatar,
+  IonIcon,
+  IonLabel,
+  IonSkeletonText,
+  IonText,
+} from "@ionic/react";
+import { checkmarkOutline } from "ionicons/icons";
 import React from "react";
 
 export default () => {
@@ -17,5 +23,5 @@ export default () => {
         </p>
       </IonLabel>
     </React.Fragment>
-  )
-}
+  );
+};
