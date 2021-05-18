@@ -10,19 +10,12 @@ import {
 import { Redirect, Route } from "react-router-dom";
 import { ellipse, square, triangle } from "ionicons/icons";
 
-// TODO: Add ts definitions to import alias
-// @ts-ignore
 import NoTabPage from "@/pages/NoTabPage";
 
-// @ts-ignore
 import Trends from "@/pages/Trends";
-// @ts-ignore
 import ECADisplay from "@/pages/ECA-Display";
-// @ts-ignore
 import Management from "@/pages/Management";
-// @ts-ignore
 import Coop from "@/pages/Cooperation";
-// @ts-ignore
 import Personal from "@/pages/Personal";
 
 const TabsRoute: React.FC = () => {
