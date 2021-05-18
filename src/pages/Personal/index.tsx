@@ -156,7 +156,7 @@ const ProfileItems: React.FC = () => {
 const Personal: React.FC = () => {
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent fullscreen scrollY={false}>
         <BannerContainer>
           <ProfileMain />
           <ProfileItems />
