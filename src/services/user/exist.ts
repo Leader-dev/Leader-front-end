@@ -8,6 +8,11 @@ interface ExistsByUsernameProps {
   username: string;
 }
 
+/**
+ * Check if user exists by phone number or username
+ *
+ * Must pass a phone OR username
+ */
 export const userExist = async (
   data: ExistsByPhoneProps | ExistsByUsernameProps
 ): Promise<boolean> => {
