@@ -17,6 +17,7 @@ import ECADisplay from "@/pages/ECA-Display";
 import Management from "@/pages/Management";
 import Coop from "@/pages/Cooperation";
 import Personal from "@/pages/Personal";
+import SignUp from "@/pages/SignUp";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -60,6 +61,7 @@ export const AppRouter: React.FC = () => {
       <IonRouterOutlet>
         <Route exact path="/notab" component={NoTabPage} />
         <Route path="/tabs" component={TabsRoute} />
+        <Route path="/signup" component={SignUp} />
         <Route exact path="/">
           <Redirect to="/tabs/trends" />
         </Route>
