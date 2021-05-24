@@ -36,6 +36,8 @@ const BannerContainer: React.FC = ({ children }) => {
           style={{
             position: "absolute",
             bottom: "-0px",
+            display: "block",
+            margin: "-1px",
           }}
         >
           <path d="M 0 75 S 50 0, 100 75" fill="white" stroke="none" />

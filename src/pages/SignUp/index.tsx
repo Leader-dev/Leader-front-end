@@ -24,6 +24,7 @@ const SVGIndicator: React.FC<SVGIndicatorProps> = ({
         width,
         transform: position ? "translateX(50vw)" : "",
         transition: `transform ${duration}s ease-in-out`,
+        margin: "1px",
       }}
     >
       <svg
@@ -33,20 +34,13 @@ const SVGIndicator: React.FC<SVGIndicatorProps> = ({
         version="1.1"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
+        style={{ display: "block" }}
       >
-        <g
-          id="Page-1"
-          stroke="none"
-          fill="none"
-          fillRule="evenodd"
-          // fill-opacity="0.3"
-        >
-          <path
-            d="M0,133 L800,133 C667.333333,124.133333 580.666667,110.833333 540,93.1 C479,66.5 479,0 400,0 C321,0 321,67.165 260,93.1 C219.333333,110.39 132.666667,123.69 0,133 Z"
-            id="Path"
-            fill="#FFFFFF"
-          ></path>
-        </g>
+        <path
+          d="M0,133 L800,133 C667.333333,124.133333 580.666667,110.833333 540,93.1 C479,66.5 479,0 400,0 C321,0 321,67.165 260,93.1 C219.333333,110.39 132.666667,123.69 0,133 Z"
+          id="Path"
+          fill="#FFFFFF"
+        ></path>
       </svg>
     </div>
   );
