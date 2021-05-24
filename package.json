@@ -57,7 +57,12 @@
   "jest": {
     "moduleNameMapper": {
       "@/(.*)$": "<rootDir>/src/$1"
-    }
+    },
+    "collectCoverageFrom": [
+      "**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
   },
   "browserslist": {
     "production": [
