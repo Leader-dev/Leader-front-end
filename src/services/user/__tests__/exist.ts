@@ -10,9 +10,4 @@ test("should check if user exists", async () => {
     .mockImplementationOnce(async () => ({ data: { exist: true } }));
   expect(await userExist(byPhoneData)).toBeTruthy();
   expect(axios.post).toHaveBeenCalledWith(...phoneArgs);
-
-  const byUsernameData = { username: "jokens" };
-  const usernameArgs = ["/user/exist", byUsernameData];
-  expect(await userExist(byUsernameData)).toBeFalsy();
-  expect(axios.post).toHaveBeenCalledWith(...usernameArgs);
 });

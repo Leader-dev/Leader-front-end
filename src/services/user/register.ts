@@ -1,7 +1,8 @@
+import JSEncrypt from "jsencrypt";
 import axios from "@/utils/request";
+import { getPublicKey } from "./key";
 
 interface RegisterProps {
-  username: string;
   password: string;
   phone: string;
   authcode: string;
@@ -11,5 +12,11 @@ interface RegisterProps {
  * Register using credentials
  */
 export const register = async (data: RegisterProps) => {
-  return await axios.post("/user/register", data);
+  const { password } = data;
+  const p = getPublicKey();
+  const crypt = new JSEncrypt({});
+  const publicKey = await p;
+  crypt.setKey(publicKey);
+  const encryptedPassword = crypt.encrypt(password);
+  await axios.post("/user/register", { ...data, password: encryptedPassword });
 };
