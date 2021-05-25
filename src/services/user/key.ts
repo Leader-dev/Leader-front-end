@@ -6,5 +6,5 @@ import axios from "@/utils/request";
  * Key expires after a certain time, and can be only used once
  */
 export const getPublicKey = async (): Promise<string> => {
-  return await axios.post("/user/key").then((res) => res.data.publicKey);
+  return (await axios.post("/user/key")).data.publicKey;
 };
