@@ -17,7 +17,7 @@ import NoTabPage from "@/pages/NoTabPage";
 // @ts-ignore
 import Trends from "@/pages/Trends";
 // @ts-ignore
-import ECADisplay from "@/pages/ECA-Display";
+import ECADisplay from "@/pages/ECADisplay";
 // @ts-ignore
 import Management from "@/pages/Management";
 // @ts-ignore
