@@ -17,6 +17,7 @@ import {
 } from "ionicons/icons";
 
 import "./index.css";
+import * as React from "react";
 
 const BannerContainer: React.FC = ({ children }) => {
   return (

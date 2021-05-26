@@ -9,7 +9,7 @@ import {
 } from "@ionic/react";
 import User from "./User";
 import { arrowUp, ellipsisHorizontal } from "ionicons/icons";
-import React from "react";
+import * as React from "react";
 import UserSkeleton from "./UserSkeleton";
 
 export default () => {
