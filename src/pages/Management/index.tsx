@@ -7,7 +7,6 @@ import {
 } from "@ionic/react";
 import "./index.css";
 
-// @ts-ignore
 import { TestText } from "@/components/test";
 
 const Management: React.FC = () => {
