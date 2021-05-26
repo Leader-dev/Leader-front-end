@@ -6,7 +6,7 @@ import {
   IonText,
 } from "@ionic/react";
 import { checkmarkOutline } from "ionicons/icons";
-import React from "react";
+import * as React from "react";
 
 export default () => {
   return (

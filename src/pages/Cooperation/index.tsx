@@ -5,6 +5,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import * as React from "react";
 import "./index.css";
 
 const Coop: React.FC = () => {

@@ -1,6 +1,6 @@
 import { IonPage, IonContent, IonButton } from "@ionic/react";
 import { useEffect, useState } from "react";
-
+import * as React from "react";
 import coffeeImage from "./coffee.jpg";
 
 interface SVGIndicatorProps {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 import {
   IonContent,
   IonHeader,
@@ -15,6 +15,8 @@ import {
 import "./index.css";
 import { filterCircleSharp } from "ionicons/icons";
 import ECAInfoCard, { ECAInfo } from "./Component/ECAInfoCard";
+
+const { useState } = React;
 
 interface ECADisplayState {
   loadingFirst: boolean;
