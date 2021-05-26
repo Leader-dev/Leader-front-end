@@ -133,12 +133,12 @@ class Trends extends React.Component<TrendsProps, TrendsState> {
   }
 
   componentWillMount() {
-    this.state = {
+    this.setState({
       loadingFirstTime: true,
       searchText: "",
       topMoments: [],
       moments: [],
-    };
+    });
   }
 
   componentDidMount() {

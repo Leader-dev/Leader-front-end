@@ -10,20 +10,14 @@ import {
 import { Redirect, Route } from "react-router-dom";
 import { ellipse, square, triangle } from "ionicons/icons";
 
-// TODO: Add ts definitions to import alias
-// @ts-ignore
 import NoTabPage from "@/pages/NoTabPage";
 
-// @ts-ignore
 import Trends from "@/pages/Trends";
-// @ts-ignore
-import ECADisplay from "@/pages/ECADisplay";
-// @ts-ignore
+import ECADisplay from "@/pages/ECA-Display";
 import Management from "@/pages/Management";
-// @ts-ignore
 import Coop from "@/pages/Cooperation";
-// @ts-ignore
 import Personal from "@/pages/Personal";
+import SignUp from "@/pages/SignUp";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -67,6 +61,7 @@ export const AppRouter: React.FC = () => {
       <IonRouterOutlet>
         <Route exact path="/notab" component={NoTabPage} />
         <Route path="/tabs" component={TabsRoute} />
+        <Route path="/signup" component={SignUp} />
         <Route exact path="/">
           <Redirect to="/tabs/trends" />
         </Route>

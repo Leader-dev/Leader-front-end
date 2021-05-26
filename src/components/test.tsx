@@ -1,3 +1,3 @@
-export const TestText = () => {
-  return "Test Component is me!";
+export const TestText: React.FC = () => {
+  return <>Test Component is me!</>;
 };

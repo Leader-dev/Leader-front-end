@@ -1,13 +1,20 @@
 import {
   IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonIcon,
   IonAvatar,
+  IonGrid,
+  IonCol,
+  IonRow,
 } from "@ionic/react";
-import { alertCircleOutline } from "ionicons/icons";
+import {
+  alertCircleOutline,
+  heartOutline,
+  libraryOutline,
+  notificationsOutline,
+  personOutline,
+  settingsOutline,
+} from "ionicons/icons";
 
 import "./index.css";
 
@@ -29,6 +36,8 @@ const BannerContainer: React.FC = ({ children }) => {
           style={{
             position: "absolute",
             bottom: "-0px",
+            display: "block",
+            margin: "-1px",
           }}
         >
           <path d="M 0 75 S 50 0, 100 75" fill="white" stroke="none" />
@@ -75,12 +84,84 @@ const ProfileMain: React.FC = () => {
   );
 };
 
+interface CuboidLinkProps {
+  icon: string;
+  title: string;
+}
+
+const CuboidLink: React.FC<CuboidLinkProps> = ({ icon, title }) => {
+  return (
+    <div
+      style={{
+        padding: "12px",
+      }}
+    >
+      <div
+        style={{
+          borderRadius: "16px",
+          boxShadow: "rgb(0 0 0 / 12%) 0px 4px 16px",
+          textAlign: "center",
+          padding: "12px 14px",
+          color: "#2183f3",
+        }}
+      >
+        <IonIcon
+          style={{
+            display: "block",
+            margin: "auto",
+          }}
+          icon={icon}
+          size="large"
+        />
+        <span
+          style={{
+            fontSize: "12px",
+          }}
+        >
+          {title}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const ProfileItems: React.FC = () => {
+  return (
+    <IonGrid>
+      <IonRow>
+        <IonCol>yay</IonCol>
+        <IonCol>Yay</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol size="4">
+          <CuboidLink title="我的履历" icon={libraryOutline} />
+        </IonCol>
+        <IonCol size="4">
+          <CuboidLink title="我的收藏" icon={heartOutline} />
+        </IonCol>
+        <IonCol size="4">
+          <CuboidLink title="我的名片" icon={personOutline} />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol offset="2" size="4">
+          <CuboidLink title="我的设置" icon={settingsOutline} />
+        </IonCol>
+        <IonCol size="4">
+          <CuboidLink title="官方通知" icon={notificationsOutline} />
+        </IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
 const Personal: React.FC = () => {
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent fullscreen scrollY={false}>
         <BannerContainer>
           <ProfileMain />
+          <ProfileItems />
         </BannerContainer>
       </IonContent>
     </IonPage>

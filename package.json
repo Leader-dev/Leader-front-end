@@ -17,7 +17,9 @@
     "@types/react-dom": "^16.9.10",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "axios": "^0.21.1",
     "ionicons": "^5.4.0",
+    "jsencrypt": "^3.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
@@ -42,6 +44,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
+    "coverage": "CI=1 craco test --coverage",
     "ionic:build": "craco build",
     "ionic:serve": "craco start",
     "eject": "react-scripts eject",
@@ -51,6 +54,16 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "@/(.*)$": "<rootDir>/src/$1"
+    },
+    "collectCoverageFrom": [
+      "**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
     ]
   },
   "browserslist": {
