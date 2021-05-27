@@ -1,3 +1,4 @@
+import * as React from "react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
   IonIcon,
@@ -13,7 +14,7 @@ import { ellipse, square, triangle } from "ionicons/icons";
 import NoTabPage from "@/pages/NoTabPage";
 
 import Trends from "@/pages/Trends";
-import ECADisplay from "@/pages/ECA-Display";
+import ECADisplay from "@/pages/ECADisplay";
 import Management from "@/pages/Management";
 import Coop from "@/pages/Cooperation";
 import Personal from "@/pages/Personal";

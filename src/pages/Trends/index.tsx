@@ -19,7 +19,7 @@ import {
 } from "@ionic/react";
 import "./index.css";
 import { add, personCircleOutline } from "ionicons/icons";
-import React from "react";
+import * as React from "react";
 import MomentCard, { MomentInfo } from "./Component/MomentCard";
 import TopMomentItem, { TopMomentInfo } from "./Component/TopMomentItem";
 import { RefresherEventDetail } from "@ionic/core";
