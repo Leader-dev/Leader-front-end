@@ -1,4 +1,5 @@
 import { IonPage, IonContent } from "@ionic/react";
+import * as React from "react";
 
 const NoTabPage: React.FC = () => {
   return (
