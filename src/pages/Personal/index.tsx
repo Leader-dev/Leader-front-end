@@ -6,9 +6,16 @@ import {
   IonGrid,
   IonCol,
   IonRow,
+  IonFab,
+  IonFabButton,
+  IonBackdrop,
+  IonList,
+  IonItem,
+  IonLabel,
 } from "@ionic/react";
 import {
   alertCircleOutline,
+  chatbubblesOutline,
   heartOutline,
   libraryOutline,
   notificationsOutline,
@@ -17,7 +24,12 @@ import {
 } from "ionicons/icons";
 
 import "./index.css";
-import * as React from "react";
+import { useEffect, useRef, useState } from "react";
+
+const useForceUpdate = () => {
+  const [, setValue] = useState(0); // integer state
+  return () => setValue((value) => value + 1); // update the state to force render
+};
 
 const BannerContainer: React.FC = ({ children }) => {
   return (
@@ -130,10 +142,6 @@ const ProfileItems: React.FC = () => {
   return (
     <IonGrid>
       <IonRow>
-        <IonCol>yay</IonCol>
-        <IonCol>Yay</IonCol>
-      </IonRow>
-      <IonRow>
         <IonCol size="4">
           <CuboidLink title="我的履历" icon={libraryOutline} />
         </IonCol>
@@ -156,6 +164,109 @@ const ProfileItems: React.FC = () => {
   );
 };
 
+const ContactUs: React.FC = () => {
+  const [popUpOpen, setPopUpOpen] = useState(false);
+  const fabRef = useRef<HTMLIonFabElement>(null);
+  const fabRect = fabRef.current?.getBoundingClientRect();
+  const update = useForceUpdate();
+  useEffect(() => {
+    update();
+  }, [update]);
+
+  return (
+    <>
+      <div
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 2,
+          background: "#000",
+          transition: "opacity 0.3s ease-in-out",
+          opacity: popUpOpen ? 0.2 : 0,
+          // display: popUpOpen ? "default" : "none",
+        }}
+        onClick={(e) => {
+          if (popUpOpen) {
+            e.stopPropagation();
+          }
+          setPopUpOpen(false);
+        }}
+      ></div>
+      <div
+        id="fk"
+        style={{
+          position: "fixed",
+          left: fabRect?.x,
+          top: fabRect?.top,
+          transform: `translateX(-100%) translateY(-100%) ${
+            popUpOpen ? "" : "translateX(-300px)"
+          }`,
+          background: "white",
+          width: "240px",
+          height: "300px",
+          borderRadius: "30px",
+          transitionProperty: "transform opacity",
+          transition: "0.3s ease-in-out",
+          opacity: popUpOpen ? 1 : 0,
+          zIndex: 3,
+        }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            padding: "12px 0 4px",
+            fontSize: "10px",
+          }}
+        >
+          呐，我们就是主创团队了，找我们聊聊吧~
+        </div>
+        <IonList>
+          <IonItem>
+            <IonAvatar slot="start">
+              <img src="https://avatars.githubusercontent.com/u/45055133?v=4" />
+            </IonAvatar>
+            <IonLabel>
+              <h2>首席产品官</h2>
+              <p>你好</p>
+            </IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonAvatar slot="start">
+              <img src="https://avatars.githubusercontent.com/u/45055133?v=4" />
+            </IonAvatar>
+            <IonLabel>
+              <h2>首席技术官</h2>
+              <p>拟好</p>
+            </IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonAvatar slot="start">
+              <img src="https://avatars.githubusercontent.com/u/45055133?v=4" />
+            </IonAvatar>
+            <IonLabel>
+              <h2>手洗洗手瓜</h2>
+              <p>你号</p>
+            </IonLabel>
+          </IonItem>
+        </IonList>
+      </div>
+
+      <IonFab ref={fabRef} vertical="bottom" horizontal="end" slot="fixed">
+        <IonFabButton
+          onClick={() => {
+            setPopUpOpen(!popUpOpen);
+          }}
+        >
+          <IonIcon icon={chatbubblesOutline} />
+        </IonFabButton>
+      </IonFab>
+    </>
+  );
+};
+
 const Personal: React.FC = () => {
   return (
     <IonPage>
@@ -164,6 +275,7 @@ const Personal: React.FC = () => {
           <ProfileMain />
           <ProfileItems />
         </BannerContainer>
+        <ContactUs />
       </IonContent>
     </IonPage>
   );
