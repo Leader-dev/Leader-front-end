@@ -31,7 +31,7 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
     <IonCard
       style={{
         height: cardHeight + "vh",
-        width: "100%",
+        width: "45vw",
       }}
     >
       <IonCardHeader

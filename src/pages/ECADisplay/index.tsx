@@ -113,9 +113,11 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "50% 50%",
-                gridGap: "10px",
-                paddingRight: "10vw",
+                gridTemplateColumns: "45vw 45vw",
+                gridTemplateRows: "19vh 19vh",
+                gridGap: "2vw",
+                gridRowGap: "1vh",
+                marginLeft: "-8vw", // May need to be modified on different platform
               }}
             >
               <div
@@ -138,7 +140,6 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
                 style={{
                   gridColumn: 2,
                   gridRow: 2,
-                  marginTop: "-4.2vh",
                 }}
               >
                 <ECAInfoCard info={this.state.eca[3 * i + 2]} size="small" />
@@ -175,7 +176,7 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
               borderTopRightRadius: "25px",
               boxShadow: "0 -4px 6px -1px lightgrey",
               position: "fixed",
-              bottom: tabBarHeight + "px",
+              bottom: tabBarHeight,
               left: 0,
               right: 0,
             }}
