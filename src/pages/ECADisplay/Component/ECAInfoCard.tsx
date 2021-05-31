@@ -11,27 +11,26 @@ import { personSharp } from "ionicons/icons";
 export interface ECAInfo {
   name: string;
   id: number;
-  poster: string;
+  posterUrl: string;
   memberNum: number;
   address: string;
 }
 
 export default ({ info, size }: { info: ECAInfo; size: string }) => {
   console.log(info);
-  const { name, id, poster, memberNum, address } = info;
+  const { name, id, posterUrl, memberNum, address } = info;
   let cardHeight, posterProportion;
   if (size === "large") {
-    cardHeight = 38;
-    posterProportion = 86;
+    posterProportion = 85;
   } else {
-    cardHeight = 18;
     posterProportion = 70;
   }
   return (
     <IonCard
       style={{
-        height: cardHeight + "vh",
-        width: "45vw",
+        height: "100%",
+        width: "100%",
+        margin: 0,
       }}
     >
       <IonCardHeader
@@ -41,7 +40,7 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
           overflow: "hidden",
         }}
       >
-        <IonImg src={poster} />
+        <IonImg src={posterUrl} />
       </IonCardHeader>
 
       <IonCardContent
