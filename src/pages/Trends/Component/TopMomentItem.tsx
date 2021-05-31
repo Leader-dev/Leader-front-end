@@ -1,7 +1,7 @@
 import { IonIcon, IonItem, IonLabel, IonText } from "@ionic/react";
 import { arrowUp } from "ionicons/icons";
 import User from "./User";
-import React from "react";
+import * as React from "react";
 import { MomentInfo } from "./MomentCard";
 
 export interface TopMomentInfo extends MomentInfo {
