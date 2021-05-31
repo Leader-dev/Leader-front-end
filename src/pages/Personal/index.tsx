@@ -24,11 +24,11 @@ import {
 } from "ionicons/icons";
 
 import "./index.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const useForceUpdate = () => {
   const [, setValue] = useState(0); // integer state
-  return () => setValue((value) => value + 1); // update the state to force render
+  return useCallback(() => setValue((value) => value + 1), []);
 };
 
 const BannerContainer: React.FC = ({ children }) => {
