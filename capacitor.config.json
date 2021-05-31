@@ -9,9 +9,5 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {},
-  "server": {
-    "url": "http://172.16.172.69:8100",
-    "cleartext": true
-  }
+  "cordova": {}
 }
