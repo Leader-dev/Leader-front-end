@@ -40,7 +40,14 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
           overflow: "hidden",
         }}
       >
-        <IonImg src={posterUrl} />
+        <IonImg
+          src={posterUrl}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
       </IonCardHeader>
 
       <IonCardContent

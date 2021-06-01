@@ -86,7 +86,12 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
               {
                 id: 40033,
                 posterUrl:
-                  "https://tva1.sinaimg.cn/large/008i3skNgy1gr1kvp1p45j309304d74h.jpg",
+                  "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
+              },
+              {
+                id: 40034,
+                posterUrl:
+                  "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
               },
             ],
           },
@@ -131,7 +136,6 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
                 gridTemplateRows: "19.5vh 19.5vh",
                 gridColumnGap: "2vw",
                 gridRowGap: "1vh",
-                margin: "auto 4vw",
               }}
             >
               <div
@@ -188,11 +192,17 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
 
         <IonContent fullscreen>
           <IonSlides
+            className="top-slider"
             pager={true}
             options={{
               initialSlide: 1,
+              speed: 400,
             }}
-            scrollbar={true}
+            style={{
+              marginTop: "2vh",
+              height: "22vh",
+              width: "92vw",
+            }}
           >
             {advertisementList}
           </IonSlides>
@@ -205,15 +215,25 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
               bottom: tabBarHeight,
               left: 0,
               right: 0,
-              height: "50vh",
+              height: "47vh",
             }}
           >
             <div
               style={{
+                display: "flex",
+                alignItems: "center",
                 height: "5vh",
+                paddingLeft: "4.5vw",
               }}
             >
-              test
+              <span
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bolder",
+                }}
+              >
+                推荐
+              </span>
             </div>
             <IonSlides
               className="bottom-slider"
@@ -222,7 +242,7 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
                 initialSlide: 1,
               }}
               style={{
-                height: "45vh",
+                overflow: "visible",
               }}
             >
               {ecaList}

@@ -4,5 +4,13 @@ ion-button {
 }
 
 .bottom-slider .swiper-pagination {
-  bottom: 2px;
+  bottom: -2vh; /* May requirement modification based on platform */
+}
+
+/*.top-slider .swiper-pagination{*/
+/*  bottom: 0;*/
+/*}*/
+
+.top-slider .swiper-pagination {
+  bottom: 0;
 }
