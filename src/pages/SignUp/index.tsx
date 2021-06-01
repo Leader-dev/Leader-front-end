@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import Joi from "joi";
 
-import { register, sendPhoneAuthCode } from "@/services/user";
+import { login, register, sendPhoneAuthCode } from "@/services/user";
 import coffeeImage from "./coffee.jpg";
 
 interface SVGIndicatorProps {
@@ -150,6 +150,8 @@ const CustomInput: React.FC<Parameters<typeof IonInput>[0]> = (props) => {
 };
 
 const Login: React.VFC = () => {
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <div style={{ textAlign: "center", padding: "32px 0" }}>
       <IonAvatar style={{ margin: "auto", height: "128px", width: "128px" }}>
@@ -161,13 +163,29 @@ const Login: React.VFC = () => {
       <IonText color="primary">
         <h2>用户名</h2>
       </IonText>
-      <CustomInput type="tel" placeholder="手机号" />
-      <CustomInput type="password" placeholder="密码" />
+      <CustomInput
+        value={phone}
+        onIonChange={(e) => setPhone(e.detail.value!)}
+        type="tel"
+        placeholder="手机号"
+      />
+      <CustomInput
+        value={password}
+        onIonChange={(e) => setPassword(e.detail.value!)}
+        type="password"
+        placeholder="密码"
+      />
       <div style={{ margin: "-8px auto 0" }}>
         <IonButton fill="clear">忘记密码</IonButton>
       </div>
       <div style={{ margin: "8px 24px" }}>
-        <IonButton expand="block" size="large">
+        <IonButton
+          expand="block"
+          size="large"
+          onClick={() => {
+            login({ phone, password });
+          }}
+        >
           登录
         </IonButton>
       </div>
