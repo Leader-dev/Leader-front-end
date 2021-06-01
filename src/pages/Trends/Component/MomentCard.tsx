@@ -7,7 +7,7 @@ import {
   IonText,
   useIonActionSheet,
 } from "@ionic/react";
-import React, { useState } from "react";
+import * as React from "react";
 import User, { UserInfo } from "./User";
 import {
   arrowUp,

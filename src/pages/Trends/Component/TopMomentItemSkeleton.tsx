@@ -7,7 +7,7 @@ import {
 } from "@ionic/react";
 import { arrowUp } from "ionicons/icons";
 import User from "./User";
-import React from "react";
+import * as React from "react";
 import UserSkeleton from "./UserSkeleton";
 
 export default ({ rank }: { rank: number }) => {
