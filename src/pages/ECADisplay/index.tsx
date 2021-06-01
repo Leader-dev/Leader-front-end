@@ -15,12 +15,16 @@ import {
 import "./index.css";
 import { filterCircleSharp } from "ionicons/icons";
 import ECAInfoCard, { ECAInfo } from "./Component/ECAInfoCard";
+import TopAdvertisement, {
+  AdvertisementInfo,
+} from "./Component/TopAdvertisement";
 
 const { useState } = React;
 
 interface ECADisplayState {
   loadingFirst: boolean;
   eca: ECAInfo[];
+  advertisement: AdvertisementInfo[];
   searchText: string;
 }
 
@@ -33,7 +37,7 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
             loadingFirst: false,
             eca: [
               {
-                poster:
+                posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
                 name: "这是一个社团",
                 id: 400031,
@@ -41,7 +45,7 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
                 address: "深圳国际交流学院",
               },
               {
-                poster:
+                posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
                 name: "这是一个社团",
                 id: 400032,
@@ -49,7 +53,7 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
                 address: "深圳国际交流学院",
               },
               {
-                poster:
+                posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
                 name: "这是一个社团",
                 id: 400033,
@@ -57,25 +61,37 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
                 address: "深圳国际交流学院",
               },
               {
-                poster: "http://placekitten.com/g/200/300",
+                posterUrl: "http://placekitten.com/g/200/300",
                 name: "这是一个社团",
                 id: 400034,
                 memberNum: 35,
                 address: "深圳国际交流学院",
               },
               {
-                poster: "http://placekitten.com/g/200/300",
+                posterUrl: "http://placekitten.com/g/200/300",
                 name: "这是一个社团",
                 id: 400035,
                 memberNum: 35,
                 address: "深圳国际交流学院",
               },
               {
-                poster: "http://placekitten.com/g/200/300",
+                posterUrl: "http://placekitten.com/g/200/300",
                 name: "这是一个社团",
                 id: 400036,
                 memberNum: 35,
                 address: "深圳国际交流学院",
+              },
+            ],
+            advertisement: [
+              {
+                id: 40033,
+                posterUrl:
+                  "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
+              },
+              {
+                id: 40034,
+                posterUrl:
+                  "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
               },
             ],
           },
@@ -104,18 +120,22 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
 
   render() {
     let ecaList = [];
+    let advertisementList: any[];
     let tabBarHeight =
       document.getElementsByTagName("ion-tab-bar")[0].clientHeight;
-    if (!this.state.loadingFirst) {
+    if (this.state.loadingFirst) {
+      advertisementList = [];
+    } else {
       for (let i = 0; i < 2; i++) {
         ecaList.push(
           <IonSlide>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "50% 50%",
-                gridGap: "10px",
-                paddingRight: "10vw",
+                gridTemplateColumns: "45vw 45vw",
+                gridTemplateRows: "19.5vh 19.5vh",
+                gridColumnGap: "2vw",
+                gridRowGap: "1vh",
               }}
             >
               <div
@@ -138,7 +158,6 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
                 style={{
                   gridColumn: 2,
                   gridRow: 2,
-                  marginTop: "-4.2vh",
                 }}
               >
                 <ECAInfoCard info={this.state.eca[3 * i + 2]} size="small" />
@@ -147,6 +166,9 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
           </IonSlide>
         );
       }
+      advertisementList = this.state.advertisement.map((info) => (
+        <TopAdvertisement info={info} />
+      ));
     }
     return (
       <IonPage>
@@ -168,25 +190,60 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
           </IonToolbar>
         </IonHeader>
 
-        <IonContent>
+        <IonContent fullscreen>
+          <IonSlides
+            className="top-slider"
+            pager={true}
+            options={{
+              initialSlide: 1,
+              speed: 400,
+            }}
+            style={{
+              marginTop: "2vh",
+              height: "22vh",
+              width: "92vw",
+            }}
+          >
+            {advertisementList}
+          </IonSlides>
           <div
             style={{
               borderTopLeftRadius: "25px",
               borderTopRightRadius: "25px",
               boxShadow: "0 -4px 6px -1px lightgrey",
               position: "fixed",
-              bottom: tabBarHeight + "px",
+              bottom: tabBarHeight,
               left: 0,
               right: 0,
+              height: "47vh",
             }}
           >
-            <div>test</div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                height: "5vh",
+                paddingLeft: "4.5vw",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bolder",
+                }}
+              >
+                推荐
+              </span>
+            </div>
             <IonSlides
+              className="bottom-slider"
               pager={true}
               options={{
                 initialSlide: 1,
               }}
-              scrollbar={true}
+              style={{
+                overflow: "visible",
+              }}
             >
               {ecaList}
             </IonSlides>
