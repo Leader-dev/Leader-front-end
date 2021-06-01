@@ -6,6 +6,7 @@ interface RegisterProps {
   password: string;
   phone: string;
   authcode: string;
+  nickname: string;
 }
 
 /**
