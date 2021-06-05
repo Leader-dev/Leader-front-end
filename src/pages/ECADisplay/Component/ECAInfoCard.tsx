@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  IonCard,
-  IonIcon,
-  IonImg,
-  IonCardContent,
-  IonCardHeader,
-} from "@ionic/react";
+import { IonCard, IonIcon, IonImg, IonCardContent } from "@ionic/react";
 import { personSharp } from "ionicons/icons";
 
 export interface ECAInfo {
@@ -21,7 +15,7 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
   const { name, id, posterUrl, memberNum, address } = info;
   let cardHeight, posterProportion;
   if (size === "large") {
-    posterProportion = 85;
+    posterProportion = 86;
   } else {
     posterProportion = 70;
   }
@@ -33,11 +27,9 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
         margin: 0,
       }}
     >
-      <IonCardHeader
+      <div
         style={{
           height: posterProportion + "%",
-          padding: 0,
-          overflow: "hidden",
         }}
       >
         <IonImg
@@ -48,7 +40,7 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
             objectFit: "cover",
           }}
         />
-      </IonCardHeader>
+      </div>
 
       <IonCardContent
         style={{

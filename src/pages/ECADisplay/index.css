@@ -1,15 +1,14 @@
-ion-button {
-  height: 4vh;
-  padding-right: 1vw;
+ion-toolbar {
+  --background: #43536d;
+}
+
+ion-searchbar .searchbar-input-container {
+  --background: white;
 }
 
 .bottom-slider .swiper-pagination {
-  bottom: -2vh; /* May requirement modification based on platform */
+  bottom: -2.5vh; /* May requirement modification based on platform */
 }
-
-/*.top-slider .swiper-pagination{*/
-/*  bottom: 0;*/
-/*}*/
 
 .top-slider .swiper-pagination {
   bottom: 0;
