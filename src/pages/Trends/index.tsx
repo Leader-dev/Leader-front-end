@@ -16,13 +16,17 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
+  isPlatform,
 } from "@ionic/react";
 import "./index.css";
-import { add, personCircleOutline } from "ionicons/icons";
+import { add, person, personCircleOutline } from "ionicons/icons";
+import { RefresherEventDetail } from "@ionic/core";
 import * as React from "react";
+
+import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
+
 import MomentCard, { MomentInfo } from "./Component/MomentCard";
 import TopMomentItem, { TopMomentInfo } from "./Component/TopMomentItem";
-import { RefresherEventDetail } from "@ionic/core";
 import MomentCardSkeleton from "./Component/MomentCardSkeleton";
 import TopMomentItemSkeleton from "./Component/TopMomentItemSkeleton";
 import { Route, RouteComponentProps } from "react-router-dom";
@@ -187,31 +191,22 @@ class Trends extends React.Component<TrendsProps, TrendsState> {
         )
         .map((info) => <MomentCard info={info} />);
     }
+    console.log(process.env);
     return (
       <IonPage>
-        <IonHeader translucent>
-          <IonToolbar>
-            <IonTitle>动态</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen>
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large">动态</IonTitle>
-            </IonToolbar>
-            <IonToolbar>
-              <IonSearchbar
-                placeholder="搜索动态"
-                value={this.state.searchText}
-                onIonChange={(e) => this.setSearchText(e.detail.value!)}
-              />
-              <IonButtons style={{ marginRight: 8 }} slot="primary">
-                <IonButton color="primary">
-                  <IonIcon slot="icon-only" icon={personCircleOutline} />
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
+        <TitledSearchBarWrapper
+          title="动态"
+          searchbarPlaceholder="搜索动态"
+          value={this.state.searchText}
+          onValueChange={(e) => this.setSearchText(e.detail.value!)}
+          rightItems={
+            <IonButtons style={{ marginRight: 8 }} slot="primary">
+              <IonButton color="primary">
+                <IonIcon slot="icon-only" icon={personCircleOutline} />
+              </IonButton>
+            </IonButtons>
+          }
+        >
           <IonRefresher
             slot="fixed"
             onIonRefresh={(event) => this.refresh(event)}
@@ -239,7 +234,7 @@ class Trends extends React.Component<TrendsProps, TrendsState> {
               <IonIcon icon={add} />
             </IonFabButton>
           </IonFab>
-        </IonContent>
+        </TitledSearchBarWrapper>
       </IonPage>
     );
   }
