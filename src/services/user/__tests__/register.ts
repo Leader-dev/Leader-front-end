@@ -20,6 +20,7 @@ test("registration", async () => {
     phone: "17583740192",
     authcode: "330300",
     password: "12345678",
+    nickname: "Hello_world",
   };
   await register(cred);
   // @ts-ignore
