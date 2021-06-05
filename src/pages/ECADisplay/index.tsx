@@ -11,9 +11,10 @@ import {
   IonSlides,
   IonSlide,
   IonIcon,
+  IonText,
 } from "@ionic/react";
 import "./index.css";
-import { filterCircleSharp } from "ionicons/icons";
+import { filterCircleSharp, filterOutline } from "ionicons/icons";
 import ECAInfoCard, { ECAInfo } from "./Component/ECAInfoCard";
 import TopAdvertisement, {
   AdvertisementInfo,
@@ -133,9 +134,9 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
               style={{
                 display: "grid",
                 gridTemplateColumns: "45vw 45vw",
-                gridTemplateRows: "19.5vh 19.5vh",
+                gridTemplateRows: "20vh 20vh",
                 gridColumnGap: "2vw",
-                gridRowGap: "1vh",
+                gridRowGap: "1.5vh",
               }}
             >
               <div
@@ -174,66 +175,91 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
       <IonPage>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>社团展示</IonTitle>
-          </IonToolbar>
-          <IonToolbar>
             <IonSearchbar
               placeholder="搜索社团"
               value={this.state.searchText}
               onIonChange={(e) => this.setSearchText(e.detail.value!)}
             />
             <IonButtons style={{ marginRight: 8 }} slot="primary">
-              <IonButton color="primary">
-                <IonIcon slot="icon-only" icon={filterCircleSharp} />
+              <IonButton color="light">
+                <IonIcon slot="icon-only" icon={filterOutline} />
               </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
 
         <IonContent fullscreen>
-          <IonSlides
-            className="top-slider"
-            pager={true}
-            options={{
-              initialSlide: 1,
-              speed: 400,
-            }}
-            style={{
-              marginTop: "2vh",
-              height: "22vh",
-              width: "92vw",
-            }}
-          >
-            {advertisementList}
-          </IonSlides>
+          <div style={{ background: "white" }}>
+            <div
+              style={{
+                background: "#43536D",
+                position: "relative",
+                paddingTop: "1vh",
+                height: "21vh",
+              }}
+            >
+              <svg
+                viewBox="0 0 100 75"
+                width="100%"
+                height="100px"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  marginBottom: "-1px",
+                  bottom: 0,
+                  display: "block",
+                }}
+              >
+                <path d="M 0 75 S 50 0, 100 75" fill="white" stroke="none" />
+              </svg>
+              <IonSlides
+                className="top-slider"
+                pager={true}
+                options={{
+                  initialSlide: 1,
+                  speed: 400,
+                }}
+                style={{
+                  height: "23vh",
+                  width: "92vw",
+                }}
+              >
+                {advertisementList}
+              </IonSlides>
+            </div>
+          </div>
+
           <div
             style={{
               borderTopLeftRadius: "25px",
               borderTopRightRadius: "25px",
               boxShadow: "0 -4px 6px -1px lightgrey",
-              position: "fixed",
+              position: "absolute",
               bottom: tabBarHeight,
               left: 0,
               right: 0,
-              height: "47vh",
+              height: "51vh",
             }}
           >
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                height: "5vh",
-                paddingLeft: "4.5vw",
+                justifyContent: "space-between",
+                height: "6vh",
+                padding: "1.5vh 1.5vw 1vh 4.5vw",
               }}
             >
-              <span
+              <IonText
                 style={{
-                  fontSize: "18px",
+                  fontSize: "24px",
                   fontWeight: "bolder",
                 }}
               >
                 推荐
-              </span>
+              </IonText>
+              <IonButton fill="clear" size="small">
+                查看更多
+              </IonButton>
             </div>
             <IonSlides
               className="bottom-slider"
