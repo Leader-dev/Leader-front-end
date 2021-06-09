@@ -19,5 +19,15 @@ export const register = async (data: RegisterProps) => {
   const publicKey = await p;
   crypt.setKey(publicKey);
   const encryptedPassword = crypt.encrypt(password);
-  await axios.post("/user/register", { ...data, password: encryptedPassword });
+  await axios.post(
+    "/user/register",
+    { ...data, password: encryptedPassword },
+    {
+      codeHandlers: {
+        400: ({ response }) => {
+          throw response.data.error;
+        },
+      },
+    }
+  );
 };

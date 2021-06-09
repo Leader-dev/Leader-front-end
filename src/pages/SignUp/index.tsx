@@ -7,11 +7,15 @@ import {
   IonText,
   IonCheckbox,
   IonProgressBar,
+  useIonRouter,
+  createAnimation,
+  AnimationBuilder,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Joi from "joi";
 
-import { login, register, sendPhoneAuthCode } from "@/services/user";
+import { useToast } from "@/utils/toast";
+import { login, register, sendPhoneAuthCode, userExist } from "@/services/user";
 import coffeeImage from "./coffee.jpg";
 
 interface SVGIndicatorProps {
@@ -19,6 +23,24 @@ interface SVGIndicatorProps {
   duration: number;
   height?: number;
 }
+
+const signupPageAnimationBuilder: AnimationBuilder = (baseEl, opts) => {
+  // reference: <https://medium.com/nerd-for-tech/ionic-react-implementing-custom-page-transition-animation-48aa3086e9da>
+  const enteringAnimation = createAnimation()
+    .addElement(opts.enteringEl)
+    .fromTo("opacity", 0, 1)
+    .duration(250);
+
+  const leavingAnimation = createAnimation()
+    .addElement(opts.leavingEl)
+    .fromTo("opacity", 1, 0)
+    .duration(250);
+
+  const animation = createAnimation()
+    .addAnimation(enteringAnimation)
+    .addAnimation(leavingAnimation);
+  return animation;
+};
 
 const SVGIndicator: React.FC<SVGIndicatorProps> = ({
   position,
@@ -152,6 +174,8 @@ const CustomInput: React.FC<Parameters<typeof IonInput>[0]> = (props) => {
 const Login: React.VFC = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [present] = useToast();
+  const { push } = useIonRouter();
   return (
     <div style={{ textAlign: "center", padding: "32px 0" }}>
       <IonAvatar style={{ margin: "auto", height: "128px", width: "128px" }}>
@@ -183,7 +207,29 @@ const Login: React.VFC = () => {
           expand="block"
           size="large"
           onClick={() => {
-            login({ phone, password });
+            login({ phone, password })
+              .then(() => {
+                present({ message: "登录成功" });
+                push(
+                  "/tabs/trends",
+                  undefined,
+                  undefined,
+                  undefined,
+                  signupPageAnimationBuilder
+                );
+              })
+              .catch((err) => {
+                switch (err) {
+                  case "password_incorrect":
+                    present({ message: "手机号或密码错误" });
+                    break;
+                  case "user_not_exist":
+                    present({ message: "手机号错误" });
+                    break;
+                  default:
+                    present({ message: err });
+                }
+              });
           }}
         >
           登录
@@ -205,6 +251,7 @@ const StageOne: React.FC<{ cb: (params: StageOneCallbackParams) => void }> = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+  const [present] = useToast();
   return (
     <>
       <CustomInput
@@ -249,15 +296,39 @@ const StageOne: React.FC<{ cb: (params: StageOneCallbackParams) => void }> = ({
           expand="block"
           onClick={() => {
             // verify inputs
-            if (
-              !Joi.string().required().min(6).max(12).validate(username)
-                .error &&
-              !Joi.string().min(8).max(24).validate(password).error &&
-              password === checkPassword
-            ) {
+            const { error } = Joi.object({
+              username: Joi.string().required().min(6).max(12),
+              password: Joi.string().min(8).max(24),
+              checkPassword: Joi.ref("password"),
+            }).validate({ username, password, checkPassword });
+            if (!error) {
               cb({ nickname: username, password });
             } else {
-              // TODO: provide error message
+              switch (error.details[0].message) {
+                case '"username" is not allowed to be empty':
+                  present({ message: "用户名不得为空" });
+                  break;
+                case '"username" length must be at least 6 characters long':
+                  present({ message: "用户名需要至少 6 个字符" });
+                  break;
+                case '"username" length must be less than or equal to 12 characters long':
+                  present({ message: "用户名不得超过 12 个字符" });
+                  break;
+                case '"password" is not allowed to be empty':
+                  present({ message: "密码不得为空" });
+                  break;
+                case '"password" length must be at least 8 characters long':
+                  present({ message: "密码需要至少 8 个字符" });
+                  break;
+                case '"password" length must be less than or equal to 24 characters long':
+                  present({ message: "密码不得超过 24 个字符" });
+                  break;
+                case '"checkPassword" must be [ref:password]':
+                  present({ message: "密码必须相同" });
+                  break;
+                default:
+                  present({ message: error.details[0].message });
+              }
             }
           }}
         >
@@ -275,6 +346,7 @@ interface StageTwoCallbackParams {
 const StageTwo: React.FC<{ cb: (params: StageTwoCallbackParams) => void }> = ({
   cb,
 }) => {
+  const [present] = useToast();
   const [phone, setPhone] = useState("");
   return (
     <>
@@ -288,16 +360,24 @@ const StageTwo: React.FC<{ cb: (params: StageTwoCallbackParams) => void }> = ({
         <IonButton
           expand="block"
           onClick={() => {
-            // verify inputs
-            if (
-              !Joi.string()
-                .required()
-                .pattern(/^[1][3,5,7,8][0-9]\d{8}$/)
-                .validate(phone).error
-            ) {
+            const { error } = Joi.string()
+              .required()
+              .pattern(/^[1][3,5,7,8][0-9]\d{8}$/)
+              .validate(phone);
+            if (!error) {
               cb({ phone });
             } else {
-              // TODO: provide error message
+              if (error.details[0].message.includes("pattern")) {
+                present({ message: "无效手机号" });
+                return;
+              }
+              switch (error.details[0].message) {
+                case '"value" is not allowed to be empty':
+                  present({ message: "手机号不得为空" });
+                  break;
+                default:
+                  present({ message: error.details[0].message });
+              }
             }
           }}
         >
@@ -315,6 +395,7 @@ interface StageThreeCallbackParams {
 const StageThree: React.FC<{
   cb: (params: StageThreeCallbackParams) => void;
 }> = ({ cb }) => {
+  const [present] = useToast();
   const [authcode, setAuthcode] = useState("");
   return (
     <>
@@ -328,11 +409,14 @@ const StageThree: React.FC<{
         <IonButton
           expand="block"
           onClick={() => {
-            // verify inputs
-            if (!Joi.string().required().length(6).validate(authcode).error) {
+            const { error } = Joi.string()
+              .required()
+              .length(6)
+              .validate(authcode);
+            if (!error) {
               cb({ authcode });
             } else {
-              // TODO: provide error message
+              present({ message: "无效验证码" });
             }
           }}
         >
@@ -351,6 +435,8 @@ const Register: React.VFC = () => {
     phone: "",
     authcode: "",
   });
+  const [present] = useToast();
+  const { push } = useIonRouter();
   const stageOneCallback = ({
     nickname,
     password,
@@ -361,14 +447,32 @@ const Register: React.VFC = () => {
     setStage(1);
     setCreds({ ...creds, nickname, password });
   };
-  const stageTwoCallback = ({ phone }: { phone: string }) => {
+  const stageTwoCallback = async ({ phone }: { phone: string }) => {
+    if (await userExist({ phone })) {
+      present({ message: "手机号已存在" });
+      return;
+    }
     setStage(2);
     setCreds({ ...creds, phone });
     sendPhoneAuthCode({ phone });
   };
-  const stageThreeCallback = ({ authcode }: { authcode: string }) => {
+  const stageThreeCallback = async ({ authcode }: { authcode: string }) => {
     setCreds({ ...creds, authcode });
-    register({ ...creds, authcode });
+    try {
+      await register({ ...creds, authcode });
+      present({ message: "注册成功！" });
+      push(
+        "/tabs/trends",
+        undefined,
+        undefined,
+        undefined,
+        signupPageAnimationBuilder
+      );
+    } catch (err) {
+      if (err === "authcode_incorrect") {
+        present({ message: "验证码错误" });
+      }
+    }
   };
   return (
     <div

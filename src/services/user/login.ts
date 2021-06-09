@@ -19,16 +19,22 @@ interface LoginWithAuthCodeProps {
 export const login = async (
   data: LoginWithPasswordProps | LoginWithAuthCodeProps
 ) => {
+  const requestData: { phone: string; password?: string; authcode?: string } = {
+    phone: data.phone,
+  };
   if ("password" in data) {
     const publicKey = await getPublicKey();
     const encrypt = new JSEncrypt({});
     encrypt.setKey(publicKey);
-    const requestData = {
-      phone: data.phone,
-      password: encrypt.encrypt(data.password),
-    };
-    await axios.post("/user/login", requestData);
+    requestData.password = encrypt.encrypt(data.password) || undefined;
   } else {
-    await axios.post("/user/login", data);
+    requestData.authcode = data.authcode;
   }
+  await axios.post("/user/login", requestData, {
+    codeHandlers: {
+      400: ({ response }) => {
+        throw response.data.error;
+      },
+    },
+  });
 };

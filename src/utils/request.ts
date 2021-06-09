@@ -1,8 +1,24 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+
+interface CodeHandlerProps {
+  response: AxiosResponse;
+  code: number;
+  config: AxiosRequestConfig;
+}
+
+type CodeHandler = (props: CodeHandlerProps) => void;
+
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    codeHandlers: {
+      [code: number]: CodeHandler;
+    };
+  }
+}
 
 const axiosInstance = axios.create({
   baseURL: "/api",
-  withCredentials: true,
+  codeHandlers: {},
 });
 
 // TODO: save using native APIs
@@ -17,8 +33,19 @@ export const getKey = (): string | null => {
 };
 
 axiosInstance.interceptors.response.use((response) => {
+  const {
+    data: { code },
+    config,
+  } = response;
   if ("set-api-token" in response.headers) {
     saveKey(response.headers["set-api-token"]);
+  }
+  if (code !== 200 && code in config.codeHandlers) {
+    config.codeHandlers[code]({
+      response,
+      code,
+      config,
+    });
   }
   return response;
 });
