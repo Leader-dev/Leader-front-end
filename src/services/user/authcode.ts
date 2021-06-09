@@ -8,5 +8,11 @@ interface SendPhoneAuthCodeProps {
  * Request an auth code to be sent to phone
  */
 export const sendPhoneAuthCode = async ({ phone }: SendPhoneAuthCodeProps) => {
-  await axios.post("/user/authcode", { phone });
+  await axios.post(
+    "/user/authcode",
+    { phone },
+    {
+      codeHandlers: {},
+    }
+  );
 };
