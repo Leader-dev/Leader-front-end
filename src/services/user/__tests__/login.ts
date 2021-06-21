@@ -29,9 +29,9 @@ describe("the login util", () => {
     axios.post = jest.fn();
     const loginWithAuthCodeData = { phone: "1234567890", authcode: "353462" };
     await login(loginWithAuthCodeData);
-    expect(axios.post).toHaveBeenCalledWith(
-      "/user/login",
-      loginWithAuthCodeData
-    );
+    // @ts-ignore
+    expect(axios.post.mock.calls[0][0]).toEqual("/user/login");
+    // @ts-ignore
+    expect(axios.post.mock.calls[0][1]).toEqual(loginWithAuthCodeData);
   });
 });

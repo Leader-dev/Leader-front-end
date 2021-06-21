@@ -8,5 +8,6 @@ test("should send auth request", async () => {
 
   await sendPhoneAuthCode({ phone });
 
-  expect(axios.post).toBeCalledWith(...resp);
+  // @ts-ignore
+  expect(axios.post.mock.calls[0].slice(0, 2)).toEqual(resp);
 });
