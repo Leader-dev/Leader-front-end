@@ -40,12 +40,19 @@ axiosInstance.interceptors.response.use((response) => {
   if ("set-api-token" in response.headers) {
     saveKey(response.headers["set-api-token"]);
   }
-  if (code !== 200 && code in config.codeHandlers) {
-    config.codeHandlers[code]({
-      response,
-      code,
-      config,
-    });
+  if (code !== 200) {
+    if (code in config.codeHandlers) {
+      config.codeHandlers[code]({
+        response,
+        code,
+        config,
+      });
+    } else {
+      console.log({ env: process.env.NODE_ENV, response });
+      if (process.env.NODE_ENV === "development") {
+        throw new Error(response.data?.error || code);
+      }
+    }
   }
   return response;
 });
