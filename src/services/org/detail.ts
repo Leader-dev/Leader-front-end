@@ -34,5 +34,6 @@ interface OrgDetailsResult {
 }
 
 export const getOrgDetails = async ({ orgId }: GetOrgDetailsArgs) => {
-  return (await axios.post("/org/detail", { orgId })).data.detail;
+  return (await axios.post("/org/detail", { orgId })).data
+    .detail as OrgDetailsResult;
 };
