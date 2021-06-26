@@ -1,7 +1,7 @@
 import axios from "@/utils/request";
 
 interface GetOrgDetailsArgs {
-  organizationId: string;
+  orgId: string;
 }
 
 interface OrgApplicationScheme {
@@ -29,8 +29,10 @@ interface OrgDetailsResult {
   memberCount: number;
   status: string;
   applicationScheme: OrgApplicationScheme;
+  /** 社长名称 */
+  presidentName: string;
 }
 
-export const getOrgDetails = async ({ organizationId }: GetOrgDetailsArgs) => {
-  return (await axios.post("/org/detail", { organizationId })).data.detail;
+export const getOrgDetails = async ({ orgId }: GetOrgDetailsArgs) => {
+  return (await axios.post("/org/detail", { orgId })).data.detail;
 };

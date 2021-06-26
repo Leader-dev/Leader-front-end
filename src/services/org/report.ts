@@ -1,11 +1,11 @@
 import axios from "@/utils/request";
 
 interface ReportOrgParams {
-  organizationId: string;
+  orgId: string;
   description: string;
   imageUrls: string[];
 }
 
 export const reportOrg = async (data: ReportOrgParams) => {
-  await axios.post("/org/report", data);
+  await axios.post("/org/report", { reportInfo: data });
 };
