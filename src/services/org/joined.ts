@@ -10,6 +10,7 @@ interface GetJoinedOrgListItem {
   posterUrl: string;
   memberCount: number;
   status: string;
+  presidentName: string;
 }
 
 export const getJoinedOrgList = async () => {
