@@ -1,4 +1,5 @@
 import axios from "@/utils/request";
+import useSWR from "swr";
 
 interface GetOrgDetailsArgs {
   orgId: string;
@@ -36,4 +37,10 @@ interface OrgDetailsResult {
 export const getOrgDetails = async ({ orgId }: GetOrgDetailsArgs) => {
   return (await axios.post("/org/detail", { orgId })).data
     .detail as OrgDetailsResult;
+};
+
+export const useOrgDetails = ({ orgId }: GetOrgDetailsArgs) => {
+  return useSWR(["/org/detail", { orgId }], (url, d) =>
+    axios(url, d).then((res) => res.data.detail as OrgDetailsResult)
+  );
 };

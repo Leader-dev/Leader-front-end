@@ -1,4 +1,5 @@
 import axios from "@/utils/request";
+import useSWR from "swr";
 
 interface QueryOrgsParams {
   pageSize: number;
@@ -36,5 +37,11 @@ interface QueryOrgsResult {
 }
 
 export const queryOrgs = async (data: QueryOrgsParams) => {
-  return (await axios.post("/org/list")).data as QueryOrgsResult;
+  return (await axios.post("/org/list", data)).data as QueryOrgsResult;
+};
+
+export const useQueryOrgs = (data: QueryOrgsParams) => {
+  return useSWR(["/org/list", data], (url, d) =>
+    axios.post(url, d).then((res) => res.data as QueryOrgsResult)
+  );
 };
