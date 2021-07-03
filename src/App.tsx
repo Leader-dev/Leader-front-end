@@ -19,12 +19,23 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
+import { SWRConfig } from "swr";
+import axios from "@/utils/request";
 import { AppRouter } from "./router";
 
+const swrConfig = {
+  // @ts-ignore
+  fetcher: (...params: any[]) => axios(...params).then((res) => res.data),
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+  shouldRetryOnError: false,
+};
 const App: React.FC = () => (
-  <IonApp>
-    <AppRouter />
-  </IonApp>
+  <SWRConfig value={swrConfig}>
+    <IonApp>
+      <AppRouter />
+    </IonApp>
+  </SWRConfig>
 );
 
 export default App;
