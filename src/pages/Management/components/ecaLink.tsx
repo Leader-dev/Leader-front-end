@@ -9,6 +9,7 @@ import {
   IonImg,
   IonRow,
 } from "@ionic/react";
+import * as React from "react";
 
 export const ECACard = ({
   imgUrl,
