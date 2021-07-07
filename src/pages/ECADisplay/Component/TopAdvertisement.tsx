@@ -2,7 +2,7 @@ import * as React from "react";
 import { IonSlides, IonSlide, IonImg } from "@ionic/react";
 
 export interface AdvertisementInfo {
-  id: number;
+  id: string;
   posterUrl: string;
 }
 

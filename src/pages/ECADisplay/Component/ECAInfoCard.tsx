@@ -3,15 +3,16 @@ import { IonCard, IonIcon, IonImg, IonCardContent } from "@ionic/react";
 import { personSharp } from "ionicons/icons";
 
 export interface ECAInfo {
+  id: string;
   name: string;
-  id: number;
+  numberId: number;
   posterUrl: string;
-  memberNum: number;
-  address: string;
+  memberCount: number;
+  instituteName: string;
 }
 
 export default ({ info, size }: { info: ECAInfo; size: string }) => {
-  const { name, id, posterUrl, memberNum, address } = info;
+  const { id, name, numberId, posterUrl, memberCount, instituteName } = info;
   let posterProportion;
   if (size === "large") {
     posterProportion = 86;
@@ -62,7 +63,7 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
             fontSize: "10px",
           }}
         >
-          {id}
+          {numberId}
         </div>
 
         <div
@@ -79,13 +80,13 @@ export default ({ info, size }: { info: ECAInfo; size: string }) => {
               marginRight: "1px",
             }}
           />
-          {memberNum}
+          {memberCount}
           <span
             style={{
               marginLeft: "2px",
             }}
           >
-            {address}
+            {instituteName}
           </span>
         </div>
       </IonCardContent>

@@ -37,59 +37,65 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
           {
             ecaRecommend: [
               {
+                id: "xxx",
                 posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
                 name: "这是一个社团",
-                id: 400031,
-                memberNum: 35,
-                address: "深圳国际交流学院",
+                numberId: 400031,
+                memberCount: 35,
+                instituteName: "深圳国际交流学院",
               },
               {
+                id: "xxx",
                 posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
                 name: "这是一个社团",
-                id: 400032,
-                memberNum: 35,
-                address: "深圳国际交流学院",
+                numberId: 400032,
+                memberCount: 35,
+                instituteName: "深圳国际交流学院",
               },
               {
+                id: "xxx",
                 posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
                 name: "这是一个社团",
-                id: 400033,
-                memberNum: 35,
-                address: "深圳国际交流学院",
+                numberId: 400033,
+                memberCount: 35,
+                instituteName: "深圳国际交流学院",
               },
               {
+                id: "xxx",
                 posterUrl: "http://placekitten.com/g/200/300",
                 name: "这是一个社团",
-                id: 400034,
-                memberNum: 35,
-                address: "深圳国际交流学院",
+                numberId: 400034,
+                memberCount: 35,
+                instituteName: "深圳国际交流学院",
               },
               {
+                id: "xxx",
                 posterUrl: "http://placekitten.com/g/200/300",
                 name: "这是一个社团",
-                id: 400035,
-                memberNum: 35,
-                address: "深圳国际交流学院",
+                numberId: 400035,
+                memberCount: 35,
+                instituteName: "深圳国际交流学院",
               },
               {
+                id: "xxx",
                 posterUrl: "http://placekitten.com/g/200/300",
                 name: "这是一个社团",
-                id: 400036,
-                memberNum: 35,
-                address: "深圳国际交流学院",
+                numberId: 400036,
+                memberCount: 35,
+                instituteName: "深圳国际交流学院",
               },
             ],
             advertisement: [
               {
-                id: 40033,
+                id: "xxxxx",
                 posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
               },
               {
-                id: 40034,
+                id: "xxxxx",
                 posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
               },
@@ -148,7 +154,7 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
     }
     return (
       <IonPage>
-        <IonHeader>
+        <IonHeader className="ion-no-border">
           <IonToolbar>
             <IonSearchbar
               placeholder="搜索社团"
