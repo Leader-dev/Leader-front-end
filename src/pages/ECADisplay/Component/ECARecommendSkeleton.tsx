@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  IonCard,
-  IonIcon,
-  IonImg,
-  IonCardContent,
-  IonSlide,
-  IonText,
-  IonButton,
-  IonSlides,
-} from "@ionic/react";
+import { IonSlide, IonSlides, IonSkeletonText } from "@ionic/react";
 import ECAInfoCardSkeleton from "./ECAInfoCardSkeleton";
 
 export default ({ tabBarHeight }: { tabBarHeight: number }) => {
@@ -30,21 +21,13 @@ export default ({ tabBarHeight }: { tabBarHeight: number }) => {
           display: "flex",
           justifyContent: "space-between",
           height: "6vh",
-          padding: "1.5vh 1.5vw 1vh 4.5vw",
+          padding: "1.5vh 4.5vw",
         }}
       >
-        <IonText
-          style={{
-            fontSize: "24px",
-            fontWeight: "bolder",
-          }}
-        >
-          推荐
-        </IonText>
-        <IonButton fill="clear" size="small">
-          查看更多
-        </IonButton>
+        <IonSkeletonText animated style={{ width: "20%", height: "80%" }} />
+        <IonSkeletonText animated style={{ width: "20%", height: "80%" }} />
       </div>
+
       <IonSlides
         className="bottom-slider"
         pager={true}
@@ -71,7 +54,7 @@ export default ({ tabBarHeight }: { tabBarHeight: number }) => {
                 gridRow: "1 / 3",
               }}
             >
-              <ECAInfoCardSkeleton />
+              <ECAInfoCardSkeleton size="large" />
             </div>
             <div
               style={{
@@ -79,7 +62,7 @@ export default ({ tabBarHeight }: { tabBarHeight: number }) => {
                 gridRow: 1,
               }}
             >
-              <ECAInfoCardSkeleton />
+              <ECAInfoCardSkeleton size="small" />
             </div>
             <div
               style={{
@@ -87,7 +70,7 @@ export default ({ tabBarHeight }: { tabBarHeight: number }) => {
                 gridRow: 2,
               }}
             >
-              <ECAInfoCardSkeleton />
+              <ECAInfoCardSkeleton size="small" />
             </div>
           </div>
         </IonSlide>

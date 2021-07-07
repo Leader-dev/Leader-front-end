@@ -11,7 +11,6 @@ export default ({
   tabBarHeight: number;
   pageNum: number;
 }) => {
-  console.log(info); // TODO Bug not fixed
   let ecaList = [];
   for (let i = 0; i < pageNum; i++) {
     ecaList.push(
@@ -91,7 +90,7 @@ export default ({
         className="bottom-slider"
         pager={true}
         options={{
-          initialSlide: 1,
+          initialSlide: 0,
         }}
         style={{
           overflow: "visible",

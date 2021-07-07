@@ -6,26 +6,39 @@ export interface AdvertisementInfo {
   posterUrl: string;
 }
 
-export default ({ info }: { info: AdvertisementInfo }) => {
-  const { id, posterUrl } = info;
-  return (
-    <IonSlides>
-      <IonSlide
+export default ({ info }: { info: AdvertisementInfo[] }) => {
+  let advertisementList = info.map((info) => (
+    <IonSlide
+      style={{
+        borderRadius: "10px",
+        overflow: "hidden",
+      }}
+    >
+      <IonImg
+        src={info.posterUrl}
         style={{
-          borderRadius: "10px",
-          overflow: "hidden",
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
         }}
-      >
-        <IonImg
-          src={posterUrl}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        />
-        {/*TODO Onclick function*/}
-      </IonSlide>
+      />
+      {/*TODO Onclick function*/}
+    </IonSlide>
+  ));
+  return (
+    <IonSlides
+      className="top-slider"
+      pager={true}
+      options={{
+        initialSlide: 1,
+        speed: 400,
+      }}
+      style={{
+        height: "23vh",
+        width: "92vw",
+      }}
+    >
+      {advertisementList}
     </IonSlides>
   );
 };
