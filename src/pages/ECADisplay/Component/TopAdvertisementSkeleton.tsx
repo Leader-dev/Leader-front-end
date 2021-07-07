@@ -3,13 +3,21 @@ import { IonSlide, IonSlides, IonSkeletonText } from "@ionic/react";
 
 export default () => {
   return (
-    <IonSlide
+    <IonSlides
+      className="top-slider"
+      pager={true}
       style={{
-        borderRadius: "10px",
-        overflow: "hidden",
+        height: "23vh",
+        width: "92vw",
       }}
     >
-      <IonSkeletonText animated style={{ width: "100%" }} />
-    </IonSlide>
+      <IonSlide
+        style={{
+          borderRadius: "10px",
+        }}
+      >
+        <IonSkeletonText animated style={{ width: "100%", height: "100%" }} />
+      </IonSlide>
+    </IonSlides>
   );
 };

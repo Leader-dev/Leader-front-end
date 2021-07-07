@@ -20,6 +20,7 @@ import TopAdvertisement, {
 import TopAdvertisementSkeleton from "./Component/TopAdvertisementSkeleton";
 import { RefresherEventDetail } from "@ionic/core";
 import ECARecommend from "./Component/ECARecommend";
+import ECARecommendSkeleton from "./Component/ECARecommendSkeleton";
 
 interface ECADisplayState {
   loadingFirst: boolean;
@@ -128,15 +129,22 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
   }
 
   render() {
-    let advertisementList: any[];
+    let advertisementList;
+    let ecaList;
     let tabBarHeight =
       document.getElementsByTagName("ion-tab-bar")[0].clientHeight;
     if (this.state.loadingFirst) {
-      advertisementList = [];
+      advertisementList = <TopAdvertisementSkeleton />;
+      ecaList = <ECARecommendSkeleton tabBarHeight={tabBarHeight} />;
     } else {
-      advertisementList = this.state.advertisement.map((info) => (
-        <TopAdvertisement info={info} />
-      ));
+      advertisementList = <TopAdvertisement info={this.state.advertisement} />;
+      ecaList = (
+        <ECARecommend
+          info={this.state.ecaRecommend}
+          tabBarHeight={tabBarHeight}
+          pageNum={2}
+        />
+      );
     }
     return (
       <IonPage>
@@ -179,28 +187,11 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
               >
                 <path d="M 0 75 S 50 0, 100 75" fill="white" stroke="none" />
               </svg>
-              <IonSlides
-                className="top-slider"
-                pager={true}
-                options={{
-                  initialSlide: 1,
-                  speed: 400,
-                }}
-                style={{
-                  height: "23vh",
-                  width: "92vw",
-                }}
-              >
-                {advertisementList}
-              </IonSlides>
+              {advertisementList}
             </div>
           </div>
 
-          <ECARecommend
-            info={this.state.ecaRecommend}
-            tabBarHeight={tabBarHeight}
-            pageNum={2}
-          />
+          {ecaList}
         </IonContent>
       </IonPage>
     );
