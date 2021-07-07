@@ -7,24 +7,23 @@ import {
   IonSearchbar,
   IonButtons,
   IonButton,
-  IonTitle,
   IonSlides,
-  IonSlide,
   IonIcon,
   IonText,
 } from "@ionic/react";
 import "./index.css";
 import { filterCircleSharp, filterOutline } from "ionicons/icons";
-import ECAInfoCard, { ECAInfo } from "./Component/ECAInfoCard";
+import { ECAInfo } from "./Component/ECAInfoCard";
 import TopAdvertisement, {
   AdvertisementInfo,
 } from "./Component/TopAdvertisement";
-
-const { useState } = React;
+import TopAdvertisementSkeleton from "./Component/TopAdvertisementSkeleton";
+import { RefresherEventDetail } from "@ionic/core";
+import ECARecommend from "./Component/ECARecommend";
 
 interface ECADisplayState {
   loadingFirst: boolean;
-  eca: ECAInfo[];
+  ecaRecommend: ECAInfo[];
   advertisement: AdvertisementInfo[];
   searchText: string;
 }
@@ -35,8 +34,7 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
       setTimeout(() => {
         this.setState(
           {
-            loadingFirst: false,
-            eca: [
+            ecaRecommend: [
               {
                 posterUrl:
                   "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
@@ -111,62 +109,31 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
   componentWillMount() {
     this.setState({
       loadingFirst: true,
-      eca: [],
+      ecaRecommend: [],
+      advertisement: [],
     });
   }
 
   componentDidMount() {
-    this.fetchData().then();
+    this.fetchData().then(() => {
+      this.setState({
+        loadingFirst: false,
+      });
+    });
+  }
+
+  async refresh(event: CustomEvent<RefresherEventDetail>) {
+    await this.fetchData();
+    event.detail.complete();
   }
 
   render() {
-    let ecaList = [];
     let advertisementList: any[];
     let tabBarHeight =
       document.getElementsByTagName("ion-tab-bar")[0].clientHeight;
     if (this.state.loadingFirst) {
       advertisementList = [];
     } else {
-      for (let i = 0; i < 2; i++) {
-        ecaList.push(
-          <IonSlide>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "45vw 45vw",
-                gridTemplateRows: "20vh 20vh",
-                gridColumnGap: "2vw",
-                gridRowGap: "1.5vh",
-              }}
-            >
-              <div
-                style={{
-                  gridColumn: 1,
-                  gridRow: "1 / 3",
-                }}
-              >
-                <ECAInfoCard info={this.state.eca[3 * i]} size="large" />
-              </div>
-              <div
-                style={{
-                  gridColumn: 2,
-                  gridRow: 1,
-                }}
-              >
-                <ECAInfoCard info={this.state.eca[3 * i + 1]} size="small" />
-              </div>
-              <div
-                style={{
-                  gridColumn: 2,
-                  gridRow: 2,
-                }}
-              >
-                <ECAInfoCard info={this.state.eca[3 * i + 2]} size="small" />
-              </div>
-            </div>
-          </IonSlide>
-        );
-      }
       advertisementList = this.state.advertisement.map((info) => (
         <TopAdvertisement info={info} />
       ));
@@ -229,51 +196,11 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
             </div>
           </div>
 
-          <div
-            style={{
-              borderTopLeftRadius: "25px",
-              borderTopRightRadius: "25px",
-              boxShadow: "0 -4px 6px -1px lightgrey",
-              position: "absolute",
-              bottom: tabBarHeight,
-              left: 0,
-              right: 0,
-              height: "51vh",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                height: "6vh",
-                padding: "1.5vh 1.5vw 1vh 4.5vw",
-              }}
-            >
-              <IonText
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "bolder",
-                }}
-              >
-                推荐
-              </IonText>
-              <IonButton fill="clear" size="small">
-                查看更多
-              </IonButton>
-            </div>
-            <IonSlides
-              className="bottom-slider"
-              pager={true}
-              options={{
-                initialSlide: 1,
-              }}
-              style={{
-                overflow: "visible",
-              }}
-            >
-              {ecaList}
-            </IonSlides>
-          </div>
+          <ECARecommend
+            info={this.state.ecaRecommend}
+            tabBarHeight={tabBarHeight}
+            pageNum={2}
+          />
         </IonContent>
       </IonPage>
     );
