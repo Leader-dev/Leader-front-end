@@ -19,6 +19,7 @@ declare module "axios" {
 const axiosInstance = axios.create({
   baseURL: "/api",
   codeHandlers: {},
+  method: "POST",
 });
 
 // TODO: save using native APIs
@@ -32,23 +33,39 @@ export const getKey = (): string | null => {
   return currentKey;
 };
 
-axiosInstance.interceptors.response.use((response) => {
-  const {
-    data: { code },
-    config,
-  } = response;
-  if ("set-api-token" in response.headers) {
-    saveKey(response.headers["set-api-token"]);
-  }
-  if (code !== 200 && code in config.codeHandlers) {
-    config.codeHandlers[code]({
-      response,
-      code,
+axiosInstance.interceptors.response.use(
+  (response) => {
+    const {
+      data: { code },
       config,
-    });
+    } = response;
+    if ("set-api-token" in response.headers) {
+      saveKey(response.headers["set-api-token"]);
+    }
+    if (code !== 200) {
+      if (code in config.codeHandlers) {
+        config.codeHandlers[code]({
+          response,
+          code,
+          config,
+        });
+      } else {
+        console.log({ env: process.env.NODE_ENV, response });
+        // throw 'fk'
+        if (process.env.NODE_ENV === "development") {
+          debugger;
+          throw new Error(response.data?.error || code);
+        }
+        debugger;
+      }
+    }
+    return response;
+  },
+  (error) => {
+    console.log(error);
+    debugger;
   }
-  return response;
-});
+);
 
 axiosInstance.interceptors.request.use((config) => {
   const k = getKey();

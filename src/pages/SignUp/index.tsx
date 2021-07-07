@@ -11,12 +11,19 @@ import {
   createAnimation,
   AnimationBuilder,
 } from "@ionic/react";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import Joi from "joi";
 
 import { useToast } from "@/utils/toast";
-import { login, register, sendPhoneAuthCode, userExist } from "@/services/user";
+import {
+  changePassword,
+  login,
+  register,
+  sendPhoneAuthCode,
+  userExist,
+} from "@/services/user";
 import coffeeImage from "./coffee.jpg";
+import { checkAuthcode } from "@/services/user/changePassword";
 
 interface SVGIndicatorProps {
   position: 0 | 1;
@@ -171,11 +178,56 @@ const CustomInput: React.FC<Parameters<typeof IonInput>[0]> = (props) => {
   );
 };
 
-const Login: React.VFC = () => {
+const CustomInputWithButton: React.FC<{
+  inputProps?: Parameters<typeof IonInput>[0];
+  endText: string;
+  onEndClick: MouseEventHandler<HTMLIonButtonElement>;
+}> = ({ inputProps, endText, onEndClick }) => {
+  return (
+    <div
+      style={{
+        margin: "24px 32px",
+      }}
+    >
+      <IonInput
+        style={{
+          border: "2px solid var(--ion-color-primary)",
+          borderRadius: "99999px",
+          color: "var(--ion-color-primary-tint)",
+        }}
+        {...inputProps}
+      >
+        <IonButton
+          style={{ order: 1 }}
+          fill="clear"
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEndClick(e);
+          }}
+        >
+          {endText}
+        </IonButton>
+      </IonInput>
+    </div>
+  );
+};
+
+enum Stat {
+  Auth,
+  Pswd,
+  Recover,
+}
+
+interface LoginSectionProps {
+  cb: () => void;
+  onStatChange: (stat: Stat) => void;
+}
+
+const LoginByPass: React.FC<LoginSectionProps> = ({ cb, onStatChange }) => {
+  const [present] = useToast();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [present] = useToast();
-  const { push } = useIonRouter();
   return (
     <div style={{ textAlign: "center", padding: "32px 0" }}>
       <IonAvatar style={{ margin: "auto", height: "128px", width: "128px" }}>
@@ -199,8 +251,24 @@ const Login: React.VFC = () => {
         type="password"
         placeholder="密码"
       />
+
       <div style={{ margin: "-8px auto 0" }}>
-        <IonButton fill="clear">忘记密码</IonButton>
+        <IonButton
+          fill="clear"
+          onClick={() => {
+            onStatChange(Stat.Recover);
+          }}
+        >
+          忘记密码
+        </IonButton>
+        <IonButton
+          fill="clear"
+          onClick={() => {
+            onStatChange(Stat.Auth);
+          }}
+        >
+          验证码登录
+        </IonButton>
       </div>
       <div style={{ margin: "8px 24px" }}>
         <IonButton
@@ -209,14 +277,7 @@ const Login: React.VFC = () => {
           onClick={() => {
             login({ phone, password })
               .then(() => {
-                present({ message: "登录成功" });
-                push(
-                  "/tabs/trends",
-                  undefined,
-                  undefined,
-                  undefined,
-                  signupPageAnimationBuilder
-                );
+                cb();
               })
               .catch((err) => {
                 switch (err) {
@@ -232,11 +293,294 @@ const Login: React.VFC = () => {
               });
           }}
         >
-          登录
+          登入
         </IonButton>
       </div>
     </div>
   );
+};
+
+const LoginByAuth: React.FC<LoginSectionProps> = ({ cb, onStatChange }) => {
+  const [present] = useToast();
+  const [phone, setPhone] = useState("");
+  const [authcode, setAuthcode] = useState("");
+  return (
+    <div style={{ textAlign: "center", padding: "32px 0" }}>
+      <IonAvatar style={{ margin: "auto", height: "128px", width: "128px" }}>
+        <img
+          alt="avatar"
+          src="https://avatars.githubusercontent.com/u/45055133?v=4"
+        />
+      </IonAvatar>
+      <IonText color="primary">
+        <h2>用户名</h2>
+      </IonText>
+      <CustomInputWithButton
+        inputProps={{
+          value: phone,
+          onIonChange: (e) => setPhone(e.detail.value!),
+          type: "tel",
+          placeholder: "手机号",
+        }}
+        endText="获取验证码"
+        onEndClick={() => {
+          userExist({ phone }).then((exists) => {
+            if (exists) {
+              sendPhoneAuthCode({ phone })
+                .then(() => {
+                  present({ message: "验证码已发送" });
+                })
+                .catch(() => {
+                  present({ message: "验证码发送失败", color: "warning" });
+                });
+            } else {
+              present({ message: "用户不存在", color: "warning" });
+            }
+          });
+        }}
+      />
+      <CustomInput
+        value={authcode}
+        onIonChange={(e) => setAuthcode(e.detail.value!)}
+        type="number"
+        placeholder="验证码"
+      />
+      <div style={{ margin: "-8px auto 0" }}>
+        <IonButton
+          fill="clear"
+          onClick={() => {
+            onStatChange(Stat.Recover);
+          }}
+        >
+          忘记密码
+        </IonButton>
+        <IonButton
+          fill="clear"
+          onClick={() => {
+            onStatChange(Stat.Pswd);
+          }}
+        >
+          密码登录
+        </IonButton>
+      </div>
+      <div style={{ margin: "8px 24px" }}>
+        <IonButton
+          expand="block"
+          size="large"
+          onClick={() => {
+            login({ phone, authcode })
+              .then(() => {
+                cb();
+              })
+              .catch((err) => {
+                switch (err) {
+                  case "password_incorrect":
+                    present({ message: "手机号或密码错误" });
+                    break;
+                  case "user_not_exist":
+                    present({ message: "手机号错误" });
+                    break;
+                  case "authcode_incorrect":
+                    present({ message: "验证码错误" });
+                    break;
+                  default:
+                    present({ message: err });
+                    console.log({ err });
+                }
+              });
+          }}
+        >
+          登入
+        </IonButton>
+      </div>
+    </div>
+  );
+};
+
+const ForgotPassword: React.FC<LoginSectionProps> = ({ cb, onStatChange }) => {
+  const [present] = useToast();
+  const [phone, setPhone] = useState("");
+  const [authcode, setAuthcode] = useState("");
+  const [pswd, setPswd] = useState(""); // password
+  const [ckps, setCkps] = useState(""); // password check
+  const [stage, setStage] = useState<1 | 0>(0);
+  if (!stage) {
+    return (
+      <div style={{ textAlign: "center", padding: "32px 0" }}>
+        <IonText color="primary">
+          <h2>忘记密码</h2>
+          <p>请进行手机号验证已确认为您本人操作</p>
+        </IonText>
+        <CustomInputWithButton
+          inputProps={{
+            value: phone,
+            onIonChange: (e) => setPhone(e.detail.value!),
+            type: "tel",
+            placeholder: "手机号",
+          }}
+          endText="获取验证码"
+          onEndClick={() => {
+            userExist({ phone }).then((exists) => {
+              if (exists) {
+                sendPhoneAuthCode({ phone })
+                  .then(() => {
+                    present({ message: "验证码已发送" });
+                  })
+                  .catch(() => {
+                    present({ message: "验证码发送失败", color: "warning" });
+                  });
+              } else {
+                present({ message: "用户不存在", color: "warning" });
+              }
+            });
+          }}
+        />
+        <CustomInput
+          value={authcode}
+          onIonChange={(e) => setAuthcode(e.detail.value!)}
+          type="number"
+          placeholder="验证码"
+        />
+        <div style={{ margin: "-8px auto 0" }}>
+          <IonButton
+            fill="clear"
+            onClick={() => {
+              onStatChange(Stat.Pswd);
+            }}
+          >
+            返回登录
+          </IonButton>
+        </div>
+        <div style={{ margin: "8px 24px" }}>
+          <IonButton
+            expand="block"
+            size="large"
+            onClick={() => {
+              checkAuthcode({ phone, authcode })
+                .then(() => {
+                  setStage(1);
+                })
+                .catch((err) => {
+                  switch (err) {
+                    case "user_not_exist":
+                      present({ message: "手机号错误" });
+                      break;
+                    case "authcode_incorrect":
+                      present({ message: "验证码错误" });
+                      break;
+                    default:
+                      present({ message: err });
+                      console.log({ err });
+                  }
+                });
+            }}
+          >
+            下一步
+          </IonButton>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div style={{ textAlign: "center", padding: "32px 0" }}>
+        <IonText color="primary">
+          <h2>忘记密码</h2>
+          <p>请进行手机号验证已确认为您本人操作</p>
+        </IonText>
+        <CustomInput
+          value={pswd}
+          onIonChange={(e) => setPswd(e.detail.value!)}
+          type="password"
+          placeholder="更改密码"
+        />
+        <CustomInput
+          value={ckps}
+          onIonChange={(e) => setCkps(e.detail.value!)}
+          type="password"
+          placeholder="确认密码"
+        />
+        <div style={{ margin: "8px 24px" }}>
+          <IonButton
+            expand="block"
+            size="large"
+            onClick={() => {
+              changePassword({ phone, password: pswd })
+                .then(() => {
+                  cb();
+                })
+                .catch((err) => {
+                  switch (err) {
+                    case "user_not_exist":
+                      present({ message: "手机号错误" });
+                      break;
+                    case "authcode_incorrect":
+                      present({ message: "验证码错误" });
+                      break;
+                    default:
+                      present({ message: err });
+                      console.log({ err });
+                  }
+                });
+            }}
+          >
+            修改密码
+          </IonButton>
+        </div>
+      </div>
+    );
+  }
+};
+
+const Login: React.VFC = () => {
+  // 三种状态对应验证码与密码登录、忘记密码和设置密码
+  const [status, setStatus] = useState<Stat>(Stat.Pswd);
+  const [present] = useToast();
+  const { push } = useIonRouter();
+  switch (status) {
+    case Stat.Pswd:
+      return (
+        <LoginByPass
+          cb={() => {
+            present({ message: "登录成功" });
+            push(
+              "/tabs/trends",
+              undefined,
+              undefined,
+              undefined,
+              signupPageAnimationBuilder
+            );
+          }}
+          onStatChange={setStatus}
+        />
+      );
+    case Stat.Auth:
+      return (
+        <LoginByAuth
+          cb={() => {
+            present({ message: "登录成功" });
+            push(
+              "/tabs/trends",
+              undefined,
+              undefined,
+              undefined,
+              signupPageAnimationBuilder
+            );
+          }}
+          onStatChange={setStatus}
+        />
+      );
+    case Stat.Recover:
+      return (
+        <ForgotPassword
+          cb={() => {
+            present({ message: "修改成功" });
+            setStatus(Stat.Pswd);
+          }}
+          onStatChange={setStatus}
+        />
+      );
+  }
+  return <div>Error</div>;
 };
 
 interface StageOneCallbackParams {
