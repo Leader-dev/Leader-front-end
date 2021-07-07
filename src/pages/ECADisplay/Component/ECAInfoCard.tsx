@@ -11,9 +11,8 @@ export interface ECAInfo {
 }
 
 export default ({ info, size }: { info: ECAInfo; size: string }) => {
-  console.log(info);
   const { name, id, posterUrl, memberNum, address } = info;
-  let cardHeight, posterProportion;
+  let posterProportion;
   if (size === "large") {
     posterProportion = 86;
   } else {
