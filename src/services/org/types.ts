@@ -5,7 +5,7 @@ interface OrgType {
   alias: string;
 }
 
-interface OrgTypes {
+export interface OrgTypes {
   [key: string]: OrgType;
 }
 

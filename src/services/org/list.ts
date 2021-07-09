@@ -1,7 +1,8 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
+import { OrgInfo } from "@/types/organization";
 
-interface QueryOrgsParams {
+export interface QueryOrgsParams {
   pageSize: number;
   pageNumber?: number;
   // numberId: string;
@@ -13,33 +14,14 @@ interface QueryOrgsParams {
   maxMemberCount?: number;
 }
 
-declare global {
-  interface OrgInfo {
-    id: string;
-    numberId: number;
-    name: string;
-    address: string;
-    /** 组织认证
-     * @value school 为学校认证
-     */
-    addressAuth: "school" | string;
-    /** 组织类别 */
-    typeAliases: string[];
-    /** 组织海报图片地址 url */
-    posterUrl: string;
-    memberCount: number;
-  }
-}
-
-interface QueryOrgsResult {
-  code: number;
+export interface QueryOrgsResult {
   list: OrgInfo[];
   totalPages: number;
   totalNumber: number;
 }
 
 export const queryOrgs = async (data: QueryOrgsParams) => {
-  return (await axios.post("/org/list", data)).data as QueryOrgsResult;
+  return (await axios.post("/org/list", data)).data.data as QueryOrgsResult;
 };
 
 export const useQueryOrgs = (data: QueryOrgsParams) => {

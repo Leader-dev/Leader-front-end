@@ -1,6 +1,6 @@
 import axios from "@/utils/request";
 
-interface CreateOrgArgs {
+export interface CreateOrgArgs {
   name: string;
   address: string;
   introduction: string;

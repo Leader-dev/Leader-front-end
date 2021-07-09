@@ -1,15 +1,8 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
+import { OrgInfo } from "@/types/organization";
 
-interface GetJoinedOrgListItem {
-  id: string;
-  numberId: number;
-  name: string;
-  address: string;
-  addressAuth: string;
-  typeAliases: string[];
-  posterUrl: string;
-  memberCount: number;
+export interface GetJoinedOrgListItem extends OrgInfo {
   status: string;
   presidentName: string;
 }
