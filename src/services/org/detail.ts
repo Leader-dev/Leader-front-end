@@ -29,7 +29,9 @@ export const getOrgDetails = async ({ orgId }: GetOrgDetailsArgs) => {
 };
 
 export const useOrgDetails = ({ orgId }: GetOrgDetailsArgs) => {
-  return useSWR(["/org/detail", { orgId }], (url, d) =>
-    axios(url, d).then((res) => res.data.detail as OrgDetailsResult)
+  return useSWR(["/org/detail", orgId], (url, orgId) =>
+    axios(url, { data: { orgId }, codeHandlers: {} }).then(
+      (res) => res.data.detail as OrgDetailsResult
+    )
   );
 };

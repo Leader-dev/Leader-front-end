@@ -1,3 +1,4 @@
+import { OrgInfo } from "@/types/organization";
 import axios from "@/utils/request";
 
 type FetchMyApplicationListResult = Array<{
