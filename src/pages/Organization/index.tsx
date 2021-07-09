@@ -19,17 +19,17 @@ import TopAdvertisement, {
 } from "./Component/TopAdvertisement";
 import TopAdvertisementSkeleton from "./Component/TopAdvertisementSkeleton";
 import { RefresherEventDetail } from "@ionic/core";
-import ECARecommend from "./Component/RecommendOrganization";
-import ECARecommendSkeleton from "./Component/RecommendOrganizationSkeleton";
+import RecommendOrganization from "./Component/RecommendOrganization";
+import RecommendOrganizationSkeleton from "./Component/RecommendOrganizationSkeleton";
 
-interface ECADisplayState {
+interface OrganizationState {
   loadingFirst: boolean;
   ecaRecommend: OrganizationInfo[];
   advertisement: AdvertisementInfo[];
   searchText: string;
 }
 
-class ECADisplay extends React.Component<any, ECADisplayState> {
+class Organization extends React.Component<any, OrganizationState> {
   async fetchData() {
     return new Promise<void>((r) => {
       setTimeout(() => {
@@ -141,11 +141,11 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
       document.getElementsByTagName("ion-tab-bar")[0].clientHeight;
     if (this.state.loadingFirst) {
       advertisementList = <TopAdvertisementSkeleton />;
-      ecaList = <ECARecommendSkeleton tabBarHeight={tabBarHeight} />;
+      ecaList = <RecommendOrganizationSkeleton tabBarHeight={tabBarHeight} />;
     } else {
       advertisementList = <TopAdvertisement info={this.state.advertisement} />;
       ecaList = (
-        <ECARecommend
+        <RecommendOrganization
           info={this.state.ecaRecommend}
           tabBarHeight={tabBarHeight}
           pageNum={2}
@@ -204,4 +204,4 @@ class ECADisplay extends React.Component<any, ECADisplayState> {
   }
 }
 
-export default ECADisplay;
+export default Organization;
