@@ -7,25 +7,21 @@ import {
   IonSearchbar,
   IonButtons,
   IonButton,
-  IonSlides,
   IonIcon,
-  IonText,
 } from "@ionic/react";
 import "./index.css";
 import { filterCircleSharp, filterOutline } from "ionicons/icons";
-import { OrganizationInfo } from "./Component/OrganizationInfoCard";
-import TopAdvertisement, {
-  AdvertisementInfo,
-} from "./Component/TopAdvertisement";
+import TopAdvertisement from "./Component/TopAdvertisement";
 import TopAdvertisementSkeleton from "./Component/TopAdvertisementSkeleton";
 import { RefresherEventDetail } from "@ionic/core";
 import RecommendOrganization from "./Component/RecommendOrganization";
 import RecommendOrganizationSkeleton from "./Component/RecommendOrganizationSkeleton";
+import { OrgInfo, AdInfo } from "@/types/organization";
 
 interface OrganizationState {
   loadingFirst: boolean;
-  ecaRecommend: OrganizationInfo[];
-  advertisement: AdvertisementInfo[];
+  orgRecommend: OrgInfo[];
+  advertisement: AdInfo[];
   searchText: string;
 }
 
@@ -35,7 +31,7 @@ class Organization extends React.Component<any, OrganizationState> {
       setTimeout(() => {
         this.setState(
           {
-            ecaRecommend: [
+            orgRecommend: [
               {
                 id: "xxx",
                 posterUrl:
@@ -44,6 +40,7 @@ class Organization extends React.Component<any, OrganizationState> {
                 numberId: 400031,
                 memberCount: 35,
                 instituteName: "深圳国际交流学院",
+                typeAliases: [],
               },
               {
                 id: "xxx",
@@ -53,6 +50,7 @@ class Organization extends React.Component<any, OrganizationState> {
                 numberId: 400032,
                 memberCount: 35,
                 instituteName: "深圳国际交流学院",
+                typeAliases: [],
               },
               {
                 id: "xxx",
@@ -62,6 +60,7 @@ class Organization extends React.Component<any, OrganizationState> {
                 numberId: 400033,
                 memberCount: 35,
                 instituteName: "深圳国际交流学院",
+                typeAliases: [],
               },
               {
                 id: "xxx",
@@ -70,6 +69,7 @@ class Organization extends React.Component<any, OrganizationState> {
                 numberId: 400034,
                 memberCount: 35,
                 instituteName: "深圳国际交流学院",
+                typeAliases: [],
               },
               {
                 id: "xxx",
@@ -78,6 +78,7 @@ class Organization extends React.Component<any, OrganizationState> {
                 numberId: 400035,
                 memberCount: 35,
                 instituteName: "深圳国际交流学院",
+                typeAliases: [],
               },
               {
                 id: "xxx",
@@ -86,6 +87,7 @@ class Organization extends React.Component<any, OrganizationState> {
                 numberId: 400036,
                 memberCount: 35,
                 instituteName: "深圳国际交流学院",
+                typeAliases: [],
               },
             ],
             advertisement: [
@@ -116,7 +118,7 @@ class Organization extends React.Component<any, OrganizationState> {
   componentWillMount() {
     this.setState({
       loadingFirst: true,
-      ecaRecommend: [],
+      orgRecommend: [],
       advertisement: [],
     });
   }
@@ -135,20 +137,18 @@ class Organization extends React.Component<any, OrganizationState> {
   }
 
   render() {
-    let advertisementList;
-    let ecaList;
+    let adList, orgList;
     let tabBarHeight =
       document.getElementsByTagName("ion-tab-bar")[0].clientHeight;
     if (this.state.loadingFirst) {
-      advertisementList = <TopAdvertisementSkeleton />;
-      ecaList = <RecommendOrganizationSkeleton tabBarHeight={tabBarHeight} />;
+      adList = <TopAdvertisementSkeleton />;
+      orgList = <RecommendOrganizationSkeleton tabBarHeight={tabBarHeight} />;
     } else {
-      advertisementList = <TopAdvertisement info={this.state.advertisement} />;
-      ecaList = (
+      adList = <TopAdvertisement info={this.state.advertisement} />;
+      orgList = (
         <RecommendOrganization
-          info={this.state.ecaRecommend}
+          info={this.state.orgRecommend}
           tabBarHeight={tabBarHeight}
-          pageNum={2}
         />
       );
     }
@@ -193,11 +193,11 @@ class Organization extends React.Component<any, OrganizationState> {
               >
                 <path d="M 0 75 S 50 0, 100 75" fill="white" stroke="none" />
               </svg>
-              {advertisementList}
+              {adList}
             </div>
           </div>
 
-          {ecaList}
+          {orgList}
         </IonContent>
       </IonPage>
     );

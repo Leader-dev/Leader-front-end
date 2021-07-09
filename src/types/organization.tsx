@@ -8,3 +8,8 @@ export interface OrgInfo {
   posterUrl: string;
   memberCount: number;
 }
+
+export interface AdInfo {
+  id: string;
+  posterUrl: string;
+}
