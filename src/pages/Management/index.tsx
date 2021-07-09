@@ -14,10 +14,13 @@ import "./index.css";
 import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
 
 import { ECACard, ECARequestCard } from "./components/ecaLink";
+import { useJoinedOrgList } from "@/services/org/joined";
 
 const Management: React.FC = () => {
   const [tab, setTab] = useState<"joined" | "apply">("joined");
   const [search, setSearch] = useState("");
+  const { data: orgList, error, isValidating } = useJoinedOrgList();
+  const loading = !error && isValidating;
   return (
     <IonPage>
       <TitledSearchBarWrapper
@@ -43,22 +46,33 @@ const Management: React.FC = () => {
           </IonSegmentButton>
         </IonSegment>
         {tab === "joined" ? (
-          ["", "", "", "", "", "", "", "", "", "", "", "", ""].map(
-            (_, index) => {
-              return (
-                <ECACard
-                  name="Leader 开发组"
-                  numberId={114514}
-                  imgUrl="https://www.baidu.com/img/flexible/logo/pc/result.png"
-                  addressAuth="school"
-                  address="深圳国际交流学院"
-                  memberCount={1919}
-                  presidentName="米老鼠"
-                  notificationCount={3}
-                  key={index}
-                />
-              );
-            }
+          loading ? null : (
+            orgList!.map(
+              ({
+                name,
+                id,
+                numberId,
+                posterUrl,
+                addressAuth,
+                address,
+                memberCount,
+                presidentName,
+              }) => {
+                return (
+                  <ECACard
+                    name={name}
+                    numberId={numberId}
+                    imgUrl={posterUrl}
+                    addressAuth={addressAuth}
+                    address={address}
+                    memberCount={memberCount}
+                    presidentName={presidentName}
+                    notificationCount={0}
+                    key={id}
+                  />
+                );
+              }
+            )
           )
         ) : (
           <>
