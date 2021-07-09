@@ -2,7 +2,7 @@ import * as React from "react";
 import { IonCard, IonIcon, IonImg, IonCardContent } from "@ionic/react";
 import { personSharp } from "ionicons/icons";
 
-export interface ECAInfo {
+export interface OrganizationInfo {
   id: string;
   name: string;
   numberId: number;
@@ -11,7 +11,7 @@ export interface ECAInfo {
   instituteName: string;
 }
 
-export default ({ info, size }: { info: ECAInfo; size: string }) => {
+export default ({ info, size }: { info: OrganizationInfo; size: string }) => {
   const { id, name, numberId, posterUrl, memberCount, instituteName } = info;
   let posterProportion;
   if (size === "large") {

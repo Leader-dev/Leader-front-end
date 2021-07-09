@@ -1,6 +1,6 @@
 import axios from "@/utils/request";
 
-interface ReportOrgParams {
+export interface ReportOrgParams {
   orgId: string;
   description: string;
   imageUrls: string[];

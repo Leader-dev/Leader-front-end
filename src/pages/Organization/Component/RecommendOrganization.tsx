@@ -1,13 +1,13 @@
 import * as React from "react";
 import { IonSlide, IonText, IonButton, IonSlides } from "@ionic/react";
-import ECAInfoCard, { ECAInfo } from "./ECAInfoCard";
+import OrganizationInfoCard, { OrganizationInfo } from "./OrganizationInfoCard";
 
 export default ({
   info,
   tabBarHeight,
   pageNum,
 }: {
-  info: ECAInfo[];
+  info: OrganizationInfo[];
   tabBarHeight: number;
   pageNum: number;
 }) => {
@@ -30,7 +30,7 @@ export default ({
               gridRow: "1 / 3",
             }}
           >
-            <ECAInfoCard info={info[3 * i]} size="large" />
+            <OrganizationInfoCard info={info[3 * i]} size="large" />
           </div>
           <div
             style={{
@@ -38,7 +38,7 @@ export default ({
               gridRow: 1,
             }}
           >
-            <ECAInfoCard info={info[3 * i + 1]} size="small" />
+            <OrganizationInfoCard info={info[3 * i + 1]} size="small" />
           </div>
           <div
             style={{
@@ -46,7 +46,7 @@ export default ({
               gridRow: 2,
             }}
           >
-            <ECAInfoCard info={info[3 * i + 2]} size="small" />
+            <OrganizationInfoCard info={info[3 * i + 2]} size="small" />
           </div>
         </div>
       </IonSlide>

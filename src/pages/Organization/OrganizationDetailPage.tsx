@@ -8,7 +8,7 @@ import {
   IonSegmentButton,
   IonToolbar,
 } from "@ionic/react";
-import { ECAInfo } from "./Component/ECAInfoCard";
+import { OrganizationInfo } from "./Component/OrganizationInfoCard";
 
 interface applicationScheme {
   open: boolean;
@@ -17,7 +17,7 @@ interface applicationScheme {
   questions: string[];
 }
 
-export interface ECADetailInfo extends ECAInfo {
+export interface ECADetailInfo extends OrganizationInfo {
   introduction: string;
   address: string;
   addressAuth: string;
