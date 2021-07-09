@@ -11,7 +11,7 @@ export default ({
   tabBarHeight: number;
 }) => {
   let orgList = [];
-  let pageNum = Math.floor(orgList.length / 3);
+  let pageNum = Math.floor(info.length / 3);
   for (let i = 0; i < pageNum; i++) {
     orgList.push(
       <IonSlide>
