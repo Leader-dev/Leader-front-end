@@ -26,6 +26,6 @@ export const queryOrgs = async (data: QueryOrgsParams) => {
 
 export const useQueryOrgs = (data: QueryOrgsParams) => {
   return useSWR(["/org/list", data], (url, d) =>
-    axios.post(url, d).then((res) => res.data as QueryOrgsResult)
+    axios.post(url, d).then((res) => res.data.data as QueryOrgsResult)
   );
 };
