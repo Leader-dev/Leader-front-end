@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IonSlide, IonSlides, IonSkeletonText } from "@ionic/react";
-import ECAInfoCardSkeleton from "./ECAInfoCardSkeleton";
+import OrganizationInfoCardSkeleton from "./OrganizationInfoCardSkeleton";
 
 export default ({ tabBarHeight }: { tabBarHeight: number }) => {
   return (
@@ -54,7 +54,7 @@ export default ({ tabBarHeight }: { tabBarHeight: number }) => {
                 gridRow: "1 / 3",
               }}
             >
-              <ECAInfoCardSkeleton size="large" />
+              <OrganizationInfoCardSkeleton size="large" />
             </div>
             <div
               style={{
@@ -62,7 +62,7 @@ export default ({ tabBarHeight }: { tabBarHeight: number }) => {
                 gridRow: 1,
               }}
             >
-              <ECAInfoCardSkeleton size="small" />
+              <OrganizationInfoCardSkeleton size="small" />
             </div>
             <div
               style={{
@@ -70,7 +70,7 @@ export default ({ tabBarHeight }: { tabBarHeight: number }) => {
                 gridRow: 2,
               }}
             >
-              <ECAInfoCardSkeleton size="small" />
+              <OrganizationInfoCardSkeleton size="small" />
             </div>
           </div>
         </IonSlide>

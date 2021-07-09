@@ -13,18 +13,18 @@ import {
 } from "@ionic/react";
 import "./index.css";
 import { filterCircleSharp, filterOutline } from "ionicons/icons";
-import { ECAInfo } from "./Component/ECAInfoCard";
+import { OrganizationInfo } from "./Component/OrganizationInfoCard";
 import TopAdvertisement, {
   AdvertisementInfo,
 } from "./Component/TopAdvertisement";
 import TopAdvertisementSkeleton from "./Component/TopAdvertisementSkeleton";
 import { RefresherEventDetail } from "@ionic/core";
-import ECARecommend from "./Component/ECARecommend";
-import ECARecommendSkeleton from "./Component/ECARecommendSkeleton";
+import ECARecommend from "./Component/RecommendOrganization";
+import ECARecommendSkeleton from "./Component/RecommendOrganizationSkeleton";
 
 interface ECADisplayState {
   loadingFirst: boolean;
-  ecaRecommend: ECAInfo[];
+  ecaRecommend: OrganizationInfo[];
   advertisement: AdvertisementInfo[];
   searchText: string;
 }
