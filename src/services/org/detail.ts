@@ -1,5 +1,6 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
+import { OrgInfo } from "@/types/organization";
 
 interface GetOrgDetailsArgs {
   orgId: string;
@@ -12,22 +13,10 @@ interface OrgApplicationScheme {
   questions: string[];
 }
 
-interface OrgDetailsResult {
-  id: string;
-  numberId: number;
-  name: string;
-  address: string;
-  /** 组织认证
-   * @value school 为学校认证
-   */
-  addressAuth: "school" | string;
-  /** 组织介绍 */
+export interface OrgDetailsResult extends OrgInfo {
   introduction: string;
-  /** 组织类别 */
-  typeAliases: string[];
-  /** 组织海报图片地址 url */
-  posterUrl: string;
-  memberCount: number;
+  phone: string;
+  email: string;
   status: string;
   applicationScheme: OrgApplicationScheme;
   /** 社长名称 */
