@@ -14,7 +14,7 @@ import { ellipse, square, triangle } from "ionicons/icons";
 import NoTabPage from "@/pages/NoTabPage";
 
 import Trends from "@/pages/Trends";
-import ECADisplay from "@/pages/ECADisplay";
+import Organization from "@/pages/Organization";
 import Management from "@/pages/Management";
 import Coop from "@/pages/Cooperation";
 import Personal from "@/pages/Personal";
@@ -25,8 +25,8 @@ const TabsRoute: React.FC = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path="/tabs/trends" component={Trends} />
-        <Route exact path="/tabs/eca-display" component={ECADisplay} />
-        <Route exact path="/tabs/eca-management" component={Management} />
+        <Route exact path="/tabs/organization" component={Organization} />
+        <Route exact path="/tabs/management" component={Management} />
         <Route exact path="/tabs/coop" component={Coop} />
         <Route exact path="/tabs/person" component={Personal} />
       </IonRouterOutlet>
@@ -35,11 +35,11 @@ const TabsRoute: React.FC = () => {
           <IonIcon icon={triangle} />
           <IonLabel> 动态 </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="eca-display" href="/tabs/eca-display">
+        <IonTabButton tab="eca-display" href="/tabs/organization">
           <IonIcon icon={ellipse} />
           <IonLabel> 展示 </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="eca-management" href="/tabs/eca-management">
+        <IonTabButton tab="eca-management" href="/tabs/management">
           <IonIcon icon={ellipse} />
           <IonLabel> 管理 </IonLabel>
         </IonTabButton>
