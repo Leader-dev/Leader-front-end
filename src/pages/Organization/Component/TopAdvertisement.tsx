@@ -1,12 +1,8 @@
 import * as React from "react";
 import { IonSlides, IonSlide, IonImg } from "@ionic/react";
+import { AdInfo } from "@/types/organization";
 
-export interface AdvertisementInfo {
-  id: string;
-  posterUrl: string;
-}
-
-export default ({ info }: { info: AdvertisementInfo[] }) => {
+export default ({ info }: { info: AdInfo[] }) => {
   let advertisementList = info.map((info) => (
     <IonSlide
       style={{
