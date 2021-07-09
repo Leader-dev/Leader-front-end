@@ -1,13 +1,22 @@
-import { useQueryOrgs } from "@/services/org/list";
+import { updateUserPortrait } from "@/services/user/info/updatePortrait";
 import { IonPage, IonContent } from "@ionic/react";
-import * as React from "react";
+import React, { useState } from "react";
 
 const NoTabPage: React.FC = () => {
-  const k = useQueryOrgs({ pageSize: 5 });
-  console.log(k);
+  const [url, setUrl] = useState("");
   return (
     <IonPage>
-      <IonContent fullscreen>I am a page with no tabs!</IonContent>
+      <IonContent fullscreen>
+        <input
+          type="file"
+          onChange={(e) => {
+            setUrl(URL.createObjectURL(e.target.files![0]));
+            updateUserPortrait(e.target.files![0]);
+          }}
+          accept="image/*"
+        />
+        <img src={url} />
+      </IonContent>
     </IonPage>
   );
 };
