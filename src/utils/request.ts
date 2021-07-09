@@ -26,11 +26,11 @@ const axiosInstance = axios.create({
 let currentKey: string;
 
 export const saveKey = (key: string) => {
-  currentKey = key;
+  localStorage.setItem("apikey", key);
 };
 
 export const getKey = (): string | null => {
-  return currentKey;
+  return localStorage.getItem("apikey") as string;
 };
 
 axiosInstance.interceptors.response.use(
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
     if ("set-api-token" in response.headers) {
       saveKey(response.headers["set-api-token"]);
     }
-    if (code !== 200) {
+    if (code && code !== 200) {
       if (code in config.codeHandlers) {
         config.codeHandlers[code]({
           response,
@@ -53,17 +53,14 @@ axiosInstance.interceptors.response.use(
         console.log({ env: process.env.NODE_ENV, response });
         // throw 'fk'
         if (process.env.NODE_ENV === "development") {
-          debugger;
           throw new Error(response.data?.error || code);
         }
-        debugger;
       }
     }
     return response;
   },
   (error) => {
     console.log(error);
-    debugger;
   }
 );
 
@@ -76,6 +73,7 @@ axiosInstance.interceptors.request.use((config) => {
       config.headers = { "api-token": k };
     }
   }
+  console.log({ k });
   return config;
 });
 
