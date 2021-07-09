@@ -13,10 +13,15 @@ interface OrgApplicationScheme {
   questions: string[];
 }
 
-export interface OrgDetailsResult extends OrgInfo {
+interface OrgDetailsResult extends OrgInfo {
   introduction: string;
   phone: string;
   email: string;
+  address: string;
+  addressAuth: string;
+  /**
+   * @value 如果为 “school” 则为学校认证
+   */
   status: string;
   applicationScheme: OrgApplicationScheme;
   /** 社长名称 */

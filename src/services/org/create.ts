@@ -2,6 +2,7 @@ import axios from "@/utils/request";
 
 export interface CreateOrgArgs {
   name: string;
+  instituteName: string;
   address: string;
   introduction: string;
   phone: string;

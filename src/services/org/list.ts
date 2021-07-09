@@ -2,7 +2,7 @@ import axios from "@/utils/request";
 import useSWR from "swr";
 import { OrgInfo } from "@/types/organization";
 
-export interface QueryOrgsParams {
+interface QueryOrgsParams {
   pageSize: number;
   pageNumber?: number;
   // numberId: string;
@@ -14,7 +14,7 @@ export interface QueryOrgsParams {
   maxMemberCount?: number;
 }
 
-export interface QueryOrgsResult {
+interface QueryOrgsResult {
   list: OrgInfo[];
   totalPages: number;
   totalNumber: number;
