@@ -8,24 +8,6 @@ import {
   IonSegmentButton,
   IonToolbar,
 } from "@ionic/react";
-import { OrganizationInfo } from "./Component/OrganizationInfoCard";
-
-interface applicationScheme {
-  open: boolean;
-  auth: boolean;
-  appointDepartment: boolean;
-  questions: string[];
-}
-
-export interface ECADetailInfo extends OrganizationInfo {
-  introduction: string;
-  address: string;
-  addressAuth: string;
-  email: string[];
-  phone: string[];
-  typeAliases: string[];
-  applicationScheme: applicationScheme;
-}
 
 export default () => {
   return (
