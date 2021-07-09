@@ -1,4 +1,5 @@
 import axios from "@/utils/request";
+import { OrgInfo } from "@/types/organization";
 
 type FetchMyApplicationListResult = Array<{
   id: string;
