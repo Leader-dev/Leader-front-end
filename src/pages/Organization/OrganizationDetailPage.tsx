@@ -7,16 +7,19 @@ import {
   IonSegment,
   IonSegmentButton,
   IonToolbar,
+  IonHeader,
 } from "@ionic/react";
 
 export default () => {
   return (
     <IonPage>
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonBackButton text="buttonText" icon="buttonIcon" />
-        </IonButtons>
-      </IonToolbar>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton text="buttonText" icon="buttonIcon" />
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
 
       <IonSegment>
         <IonSegmentButton>

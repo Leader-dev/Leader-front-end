@@ -30,8 +30,8 @@ export default ({ info }: { info: AdInfo[] }) => {
         speed: 400,
       }}
       style={{
-        height: "23vh",
-        width: "92vw",
+        height: "24vh",
+        width: "90vw",
       }}
     >
       {advertisementList}
