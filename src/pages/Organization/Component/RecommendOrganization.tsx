@@ -76,7 +76,7 @@ export default ({
       >
         <IonText
           style={{
-            fontSize: "24px",
+            fontSize: "22px",
             fontWeight: "bolder",
           }}
         >
