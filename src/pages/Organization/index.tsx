@@ -155,7 +155,7 @@ class Organization extends React.Component<any, OrganizationState> {
     return (
       <IonPage>
         <IonHeader className="ion-no-border">
-          <IonToolbar>
+          <IonToolbar className="blue-toolbar">
             <IonSearchbar
               placeholder="搜索社团"
               value={this.state.searchText}
@@ -173,20 +173,20 @@ class Organization extends React.Component<any, OrganizationState> {
           <div style={{ background: "white" }}>
             <div
               style={{
-                background: "#43536D",
+                background: "var(--ion-color-blue)",
                 position: "relative",
-                paddingTop: "1vh",
-                height: "21vh",
+                height: "23vh",
+                paddingTop: "2vh",
               }}
             >
               <svg
                 viewBox="0 0 100 75"
                 width="100%"
-                height="100px"
+                height="15vh"
                 preserveAspectRatio="none"
                 style={{
                   position: "absolute",
-                  marginBottom: "-1px",
+                  // marginBottom: "-1px",
                   bottom: 0,
                   display: "block",
                 }}
