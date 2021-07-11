@@ -12,6 +12,7 @@ import { Redirect, Route } from "react-router-dom";
 import { ellipse, square, triangle } from "ionicons/icons";
 
 import NoTabPage from "@/pages/NoTabPage";
+import OrgDetail from "@/pages/NoTabPage/OrgDetail";
 
 import Trends from "@/pages/Trends";
 import Organization from "@/pages/Organization";
@@ -35,11 +36,11 @@ const TabsRoute: React.FC = () => {
           <IonIcon icon={triangle} />
           <IonLabel> 动态 </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="eca-display" href="/tabs/organization">
+        <IonTabButton tab="orgs" href="/tabs/organization">
           <IonIcon icon={ellipse} />
           <IonLabel> 展示 </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="eca-management" href="/tabs/management">
+        <IonTabButton tab="management" href="/tabs/management">
           <IonIcon icon={ellipse} />
           <IonLabel> 管理 </IonLabel>
         </IonTabButton>
@@ -61,6 +62,7 @@ export const AppRouter: React.FC = () => {
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/notab" component={NoTabPage} />
+        <Route exact path="/notab/org-detail" component={OrgDetail} />
         <Route path="/tabs" component={TabsRoute} />
         <Route path="/signup" component={SignUp} />
         <Route exact path="/">

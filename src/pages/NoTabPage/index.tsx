@@ -1,6 +1,7 @@
 import { updateUserPortrait } from "@/services/user/info/updatePortrait";
 import { IonPage, IonContent } from "@ionic/react";
-import React, { useState } from "react";
+import { useState } from "react";
+import * as React from "react";
 
 const NoTabPage: React.FC = () => {
   const [url, setUrl] = useState("");
