@@ -88,7 +88,7 @@ const MemberManagement = () => {
                 history.push({ search: `?department=none` });
               }}
             >
-              <IonLabel>{currentOrg?.name}</IonLabel>
+              <IonLabel>{currentOrg?.detail.name}</IonLabel>
             </IonItem>
             {loading
               ? null
