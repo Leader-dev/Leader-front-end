@@ -1,6 +1,7 @@
 import { useOrgDetails } from "@/services/org/detail";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
+import * as React from "react";
 import {
   IonAvatar,
   IonButton,
