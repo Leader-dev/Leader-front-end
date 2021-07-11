@@ -13,11 +13,11 @@ import { ellipse, square, triangle } from "ionicons/icons";
 
 import NoTabPage from "@/pages/NoTabPage";
 
-import Trends from "@/pages/Trends";
-import Organization from "@/pages/Organization";
-import Management from "@/pages/Management";
-import Coop from "@/pages/Cooperation";
-import Personal from "@/pages/Personal";
+import Trends from "@/pages/Tabs/Trends";
+import Organization from "@/pages/Tabs/OrgDisplay";
+import Management from "@/pages/Tabs/Management";
+import Coop from "@/pages/Tabs/Cooperation";
+import Personal from "@/pages/Tabs/Personal";
 import SignUp from "@/pages/SignUp";
 import MemberManagement from "@/pages/Org/ManageMember";
 
