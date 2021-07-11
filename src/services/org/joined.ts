@@ -2,7 +2,12 @@ import axios from "@/utils/request";
 import useSWR from "swr";
 import { OrgInfo } from "@/types/organization";
 
-export interface GetJoinedOrgListItem extends OrgInfo {
+interface GetJoinedOrgListItem extends OrgInfo {
+  address: string;
+  addressAuth: string;
+  /**
+   * @value 如果为 “school” 则为学校认证
+   */
   status: string;
   presidentName: string;
 }

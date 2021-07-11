@@ -1,5 +1,5 @@
-ion-toolbar {
-  --background: #43536d;
+.blue-toolbar {
+  --background: var(--ion-color-blue);
 }
 
 ion-searchbar .searchbar-input-container {

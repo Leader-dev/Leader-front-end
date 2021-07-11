@@ -1,9 +1,9 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
-import { OrgInfo } from "@/types/organization";
+import { OrgInfo, AdInfo } from "@/types/organization";
 
-export interface GetHomeOrgsResult {
-  pic: { id: string; posterUrl: string }[];
+interface GetHomeOrgsResult {
+  pic: AdInfo[];
   list: OrgInfo[];
 }
 
