@@ -2,6 +2,12 @@
   --background: transparent;
 }
 
+.customized-tab-bar {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  --border: none;
+}
+
 .image-header {
   background-image: url("https://tva1.sinaimg.cn/large/008i3skNgy1gsbsxdsc4ij30a006rjrp.jpg");
   height: 40vh;
