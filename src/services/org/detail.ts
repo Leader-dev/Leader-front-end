@@ -13,7 +13,7 @@ interface OrgApplicationScheme {
   questions: string[];
 }
 
-interface OrgDetailsResult extends OrgInfo {
+interface OrgDetails extends OrgInfo {
   introduction: string;
   phone: string;
   email: string;
@@ -28,15 +28,23 @@ interface OrgDetailsResult extends OrgInfo {
   presidentName: string;
 }
 
+interface OrgDetailsResult {
+  detail: OrgDetails;
+  applicationStatus: string;
+  /**
+   * @value 用户是否能申请 ("closed” | “available” | “joined" | “applied”)
+   */
+}
+
 export const getOrgDetails = async ({ orgId }: GetOrgDetailsArgs) => {
   return (await axios.post("/org/detail", { orgId })).data
-    .detail as OrgDetailsResult;
+    .data as OrgDetailsResult;
 };
 
 export const useOrgDetails = ({ orgId }: GetOrgDetailsArgs) => {
   return useSWR(["/org/detail", orgId], (url, orgId) =>
     axios(url, { data: { orgId }, codeHandlers: {} }).then(
-      (res) => res.data.detail as OrgDetailsResult
+      (res) => res.data.data as OrgDetailsResult
     )
   );
 };

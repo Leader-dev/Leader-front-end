@@ -79,13 +79,7 @@ const OrgDetail: React.FC = () => {
         </div>
       </IonHeader>
 
-      <IonContent fullscreen>
-        <div
-          style={{
-            borderRadius: "10px",
-          }}
-        ></div>
-      </IonContent>
+      <IonContent fullscreen></IonContent>
     </IonPage>
   );
 };
