@@ -18,6 +18,6 @@ export const getJoinedOrgList = async () => {
 
 export const useJoinedOrgList = () => {
   return useSWR("/org/joined", (url) =>
-    axios(url).then((res) => res.data.list as GetJoinedOrgListItem)
+    axios(url).then((res) => res.data.list as GetJoinedOrgListItem[])
   );
 };
