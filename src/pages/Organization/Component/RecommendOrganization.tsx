@@ -1,19 +1,19 @@
 import * as React from "react";
 import { IonSlide, IonText, IonButton, IonSlides } from "@ionic/react";
-import OrganizationInfoCard, { OrganizationInfo } from "./OrganizationInfoCard";
+import OrganizationInfoCard from "./OrganizationInfoCard";
+import { OrgInfo } from "@/types/organization";
 
 export default ({
   info,
   tabBarHeight,
-  pageNum,
 }: {
-  info: OrganizationInfo[];
+  info: OrgInfo[];
   tabBarHeight: number;
-  pageNum: number;
 }) => {
-  let ecaList = [];
+  let orgList = [];
+  let pageNum = Math.floor(info.length / 3);
   for (let i = 0; i < pageNum; i++) {
-    ecaList.push(
+    orgList.push(
       <IonSlide>
         <div
           style={{
@@ -76,7 +76,7 @@ export default ({
       >
         <IonText
           style={{
-            fontSize: "24px",
+            fontSize: "22px",
             fontWeight: "bolder",
           }}
         >
@@ -96,7 +96,7 @@ export default ({
           overflow: "visible",
         }}
       >
-        {ecaList}
+        {orgList}
       </IonSlides>
     </div>
   );

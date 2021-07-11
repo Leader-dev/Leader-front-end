@@ -1,18 +1,18 @@
 import * as React from "react";
 import { IonCard, IonIcon, IonImg, IonCardContent } from "@ionic/react";
 import { personSharp } from "ionicons/icons";
+import { OrgInfo } from "@/types/organization";
 
-export interface OrganizationInfo {
-  id: string;
-  name: string;
-  numberId: number;
-  posterUrl: string;
-  memberCount: number;
-  instituteName: string;
-}
-
-export default ({ info, size }: { info: OrganizationInfo; size: string }) => {
-  const { id, name, numberId, posterUrl, memberCount, instituteName } = info;
+export default ({ info, size }: { info: OrgInfo; size: string }) => {
+  const {
+    id,
+    name,
+    numberId,
+    posterUrl,
+    memberCount,
+    instituteName,
+    typeAliases,
+  } = info;
   let posterProportion;
   if (size === "large") {
     posterProportion = 86;
