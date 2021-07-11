@@ -2,6 +2,7 @@ import { useOrgDetails } from "@/services/org/detail";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import {
+  IonAvatar,
   IonButton,
   IonContent,
   IonHeader,
@@ -65,8 +66,14 @@ const MemberManagement = () => {
         {departmentId ? (
           <IonList>
             {memberList?.map((member) => {
+              console.log({ member });
               return (
                 <IonItem key={member.id}>
+                  {member.portraitUrl && (
+                    <IonAvatar slot="start">
+                      <img src={member.portraitUrl} />
+                    </IonAvatar>
+                  )}
                   <IonLabel>{member.name}</IonLabel>
                 </IonItem>
               );
