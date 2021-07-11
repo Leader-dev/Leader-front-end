@@ -47,7 +47,7 @@ const Management: React.FC = () => {
         </IonSegment>
         {tab === "joined" ? (
           loading ? null : (
-            orgList!.map(
+            orgList?.map(
               ({
                 name,
                 id,
