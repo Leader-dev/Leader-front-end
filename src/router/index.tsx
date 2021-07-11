@@ -12,13 +12,13 @@ import { Redirect, Route } from "react-router-dom";
 import { ellipse, square, triangle } from "ionicons/icons";
 
 import NoTabPage from "@/pages/NoTabPage";
-import OrgDetail from "@/pages/NoTabPage/OrgDetail";
+import OrgDetail from "@/pages/Org/OrgDisplay/OrgDetail";
 
-import Trends from "@/pages/Trends";
-import Organization from "@/pages/Organization";
-import Management from "@/pages/Management";
-import Coop from "@/pages/Cooperation";
-import Personal from "@/pages/Personal";
+import Trends from "@/pages/Tabs/Trends";
+import Organization from "@/pages/Tabs/OrgDisplay";
+import Management from "@/pages/Tabs/Management";
+import Coop from "@/pages/Tabs/Cooperation";
+import Personal from "@/pages/Tabs/Personal";
 import SignUp from "@/pages/SignUp";
 import MemberManagement from "@/pages/Org/ManageMember";
 
@@ -27,7 +27,7 @@ const TabsRoute: React.FC = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path="/tabs/trends" component={Trends} />
-        <Route exact path="/tabs/organization" component={Organization} />
+        <Route exact path="/tabs/org-display" component={Organization} />
         <Route exact path="/tabs/management" component={Management} />
         <Route exact path="/tabs/coop" component={Coop} />
         <Route exact path="/tabs/person" component={Personal} />
@@ -37,7 +37,7 @@ const TabsRoute: React.FC = () => {
           <IonIcon icon={triangle} />
           <IonLabel> 动态 </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="orgs" href="/tabs/organization">
+        <IonTabButton tab="orgs" href="/tabs/org-display">
           <IonIcon icon={ellipse} />
           <IonLabel> 展示 </IonLabel>
         </IonTabButton>
@@ -63,9 +63,9 @@ export const AppRouter: React.FC = () => {
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/notab" component={NoTabPage} />
-        <Route exact path="/notab/org-detail" component={OrgDetail} />
         <Route path="/tabs" component={TabsRoute} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/org/:ordId/detail" component={OrgDetail} />
         <Route path="/org/:orgId/members" component={MemberManagement} />
         <Route exact path="/">
           <Redirect to="/tabs/trends" />
