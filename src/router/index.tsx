@@ -21,6 +21,7 @@ import Coop from "@/pages/Tabs/Cooperation";
 import Personal from "@/pages/Tabs/Personal";
 import SignUp from "@/pages/SignUp";
 import MemberManagement from "@/pages/Org/ManageMember";
+import OrgDetailInfo from "@/pages/Org/OrgDisplay/Component/OrgDetailInfo";
 
 const TabsRoute: React.FC = () => {
   return (

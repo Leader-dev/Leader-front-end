@@ -1,39 +1,9 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
-import { OrgInfo } from "@/types/organization";
+import { OrgDetailsResult } from "@/types/organization";
 
 interface GetOrgDetailsArgs {
   orgId: string;
-}
-
-interface OrgApplicationScheme {
-  open: boolean;
-  auth: boolean;
-  appointDepartment: boolean;
-  questions: string[];
-}
-
-interface OrgDetails extends OrgInfo {
-  introduction: string;
-  phone: string;
-  email: string;
-  address: string;
-  addressAuth: string;
-  /**
-   * @value 如果为 “school” 则为学校认证
-   */
-  status: string;
-  applicationScheme: OrgApplicationScheme;
-  /** 社长名称 */
-  presidentName: string;
-}
-
-interface OrgDetailsResult {
-  detail: OrgDetails;
-  applicationStatus: string;
-  /**
-   * @value 用户是否能申请 ("closed” | “available” | “joined" | “applied”)
-   */
 }
 
 export const getOrgDetails = async ({ orgId }: GetOrgDetailsArgs) => {

@@ -2,10 +2,10 @@
   --background: transparent;
 }
 
-.customized-tab-bar {
+.rounded-toolbar {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  --border: none;
+  --border-style: none;
 }
 
 .image-header {
