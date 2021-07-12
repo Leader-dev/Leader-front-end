@@ -160,6 +160,7 @@ class Organization extends React.Component<any, OrganizationState> {
               placeholder="搜索社团"
               value={this.state.searchText}
               onIonChange={(e) => this.setSearchText(e.detail.value!)}
+              style={{ "--background": "white" }}
             />
             <IonButtons style={{ marginRight: 8 }} slot="primary">
               <IonButton color="light">

@@ -2,10 +2,6 @@
   --background: var(--ion-color-blue);
 }
 
-ion-searchbar .searchbar-input-container {
-  --background: white;
-}
-
 .bottom-slider .swiper-pagination {
   bottom: -2.5vh; /* May requirement modification based on platform */
 }
