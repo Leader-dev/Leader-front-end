@@ -20,7 +20,7 @@ import Coop from "@/pages/Tabs/Cooperation";
 import Personal from "@/pages/Tabs/Personal";
 import SignUp from "@/pages/SignUp";
 import MemberManagement from "@/pages/Org/ManageMember";
-import OrgDetail from "@/pages/Org/OrgDisplay/OrgDetail";
+import OrgDetail from "@/pages/Org/Detail";
 import OrgHome from "@/pages/Org/Home";
 
 const TabsRoute: React.FC = () => {
