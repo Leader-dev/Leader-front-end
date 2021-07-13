@@ -8,7 +8,7 @@ export default ({
   tabBarHeight,
 }: {
   info: OrgInfo[];
-  tabBarHeight: number;
+  tabBarHeight: string;
 }) => {
   let orgList = [];
   let pageNum = Math.floor(info.length / 3);

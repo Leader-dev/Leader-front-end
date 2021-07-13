@@ -2,7 +2,7 @@ import * as React from "react";
 import { IonSlide, IonSlides, IonSkeletonText } from "@ionic/react";
 import OrganizationInfoCardSkeleton from "./OrganizationInfoCardSkeleton";
 
-export default ({ tabBarHeight }: { tabBarHeight: number }) => {
+export default ({ tabBarHeight }: { tabBarHeight: string }) => {
   return (
     <div
       style={{
