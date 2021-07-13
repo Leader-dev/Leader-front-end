@@ -23,7 +23,7 @@ const iconAlign: CSSProperties = {
 };
 
 export default ({ info }: { info: OrgDetailsResult }) => {
-  const { detail, applicationStatus } = info;
+  const { detail } = info;
   let emailList = detail.email.map((email) => (
     <IonRow style={iconAlign}>
       <IonIcon icon={mail} color="primary" style={{ marginRight: "2px" }} />
