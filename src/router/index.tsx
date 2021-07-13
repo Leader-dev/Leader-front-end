@@ -22,6 +22,7 @@ import SignUp from "@/pages/SignUp";
 import MemberManagement from "@/pages/Org/ManageMember";
 import OrgDetail from "@/pages/Org/Detail";
 import OrgHome from "@/pages/Org/Home";
+import OrgApply from "@/pages/Org/Apply";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -67,6 +68,7 @@ export const AppRouter: React.FC = () => {
         <Route path="/tabs" component={TabsRoute} />
         <Route path="/signup" component={SignUp} />
         <Route path="/org/:ordId/detail" component={OrgDetail} />
+        <Route path="/org/:ordId/apply" component={OrgApply} />
         <Route path="/org/:orgId/members" component={MemberManagement} />
         <Route path="/org/:orgId/home" component={OrgHome} />
         <Route exact path="/">
