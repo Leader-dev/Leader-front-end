@@ -12,7 +12,7 @@ import {
   IonSegment,
   IonSegmentButton,
 } from "@ionic/react";
-import "./OrgDetail.css";
+import "./index.css";
 import { heartOutline, warningOutline } from "ionicons/icons";
 import { useState } from "react";
 import { useParams } from "react-router";
@@ -92,6 +92,7 @@ export default () => {
           <IonToolbar className="rounded-toolbar">
             <IonSegment
               mode="md"
+              value={tab}
               onIonChange={(e) => {
                 setTab(e.detail.value as "info" | "contact");
               }}
