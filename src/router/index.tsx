@@ -12,7 +12,6 @@ import { Redirect, Route } from "react-router-dom";
 import { ellipse, square, triangle } from "ionicons/icons";
 
 import NoTabPage from "@/pages/NoTabPage";
-import OrgDetail from "@/pages/Org/OrgDisplay/OrgDetail";
 
 import Trends from "@/pages/Tabs/Trends";
 import OrgDisplay from "@/pages/Tabs/OrgDisplay";
@@ -21,6 +20,8 @@ import Coop from "@/pages/Tabs/Cooperation";
 import Personal from "@/pages/Tabs/Personal";
 import SignUp from "@/pages/SignUp";
 import MemberManagement from "@/pages/Org/ManageMember";
+import OrgDetail from "@/pages/Org/OrgDisplay/OrgDetail";
+import OrgHome from "@/pages/Org/Home";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -67,6 +68,7 @@ export const AppRouter: React.FC = () => {
         <Route path="/signup" component={SignUp} />
         <Route path="/org/:ordId/detail" component={OrgDetail} />
         <Route path="/org/:orgId/members" component={MemberManagement} />
+        <Route path="/org/:orgId/home" component={OrgHome} />
         <Route exact path="/">
           <Redirect to="/tabs/trends" />
         </Route>
