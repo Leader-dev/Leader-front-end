@@ -15,20 +15,19 @@ import NoTabPage from "@/pages/NoTabPage";
 import OrgDetail from "@/pages/Org/OrgDisplay/OrgDetail";
 
 import Trends from "@/pages/Tabs/Trends";
-import Organization from "@/pages/Tabs/OrgDisplay";
+import OrgDisplay from "@/pages/Tabs/OrgDisplay";
 import Management from "@/pages/Tabs/Management";
 import Coop from "@/pages/Tabs/Cooperation";
 import Personal from "@/pages/Tabs/Personal";
 import SignUp from "@/pages/SignUp";
 import MemberManagement from "@/pages/Org/ManageMember";
-import OrgDetailInfo from "@/pages/Org/OrgDisplay/Component/OrgDetailInfo";
 
 const TabsRoute: React.FC = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path="/tabs/trends" component={Trends} />
-        <Route exact path="/tabs/org-display" component={Organization} />
+        <Route exact path="/tabs/org-display" component={OrgDisplay} />
         <Route exact path="/tabs/management" component={Management} />
         <Route exact path="/tabs/coop" component={Coop} />
         <Route exact path="/tabs/person" component={Personal} />
