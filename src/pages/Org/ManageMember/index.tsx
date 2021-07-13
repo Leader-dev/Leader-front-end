@@ -4,7 +4,9 @@ import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import * as React from "react";
 import {
   IonAvatar,
+  IonBackButton,
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
@@ -41,22 +43,14 @@ const MemberManagement = () => {
     departmentId: departmentId === "none" ? undefined : departmentId,
   });
   const loading = !error && isValidating;
+  console.log({ currentOrg });
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          {!departmentId || (
-            <IonButton
-              slot="start"
-              fill="clear"
-              color="light"
-              onClick={() => {
-                history.push({ search: "" });
-              }}
-            >
-              <IonIcon icon={chevronBackOutline} />
-            </IonButton>
-          )}
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
           <IonTitle>咨询成员</IonTitle>
         </IonToolbar>
         <IonToolbar>

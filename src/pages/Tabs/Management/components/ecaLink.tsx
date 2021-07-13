@@ -17,11 +17,13 @@ export const ECACard = ({
   name,
   address,
   addressAuth,
+  id,
   memberCount,
   presidentName,
   notificationCount,
 }: {
   name: string;
+  id: string;
   imgUrl: string;
   numberId: number;
   addressAuth: "school" | string;
@@ -59,7 +61,11 @@ export const ECACard = ({
                   <IonBadge color="danger">{notificationCount}</IonBadge>
                 )}
               </div>
-              <IonButton fill="outline" size="small">
+              <IonButton
+                fill="outline"
+                size="small"
+                routerLink={`/org/${id}/home`}
+              >
                 点击管理
               </IonButton>
             </IonCol>
