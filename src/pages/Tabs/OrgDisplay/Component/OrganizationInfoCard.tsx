@@ -2,6 +2,7 @@ import * as React from "react";
 import { IonCard, IonIcon, IonImg, IonCardContent } from "@ionic/react";
 import { personSharp } from "ionicons/icons";
 import { OrgInfo } from "@/types/organization";
+import { useHistory } from "react-router";
 
 export default ({ info, size }: { info: OrgInfo; size: string }) => {
   const {
@@ -19,12 +20,21 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
   } else {
     posterProportion = 70;
   }
+
+  const history = useHistory();
+  let pathName = "/org/" + id + "/detail";
+
   return (
     <IonCard
       style={{
         height: "100%",
         width: "100%",
         margin: 0,
+      }}
+      onClick={() => {
+        history.push({
+          pathname: pathName,
+        });
       }}
     >
       <div

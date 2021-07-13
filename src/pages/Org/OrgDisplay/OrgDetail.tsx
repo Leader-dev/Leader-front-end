@@ -17,7 +17,6 @@ import { heartOutline, warningOutline } from "ionicons/icons";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useOrgDetails } from "@/services/org/detail";
-import { OrgDetailsResult } from "../../../types/organization";
 import OrgDetailInfo from "./Component/OrgDetailInfo";
 import OrgDetailContact from "./Component/OrgDetailContact";
 
@@ -30,9 +29,8 @@ export default () => {
   //   <div> Skeleton </div>
   // )
 
-  // Test data
-  let data: OrgDetailsResult;
-  data = {
+  // Test data]
+  let data = {
     detail: {
       id: "xxxxxx",
       name: "计算机协会",
