@@ -16,6 +16,8 @@ export const TitledSearchBarWrapper: React.FC<{
   rightItems: React.ReactNode;
   value: string;
   onValueChange: React.ComponentProps<typeof IonSearchbar>["onIonChange"];
+  layer?: React.ReactNode;
+  noTopTitle?: boolean;
 }> = ({
   children,
   title,
@@ -23,28 +25,36 @@ export const TitledSearchBarWrapper: React.FC<{
   value,
   onValueChange,
   searchbarPlaceholder,
+  layer,
+  noTopTitle,
 }) => {
   if (isPlatform("ios")) {
     return (
       <>
         <IonHeader translucent>
-          <IonToolbar>
-            <IonTitle>{title}</IonTitle>
-          </IonToolbar>
+          {!noTopTitle && (
+            <IonToolbar>
+              <IonTitle>{title}</IonTitle>
+            </IonToolbar>
+          )}
         </IonHeader>
         <IonContent fullscreen>
           <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large">{title}</IonTitle>
-            </IonToolbar>
+            {!noTopTitle && (
+              <IonToolbar>
+                <IonTitle size="large">{title}</IonTitle>
+              </IonToolbar>
+            )}
             <IonToolbar>
               <IonSearchbar
                 placeholder={searchbarPlaceholder}
                 value={value}
                 onIonChange={onValueChange}
+                style={{ "--background": "var(--ion-color-medium, #92949c)" }}
               />
               {rightItems}
             </IonToolbar>
+            {layer && <IonToolbar>{layer}</IonToolbar>}
           </IonHeader>
           {children}
         </IonContent>

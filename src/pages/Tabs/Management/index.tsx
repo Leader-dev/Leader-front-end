@@ -31,20 +31,23 @@ const Management: React.FC = () => {
         onValueChange={(e) => {
           setSearch(e.detail.value!);
         }}
+        noTopTitle
+        layer={
+          <IonSegment
+            value={tab}
+            onIonChange={(e) => {
+              setTab(e.detail.value as "joined" | "apply");
+            }}
+          >
+            <IonSegmentButton value="joined">
+              <IonLabel>我加入的</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="apply">
+              <IonLabel>加入申请</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+        }
       >
-        <IonSegment
-          value={tab}
-          onIonChange={(e) => {
-            setTab(e.detail.value as "joined" | "apply");
-          }}
-        >
-          <IonSegmentButton value="joined">
-            <IonLabel>我加入的</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="apply">
-            <IonLabel>加入申请</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
         {tab === "joined" ? (
           loading ? null : (
             orgList?.map(
@@ -68,6 +71,7 @@ const Management: React.FC = () => {
                     memberCount={memberCount}
                     presidentName={presidentName}
                     notificationCount={0}
+                    id={id}
                     key={id}
                   />
                 );
@@ -97,6 +101,28 @@ const Management: React.FC = () => {
               presidentName="米老鼠"
               notificationCount={3}
               status="accepted"
+            />
+            <ECARequestCard
+              name="Leader 开发组"
+              numberId={114514}
+              imgUrl="https://www.baidu.com/img/flexible/logo/pc/result.png"
+              addressAuth="school"
+              address="深圳国际交流学院"
+              memberCount={1919}
+              presidentName="米老鼠"
+              notificationCount={3}
+              status="rejected"
+            />
+            <ECARequestCard
+              name="Leader 开发组"
+              numberId={114514}
+              imgUrl="https://www.baidu.com/img/flexible/logo/pc/result.png"
+              addressAuth="school"
+              address="深圳国际交流学院"
+              memberCount={1919}
+              presidentName="米老鼠"
+              notificationCount={3}
+              status="rejected"
             />
             <ECARequestCard
               name="Leader 开发组"
