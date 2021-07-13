@@ -1,16 +1,5 @@
 import * as React from "react";
-import {
-  IonCardContent,
-  IonCard,
-  IonCol,
-  IonGrid,
-  IonButton,
-  IonRow,
-  IonPage,
-  IonContent,
-  IonItem,
-  IonIcon,
-} from "@ionic/react";
+import { IonCol, IonGrid, IonButton, IonRow, IonIcon } from "@ionic/react";
 import { OrgDetailsResult } from "@/types/organization";
 import { checkmarkCircle, helpCircle, peopleSharp } from "ionicons/icons";
 
@@ -21,29 +10,25 @@ export default ({ info }: { info: OrgDetailsResult }) => {
   if (applicationStatus === "closed") {
     button = (
       <IonButton color="dark" size="small">
-        {" "}
-        招新关闭{" "}
+        招新关闭
       </IonButton>
     );
   } else if (applicationStatus === "available") {
     button = (
       <IonButton color="primary" size="small">
-        {" "}
-        申请加入{" "}
+        申请加入
       </IonButton>
     );
   } else if (applicationStatus === "joined") {
     button = (
       <IonButton color="success" size="small">
-        {" "}
-        已加入{" "}
+        已加入
       </IonButton>
     );
   } else if (applicationStatus === "applied") {
     button = (
       <IonButton color="medium" size="small">
-        {" "}
-        已申请{" "}
+        已申请
       </IonButton>
     );
   } else {
@@ -69,12 +54,10 @@ export default ({ info }: { info: OrgDetailsResult }) => {
             style={{
               fontSize: "120%",
               fontWeight: "bold",
-              color: "black",
               lineHeight: "150%",
             }}
           >
-            {" "}
-            {detail.name}{" "}
+            {detail.name}
           </div>
           <div
             style={{
@@ -83,8 +66,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
               lineHeight: "140%",
             }}
           >
-            {" "}
-            {detail.numberId}{" "}
+            {detail.numberId}
           </div>
           <div
             style={{
@@ -120,12 +102,10 @@ export default ({ info }: { info: OrgDetailsResult }) => {
           lineHeight: "160%",
         }}
       >
-        {" "}
         简介：
       </IonRow>
       <IonRow style={{ fontSize: "95%", lineHeight: "125%" }}>
-        {" "}
-        {detail.introduction}{" "}
+        {detail.introduction}
       </IonRow>
     </IonGrid>
   );

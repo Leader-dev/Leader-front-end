@@ -11,14 +11,16 @@ import {
   IonIcon,
   IonSegment,
   IonSegmentButton,
+  IonSkeletonText,
 } from "@ionic/react";
 import "./index.css";
 import { heartOutline, warningOutline } from "ionicons/icons";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { useParams } from "react-router";
 import { useOrgDetails } from "@/services/org/detail";
-import OrgDetailInfo from "./Component/OrgDetailInfo";
-import OrgDetailContact from "./Component/OrgDetailContact";
+import OrgDetailInfo from "./Component/Info";
+import OrgDetailContact from "./Component/Contact";
+import InfoSkeleton from "./Component/InfoSkeleton";
 
 export default () => {
   // TODO fetch data from backend
@@ -29,7 +31,7 @@ export default () => {
   //   <div> Skeleton </div>
   // )
 
-  // Test data]
+  // Test data
   let data = {
     detail: {
       id: "xxxxxx",
@@ -42,7 +44,8 @@ export default () => {
       address: "广东深圳",
       addressAuth: "school",
       typeAliases: [""],
-      posterUrl: "",
+      posterUrl:
+        "https://tva1.sinaimg.cn/large/008i3skNgy1gsbsxdsc4ij30a006rjrp.jpg",
       status: "",
       phone: ["113115155", "189237523465"],
       email: ["aaaaa@gmail.com", "test@qq.com"],
@@ -57,16 +60,29 @@ export default () => {
     applicationStatus: "applied",
   };
 
+  // Test skeleton
+  let loadingFirst = false;
+
   const [tab, setTab] = useState<"info" | "contact">("info");
-  let orgContent;
-  if (tab === "info") {
-    orgContent = <OrgDetailInfo info={data} />;
+  let orgContent, header;
+  if (loadingFirst) {
+    orgContent = <InfoSkeleton />;
   } else {
-    orgContent = <OrgDetailContact info={data} />;
+    if (tab === "info") {
+      orgContent = <OrgDetailInfo info={data} />;
+    } else {
+      orgContent = <OrgDetailContact info={data} />;
+    }
   }
+
   return (
     <IonPage>
-      <IonHeader className="image-header">
+      <IonHeader
+        style={{
+          backgroundImage: 'url("' + data.detail.posterUrl + '")',
+          height: "40vh",
+        }}
+      >
         <div
           style={{
             height: "100%",
@@ -77,7 +93,11 @@ export default () => {
         >
           <IonToolbar className="transparent-toolbar">
             <IonButtons slot="start">
-              <IonBackButton defaultHref="/" color="light" text="" />
+              <IonBackButton
+                defaultHref="/tabs/org-display"
+                color="light"
+                text=""
+              />
             </IonButtons>
             <IonButtons slot="end">
               <IonButton color="light">
