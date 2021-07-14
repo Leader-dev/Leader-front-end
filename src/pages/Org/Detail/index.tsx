@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   IonButtons,
-  IonBackButton,
   IonLabel,
   IonPage,
   IonToolbar,
@@ -14,7 +13,7 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 import "./index.css";
-import { heartOutline, warningOutline } from "ionicons/icons";
+import { chevronBack, heartOutline, warningOutline } from "ionicons/icons";
 import { CSSProperties, useState } from "react";
 import { useParams } from "react-router";
 import { useOrgDetails } from "@/services/org/detail";
@@ -54,10 +53,10 @@ export default () => {
         open: false,
         auth: true,
         appointDepartment: true,
-        questions: ["你的名字"],
+        questions: ["question1", "question2"],
       },
     },
-    applicationStatus: "applied",
+    applicationStatus: "available",
   };
 
   // Test skeleton
@@ -93,11 +92,9 @@ export default () => {
         >
           <IonToolbar className="transparent-toolbar">
             <IonButtons slot="start">
-              <IonBackButton
-                defaultHref="/tabs/org-display"
-                color="light"
-                text=""
-              />
+              <IonButton href="/tabs/org-display" color="light">
+                <IonIcon icon={chevronBack} />
+              </IonButton>
             </IonButtons>
             <IonButtons slot="end">
               <IonButton color="light">
