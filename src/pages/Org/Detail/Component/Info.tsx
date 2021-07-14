@@ -2,6 +2,7 @@ import * as React from "react";
 import { IonCol, IonGrid, IonButton, IonRow, IonIcon } from "@ionic/react";
 import { OrgDetailsResult } from "@/types/organization";
 import { checkmarkCircle, helpCircle, peopleSharp } from "ionicons/icons";
+import { Link } from "react-router-dom";
 
 export default ({ info }: { info: OrgDetailsResult }) => {
   const { detail, applicationStatus } = info;
@@ -9,25 +10,27 @@ export default ({ info }: { info: OrgDetailsResult }) => {
   let button;
   if (applicationStatus === "closed") {
     button = (
-      <IonButton color="dark" size="small">
+      <IonButton color="dark" size="small" disabled={true}>
         招新关闭
       </IonButton>
     );
   } else if (applicationStatus === "available") {
     button = (
-      <IonButton color="primary" size="small">
-        申请加入
-      </IonButton>
+      <Link to="apply">
+        <IonButton color="primary" size="small">
+          申请加入
+        </IonButton>
+      </Link>
     );
   } else if (applicationStatus === "joined") {
     button = (
-      <IonButton color="success" size="small">
+      <IonButton color="success" size="small" disabled={true}>
         已加入
       </IonButton>
     );
   } else if (applicationStatus === "applied") {
     button = (
-      <IonButton color="medium" size="small">
+      <IonButton color="medium" size="small" disabled={true}>
         已申请
       </IonButton>
     );
