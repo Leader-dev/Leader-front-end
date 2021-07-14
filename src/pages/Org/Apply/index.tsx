@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useParams } from "react-router";
+import { useLocation } from "react-router";
 import {
   IonBackButton,
   IonButtons,
@@ -10,6 +10,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import OrgCard from "./Component/OrgCard";
+import ApplyForm from "./Component/ApplyForm";
 
 export default () => {
   // const { orgId } = useParams<{ orgId: string }>();
@@ -42,10 +43,10 @@ export default () => {
         open: false,
         auth: true,
         appointDepartment: true,
-        questions: ["你的名字"],
+        questions: ["question1", "question2"],
       },
     },
-    applicationStatus: "applied",
+    applicationStatus: "available",
   };
 
   return (
@@ -60,6 +61,7 @@ export default () => {
       </IonHeader>
       <IonContent fullscreen>
         <OrgCard info={data} />
+        <ApplyForm info={data} />
       </IonContent>
     </IonPage>
   );
