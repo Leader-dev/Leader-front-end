@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   IonCard,
-  IonCardContent,
   IonCol,
   IonGrid,
   IonIcon,
@@ -30,14 +29,12 @@ export default ({ info }: { info: OrgDetailsResult }) => {
     authColor = "var(--ion-color-warning)";
   }
   const history = useHistory();
-  let pathName = "/org/" + detail.id + "/detail";
 
   return (
     <IonCard
       onClick={() => {
         history.push({
-          // pathname: "../:orgId/detail",
-          pathname: pathName,
+          pathname: "detail",
         });
       }}
       style={{ margin: "10px 0" }}
