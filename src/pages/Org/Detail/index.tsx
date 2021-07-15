@@ -77,6 +77,7 @@ export default () => {
     }
   }
 
+  // TODO routing animation for back button
   return (
     <IonPage>
       <IonHeader
@@ -96,8 +97,6 @@ export default () => {
           <IonToolbar className="transparent-toolbar">
             <IonButtons slot="start">
               <IonButton href="/tabs/org-display" color="light">
-                {" "}
-                // TODO routing animation
                 <IonIcon icon={chevronBack} />
               </IonButton>
             </IonButtons>
