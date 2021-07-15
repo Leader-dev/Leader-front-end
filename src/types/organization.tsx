@@ -18,7 +18,7 @@ interface OrgApplicationScheme {
   open: boolean;
   auth: boolean;
   appointDepartment: boolean;
-  questions: string[];
+  questions: { question: string; required: boolean }[];
 }
 
 interface OrgDetails extends OrgInfo {

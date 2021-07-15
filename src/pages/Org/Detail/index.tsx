@@ -53,7 +53,10 @@ export default () => {
         open: false,
         auth: true,
         appointDepartment: true,
-        questions: ["question1", "question2"],
+        questions: [
+          { question: "question1", required: true },
+          { question: "question2", required: false },
+        ],
       },
     },
     applicationStatus: "available",
@@ -93,6 +96,8 @@ export default () => {
           <IonToolbar className="transparent-toolbar">
             <IonButtons slot="start">
               <IonButton href="/tabs/org-display" color="light">
+                {" "}
+                // TODO routing animation
                 <IonIcon icon={chevronBack} />
               </IonButton>
             </IonButtons>
