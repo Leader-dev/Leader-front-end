@@ -11,17 +11,19 @@ import {
 } from "@ionic/react";
 import OrgCard from "./Component/OrgCard";
 import ApplyForm from "./Component/ApplyForm";
+import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 
 export default () => {
   // const { orgId } = useParams<{ orgId: string }>();
-  // const { data: data, error } = useOrgDetails({ orgId });
-  // if (error) return <div>failed to load</div>
-  // if (!data) return (
+  // const { data: details, error: detailsError } = useOrgDetails({ orgId });
+  // const {data: departments, error: departmentsError } = useDepartmentList({ orgId })
+  // if ( detailsError || departmentsError ) return <div>failed to load</div>
+  // if ( !details || !departments ) return (
   //   <div> Skeleton </div>
   // )
 
   // Test data
-  let data = {
+  let details = {
     detail: {
       id: "xxxxxx",
       name: "计算机协会",
@@ -43,11 +45,19 @@ export default () => {
         open: false,
         auth: true,
         appointDepartment: true,
-        questions: ["question1", "question2"],
+        questions: [
+          { question: "请做一个自我介绍", required: true },
+          { question: "为什么想来我们的社团", required: false },
+        ],
       },
     },
     applicationStatus: "available",
   };
+
+  let departments = [
+    { id: "1111", name: "技术部" },
+    { id: "1112", name: "学术部" },
+  ];
 
   return (
     <IonPage>
@@ -60,8 +70,8 @@ export default () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <OrgCard info={data} />
-        <ApplyForm info={data} />
+        <OrgCard info={details} />
+        <ApplyForm details={details} departments={departments} />
       </IonContent>
     </IonPage>
   );
