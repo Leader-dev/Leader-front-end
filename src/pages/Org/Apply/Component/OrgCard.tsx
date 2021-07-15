@@ -7,14 +7,8 @@ import {
   IonImg,
   IonRow,
 } from "@ionic/react";
-import {
-  checkmarkCircle,
-  chevronForward,
-  helpCircle,
-  peopleSharp,
-} from "ionicons/icons";
+import { checkmarkCircle, helpCircle, peopleSharp } from "ionicons/icons";
 import { OrgDetailsResult } from "@/types/organization";
-import { useHistory } from "react-router";
 
 export default ({ info }: { info: OrgDetailsResult }) => {
   const { detail } = info;
@@ -28,17 +22,9 @@ export default ({ info }: { info: OrgDetailsResult }) => {
     authIcon = <IonIcon icon={helpCircle} style={{ marginRight: "2px" }} />;
     authColor = "var(--ion-color-warning)";
   }
-  const history = useHistory();
 
   return (
-    <IonCard
-      onClick={() => {
-        history.push({
-          pathname: "detail",
-        });
-      }}
-      style={{ margin: "10px 0" }}
-    >
+    <IonCard style={{ margin: "10px 0" }}>
       <IonGrid style={{ padding: "12px" }}>
         <IonRow>
           <IonCol size="5">
@@ -102,13 +88,6 @@ export default ({ info }: { info: OrgDetailsResult }) => {
               <IonIcon icon={peopleSharp} style={{ marginRight: "2px" }} />
               成员数 {detail.memberCount}
             </div>
-          </IonCol>
-          <IonCol
-            size="1"
-            style={{ textAlign: "right" }}
-            className="ion-align-self-center"
-          >
-            <IonIcon icon={chevronForward} />
           </IonCol>
         </IonRow>
       </IonGrid>
