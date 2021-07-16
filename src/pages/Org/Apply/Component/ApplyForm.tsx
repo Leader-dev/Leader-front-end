@@ -54,7 +54,6 @@ export default ({
     let onChange = (e: any) => {
       answers[i] = e.target.value;
       setAnswers(answers);
-      // console.log(answers);
     };
 
     let required = questions[i].required;
@@ -138,7 +137,7 @@ export default ({
         //       )
       }
     >
-      <IonList style={{ lineHeight: "120%" }}>
+      <IonList style={{ lineHeight: fontSize }}>
         <IonItem>
           <IonLabel position="stacked" style={{ fontSize: fontSize }}>
             您的姓名
