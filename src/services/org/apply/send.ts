@@ -6,7 +6,7 @@ declare global {
 
 interface ApplyToOrgParams {
   orgId: string;
-  departmentId: string;
+  departmentId: string | null;
   applicationForm: ApplicationForm;
 }
 
