@@ -1,15 +1,14 @@
 import * as React from "react";
 import {
   IonButton,
-  IonIcon,
   IonInput,
   IonItem,
-  IonItemDivider,
   IonLabel,
   IonList,
   IonSelect,
   IonSelectOption,
   IonTextarea,
+  isPlatform,
 } from "@ionic/react";
 import { OrgDetailsResult } from "@/types/organization";
 import { useState } from "react";
@@ -30,15 +29,14 @@ export default ({
   const applicationInfo = detail.applicationScheme;
   const [name, setName] = useState<string>();
   type Department = typeof departments[number];
-  const [selectedDepartment, setSelectedDepartment] = useState<Department>({
-    id: "",
-    name: "",
-  });
+  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
   const questions = applicationInfo.questions;
   const length = questions.length;
   const [answers, setAnswers] = useState(
     Array.from({ length: length }).fill("")
   );
+
+  let fontSize = isPlatform("ios") ? "90%" : "20px";
 
   let inputList = [];
   for (let i = 0; i < length; i++) {
@@ -57,18 +55,16 @@ export default ({
           fontWeight: "bold",
         }}
       >
-        *{" "}
+        *
       </span>
     ) : null;
     inputList.push(
       <IonItem>
-        <IonLabel position="stacked" style={{ fontSize: "90%" }}>
-          {" "}
+        <IonLabel position="stacked" style={{ fontSize: fontSize }}>
           {questions[i].question}
-          {requiredHint}{" "}
+          {requiredHint}
         </IonLabel>
         <IonTextarea
-          style={{ lineHeight: "90%" }}
           required={required}
           rows={1}
           autoGrow={true}
@@ -82,8 +78,7 @@ export default ({
   if (applicationInfo.appointDepartment) {
     let selectionOptions = departments.map((department) => (
       <IonSelectOption key={department.id} value={department}>
-        {" "}
-        {department.name}{" "}
+        {department.name}
       </IonSelectOption>
     ));
     departmentSelect = (
@@ -109,9 +104,9 @@ export default ({
 
   return (
     <div>
-      <IonList>
+      <IonList style={{ lineHeight: fontSize }}>
         <IonItem>
-          <IonLabel position="stacked" style={{ fontSize: "90%" }}>
+          <IonLabel position="stacked" style={{ fontSize: fontSize }}>
             您的姓名
             <span
               style={{
@@ -120,7 +115,7 @@ export default ({
                 fontWeight: "bold",
               }}
             >
-              *{" "}
+              *
             </span>
           </IonLabel>
           <IonInput
@@ -137,8 +132,7 @@ export default ({
         expand="block"
         onClick={() => console.log(selectedDepartment)}
       >
-        {" "}
-        确认{" "}
+        确认
       </IonButton>
     </div>
   );
