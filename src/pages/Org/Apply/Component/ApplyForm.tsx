@@ -13,33 +13,44 @@ import {
 import { OrgDetailsResult } from "@/types/organization";
 import { useState } from "react";
 import "./ApplyForm.css";
+import { applyToOrg } from "@/services/org/apply/send";
+import { useHistory } from "react-router";
 
 const options = {
   cssClass: "department-select-option",
 };
+
+interface Department {
+  id: string | null;
+  name: string | null;
+}
 
 export default ({
   details,
   departments,
 }: {
   details: OrgDetailsResult;
-  departments: { id: string; name: string }[];
+  departments: Department[];
 }) => {
+  const history = useHistory();
+
   const { detail } = details;
   const applicationInfo = detail.applicationScheme;
+
   const [name, setName] = useState<string>();
-  type Department = typeof departments[number];
-  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
+  const [selectedDepartment, setSelectedDepartment] = useState<Department>({
+    id: null,
+    name: null,
+  });
   const questions = applicationInfo.questions;
-  const length = questions.length;
-  const [answers, setAnswers] = useState(
-    Array.from({ length: length }).fill("")
+  const [answers, setAnswers] = useState<string[]>(
+    Array(questions.length).fill("")
   );
 
   let fontSize = isPlatform("ios") ? "90%" : "20px";
 
   let inputList = [];
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < questions.length; i++) {
     let onChange = (e: any) => {
       answers[i] = e.target.value;
       setAnswers(answers);
@@ -103,8 +114,31 @@ export default ({
   }
 
   return (
-    <div>
-      <IonList style={{ lineHeight: fontSize }}>
+    <form
+      onSubmit={
+        (event) => {
+          console.log({
+            orgId: detail.id,
+            departmentId: selectedDepartment.id,
+            applicationForm: answers.map((answer, index) => ({
+              question: questions[index].question,
+              answer: answer,
+            })),
+          });
+          history.go(-1);
+          event.preventDefault();
+        }
+        //   applyToOrg({
+        //     orgId: detail.id,
+        //     departmentId: selectedDepartment.id,
+        //     applicationForm: answers.map((answer, index) => ({question: questions[index].question, answer: answer}))
+        //   }).then(r =>
+        //       history.go(-1)
+        //       event.preventDefault()
+        //       )
+      }
+    >
+      <IonList style={{ lineHeight: "120%" }}>
         <IonItem>
           <IonLabel position="stacked" style={{ fontSize: fontSize }}>
             您的姓名
@@ -127,13 +161,9 @@ export default ({
         {inputList}
         {departmentSelect}
       </IonList>
-      <IonButton
-        style={{ margin: "25px 15px" }}
-        expand="block"
-        onClick={() => console.log(selectedDepartment)}
-      >
+      <IonButton style={{ margin: "25px 15px" }} expand="block" type="submit">
         确认
       </IonButton>
-    </div>
+    </form>
   );
 };
