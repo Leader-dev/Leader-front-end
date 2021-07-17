@@ -8,11 +8,11 @@ interface GetHomeOrgsResult {
 }
 
 export const getHomeOrgs = async () => {
-  return (await axios.post("/org/home")).data.data as GetHomeOrgsResult;
+  return (await axios.post("/org/home")).data.index as GetHomeOrgsResult;
 };
 
 export const useHomeOrg = () => {
   return useSWR("/org/home", (url) =>
-    axios(url).then((res) => res.data.data as GetHomeOrgsResult)
+    axios(url).then((res) => res.data.index as GetHomeOrgsResult)
   );
 };
