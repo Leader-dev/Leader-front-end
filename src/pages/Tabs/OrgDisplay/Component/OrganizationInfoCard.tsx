@@ -22,7 +22,6 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
   }
 
   const history = useHistory();
-  let pathName = "/org/" + id + "/detail";
 
   return (
     <IonCard
@@ -32,8 +31,9 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
         margin: 0,
       }}
       onClick={() => {
+        console.log(id);
         history.push({
-          pathname: pathName,
+          pathname: `/org/${id}/detail`,
         });
       }}
     >
