@@ -13,7 +13,7 @@ import { OrgDetailsResult } from "@/types/organization";
 export default ({ info }: { info: OrgDetailsResult }) => {
   const { detail } = info;
   let authIcon, authColor;
-  if (detail.addressAuth === "school") {
+  if (detail.instituteAuth === "school") {
     authIcon = (
       <IonIcon icon={checkmarkCircle} style={{ marginRight: "2px" }} />
     );
