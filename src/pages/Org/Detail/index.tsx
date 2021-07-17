@@ -16,9 +16,9 @@ import { chevronBack, heartOutline, warningOutline } from "ionicons/icons";
 import { CSSProperties, useState } from "react";
 import { useParams } from "react-router";
 import { useOrgDetails } from "@/services/org/detail";
-import OrgDetailInfo from "./Component/Info";
-import OrgDetailContact from "./Component/Contact";
-import InfoSkeleton from "./Component/InfoSkeleton";
+import OrgDetailInfo from "./components/Info";
+import OrgDetailContact from "./components/Contact";
+import InfoSkeleton from "./components/InfoSkeleton";
 
 export default () => {
   // Test data
