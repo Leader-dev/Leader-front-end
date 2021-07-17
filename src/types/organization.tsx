@@ -4,6 +4,9 @@ export interface OrgInfo {
   name: string;
   instituteName: string;
   instituteAuth: string;
+  /**
+   * @value 如果为 “school” 则为学校认证
+   */
   typeAliases: string[];
   /** 组织海报图片地址 url */
   posterUrl: string;
@@ -27,9 +30,6 @@ interface OrgDetails extends OrgInfo {
   phone: string[];
   email: string[];
   address: string;
-  /**
-   * @value 如果为 “school” 则为学校认证
-   */
   status: string;
   applicationScheme: OrgApplicationScheme;
   /** 社长名称 */
