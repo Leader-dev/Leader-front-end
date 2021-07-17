@@ -3,6 +3,7 @@ export interface OrgInfo {
   numberId: number;
   name: string;
   instituteName: string;
+  instituteAuth: string;
   typeAliases: string[];
   /** 组织海报图片地址 url */
   posterUrl: string;
@@ -26,7 +27,6 @@ interface OrgDetails extends OrgInfo {
   phone: string[];
   email: string[];
   address: string;
-  addressAuth: string;
   /**
    * @value 如果为 “school” 则为学校认证
    */
