@@ -43,3 +43,12 @@ export interface OrgDetailsResult {
    * @value 用户是否能申请 ("closed” | “available” | “joined" | “applied”)
    */
 }
+
+export interface MemberInfo {
+  name: string;
+  numberId: number;
+  title: string;
+  departmentName: string;
+  phone: string[];
+  email: string[];
+}
