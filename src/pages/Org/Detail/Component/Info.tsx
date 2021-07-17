@@ -52,7 +52,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
   return (
     <IonGrid>
       <IonRow>
-        <IonCol size="9" style={{ fontSize: "90%", lineHeight: "130%" }}>
+        <IonCol style={{ fontSize: "90%", lineHeight: "130%" }}>
           <div
             style={{
               fontSize: "120%",
@@ -92,7 +92,11 @@ export default ({ info }: { info: OrgDetailsResult }) => {
             成员数 {detail.memberCount}
           </div>
         </IonCol>
-        <IonCol size="3" className="ion-align-self-center">
+        <IonCol
+          size="4"
+          className="ion-align-self-center"
+          style={{ textAlign: "right" }}
+        >
           {button}
         </IonCol>
       </IonRow>
