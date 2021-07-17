@@ -33,7 +33,7 @@ export default () => {
       memberCount: 280,
       instituteName: "深国交",
       address: "广东深圳",
-      addressAuth: "school",
+      instituteAuth: "school",
       typeAliases: [""],
       posterUrl:
         "https://tva1.sinaimg.cn/large/008i3skNgy1gsbsxdsc4ij30a006rjrp.jpg",
