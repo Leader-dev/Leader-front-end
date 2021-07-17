@@ -39,6 +39,33 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
+const Item = () => {
+  return (
+    <IonCol style={{ textAlign: "center", padding: "16px" }}>
+      <div
+        style={{
+          borderRadius: "18px",
+          background: "var(--ion-color-primary)",
+          aspectRatio: "1/1",
+          display: "flex",
+          marginBottom: "4px",
+        }}
+      >
+        <IonIcon
+          icon={megaphone}
+          style={{
+            color: "white",
+            margin: "auto",
+            padding: "8px",
+            fontSize: "240%",
+          }}
+        />
+      </div>
+      公告
+    </IonCol>
+  );
+};
+
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: startUrl } = useStartUrl();
