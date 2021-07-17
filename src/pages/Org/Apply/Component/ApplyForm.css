@@ -1,8 +1,8 @@
 .department-select::part(placeholder),
 ::part(text) {
-  font-size: 90%;
+  font-size: 15px;
 }
 
 .department-select-option .select-interface-option {
-  font-size: 90%;
+  font-size: 15px;
 }
