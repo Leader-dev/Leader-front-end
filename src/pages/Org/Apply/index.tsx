@@ -9,8 +9,8 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import OrgCard from "./Component/OrgCard";
-import ApplyForm from "./Component/ApplyForm";
+import OrgCard from "./components/OrgCard";
+import ApplyForm from "./components/ApplyForm";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 
 export default () => {
