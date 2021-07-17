@@ -3,13 +3,7 @@ import { IonSlide, IonText, IonButton, IonSlides } from "@ionic/react";
 import OrganizationInfoCard from "./OrganizationInfoCard";
 import { OrgInfo } from "@/types/organization";
 
-export default ({
-  info,
-  tabBarHeight,
-}: {
-  info: OrgInfo[];
-  tabBarHeight: string;
-}) => {
+export default ({ info }: { info: OrgInfo[] }) => {
   let orgList = [];
   let pageNum = Math.floor(info.length / 3);
   for (let i = 0; i < pageNum; i++) {
@@ -55,12 +49,12 @@ export default ({
 
   return (
     <div
+      slot="fixed"
       style={{
         borderTopLeftRadius: "25px",
         borderTopRightRadius: "25px",
         boxShadow: "0 -4px 6px -1px lightgrey",
-        position: "absolute",
-        bottom: tabBarHeight,
+        bottom: 0,
         left: 0,
         right: 0,
         height: "51vh",

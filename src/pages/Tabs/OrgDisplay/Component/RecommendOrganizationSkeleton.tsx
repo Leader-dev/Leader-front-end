@@ -2,15 +2,15 @@ import * as React from "react";
 import { IonSlide, IonSlides, IonSkeletonText } from "@ionic/react";
 import OrganizationInfoCardSkeleton from "./OrganizationInfoCardSkeleton";
 
-export default ({ tabBarHeight }: { tabBarHeight: string }) => {
+export default () => {
   return (
     <div
+      slot="fixed"
       style={{
         borderTopLeftRadius: "25px",
         borderTopRightRadius: "25px",
         boxShadow: "0 -4px 6px -1px lightgrey",
-        position: "absolute",
-        bottom: tabBarHeight,
+        bottom: 0,
         left: 0,
         right: 0,
         height: "51vh",
