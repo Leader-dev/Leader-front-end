@@ -67,7 +67,7 @@ export const AppRouter: React.FC = () => {
         <Route exact path="/notab" component={NoTabPage} />
         <Route path="/tabs" component={TabsRoute} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/org/:ordId/detail" component={OrgDetail} />
+        <Route path="/org/:orgId/detail" component={OrgDetail} />
         <Route path="/org/:ordId/apply" component={OrgApply} />
         <Route path="/org/:orgId/members" component={MemberManagement} />
         <Route path="/org/:orgId/home" component={OrgHome} />
