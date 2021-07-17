@@ -39,7 +39,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
   }
 
   let authIcon, authColor;
-  if (detail.addressAuth === "school") {
+  if (detail.instituteAuth === "school") {
     authIcon = (
       <IonIcon icon={checkmarkCircle} style={{ marginRight: "2px" }} />
     );
