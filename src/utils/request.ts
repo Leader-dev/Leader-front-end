@@ -18,6 +18,8 @@ declare module "axios" {
 
 const axiosInstance = axios.create({
   baseURL: "/api",
+  // baseURL: "https://leader-api.raywork.site/",
+  // baseURL: "http://8.210.136.102:8080/",
   codeHandlers: {},
   method: "POST",
 });
