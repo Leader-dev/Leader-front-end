@@ -24,18 +24,22 @@ const iconAlign: CSSProperties = {
 
 export default ({ info }: { info: OrgDetailsResult }) => {
   const { detail } = info;
-  let emailList = detail.email.map((email) => (
-    <IonRow style={iconAlign}>
-      <IonIcon icon={mail} color="primary" style={{ marginRight: "2px" }} />
-      {email}
-    </IonRow>
-  ));
-  let phoneList = detail.phone.map((phone) => (
-    <IonRow style={iconAlign}>
-      <IonIcon icon={call} color="primary" style={{ marginRight: "2px" }} />
-      {phone}
-    </IonRow>
-  ));
+  let emailList = detail.email
+    ? detail.email.map((email) => (
+        <IonRow style={iconAlign}>
+          <IonIcon icon={mail} color="primary" style={{ marginRight: "2px" }} />
+          {email}
+        </IonRow>
+      ))
+    : "无";
+  let phoneList = detail.phone
+    ? detail.phone.map((phone) => (
+        <IonRow style={iconAlign}>
+          <IonIcon icon={call} color="primary" style={{ marginRight: "2px" }} />
+          {phone}
+        </IonRow>
+      ))
+    : "无";
 
   return (
     <IonGrid>
