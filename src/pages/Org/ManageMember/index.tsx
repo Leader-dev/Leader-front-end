@@ -19,13 +19,21 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { chevronBackOutline } from "ionicons/icons";
-import { useLocation, useParams, useHistory } from "react-router";
+import {
+  useLocation,
+  useParams,
+  useHistory,
+  Route,
+  Switch,
+} from "react-router";
+import { useOrgMemberInfo } from "@/services/org/manage/structure/memberInfo";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const MemberManagement = () => {
+  console.log("DUH");
   const history = useHistory();
   const { orgId } = useParams<{ orgId: string }>();
   const departmentId = useQuery().get("department") || undefined;
@@ -63,7 +71,10 @@ const MemberManagement = () => {
             {memberList?.map((member) => {
               console.log({ member });
               return (
-                <IonItem key={member.id}>
+                <IonItem
+                  key={member.id}
+                  routerLink={`/org/${orgId}/members/${member.id}`}
+                >
                   {member.portraitUrl && (
                     <IonAvatar slot="start">
                       <img src={member.portraitUrl} />
@@ -104,4 +115,37 @@ const MemberManagement = () => {
     </IonPage>
   );
 };
-export default MemberManagement;
+// export default MemberManagement;
+const MemberInfo = () => {
+  const { orgId, memberId } = useParams<{ orgId: string; memberId: string }>();
+  const { data: info } = useOrgMemberInfo({ orgId, memberId });
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
+          <IonTitle>成员信息</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <div style={{ textAlign: "center", margin: "32px 0" }}>
+          <div style={{ fontSize: "24px", marginBottom: "8px" }}>
+            {info?.name}
+          </div>
+          <div>{info?.numberId}</div>
+        </div>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default () => {
+  return (
+    <Switch>
+      <Route path="/org/:orgId/members/:memberId" component={MemberInfo} />
+      <Route component={MemberManagement} />
+    </Switch>
+  );
+};
