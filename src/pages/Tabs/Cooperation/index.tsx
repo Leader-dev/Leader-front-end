@@ -21,4 +21,6 @@ const Coop: React.FC = () => {
   );
 };
 
-export default Coop;
+// export default Coop;
+
+export { WIPIndicator as default } from "@/components/wipIndicator";

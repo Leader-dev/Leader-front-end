@@ -24,6 +24,7 @@ import OrgDetail from "@/pages/Org/Detail";
 import OrgHome from "@/pages/Org/Home";
 import OrgApply from "@/pages/Org/Apply";
 import RecruitManage from "@/pages/Org/Recruit";
+import WIPIndicator from "@/pages/Tabs/Cooperation";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -76,6 +77,7 @@ export const AppRouter: React.FC = () => {
         <Route exact path="/">
           <Redirect to="/tabs/trends" />
         </Route>
+        <Route component={WIPIndicator} />
       </IonRouterOutlet>
     </IonReactRouter>
   );
