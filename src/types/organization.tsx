@@ -1,3 +1,6 @@
+/** unix timestamp */
+type Timestamp = number;
+
 export interface OrgInfo {
   id: string;
   numberId: number;
@@ -23,6 +26,20 @@ interface OrgApplicationScheme {
   auth: boolean;
   appointDepartment: boolean;
   questions: { question: string; required: boolean }[];
+}
+
+export interface UserOverview {
+  id: string;
+  uid: number;
+  nickname: string;
+}
+export interface OrgApplication {
+  id: string;
+  name: string;
+  applicantId: string;
+  applicantInfo: UserOverview;
+  sendDate: Timestamp;
+  status: string;
 }
 
 interface OrgDetails extends OrgInfo {
