@@ -20,10 +20,10 @@ const options = {
   cssClass: "department-select-option",
 };
 
-interface Department {
+type Department = {
   id: string | null;
   name: string | null;
-}
+};
 
 export default ({
   details,
@@ -43,46 +43,46 @@ export default ({
     name: null,
   });
   const questions = applicationInfo.questions;
-  const [answers, setAnswers] = useState<string[]>(
-    Array(questions.length).fill("")
-  );
+  const [answers, setAnswers] = useState<string[]>([]);
 
   let fontSize = isPlatform("ios") ? "90%" : "20px";
 
-  let inputList = [];
-  for (let i = 0; i < questions.length; i++) {
-    let onChange = (e: any) => {
-      answers[i] = e.target.value;
-      setAnswers(answers);
-    };
+  const handleInputChange = (e: any, index: number) => {
+    const newAnswers = [...answers];
+    newAnswers[index] = e.target.value;
+    setAnswers(newAnswers);
+  };
 
-    let required = questions[i].required;
-    let requiredHint = required ? (
-      <span
-        style={{
-          color: "var(--ion-color-primary)",
-          marginLeft: "3px",
-          fontWeight: "bold",
-        }}
-      >
-        *
-      </span>
-    ) : null;
-    inputList.push(
-      <IonItem>
-        <IonLabel position="stacked" style={{ fontSize: fontSize }}>
-          {questions[i].question}
-          {requiredHint}
-        </IonLabel>
-        <IonTextarea
-          required={required}
-          rows={1}
-          autoGrow={true}
-          onIonChange={onChange}
-        />
-      </IonItem>
-    );
-  }
+  let inputList = questions
+    ? questions.map((q, index) => {
+        let required = q.required;
+        let requiredHint = required ? (
+          <span
+            style={{
+              color: "var(--ion-color-primary)",
+              marginLeft: "3px",
+              fontWeight: "bold",
+            }}
+          >
+            *
+          </span>
+        ) : null;
+        return (
+          <IonItem>
+            <IonLabel position="stacked" style={{ fontSize: fontSize }}>
+              {q.question}
+              {requiredHint}
+            </IonLabel>
+            <IonTextarea
+              required={required}
+              rows={1}
+              autoGrow={true}
+              onIonChange={(e) => handleInputChange(e, index)}
+            />
+          </IonItem>
+        );
+      })
+    : null;
 
   let departmentSelect;
   if (applicationInfo.appointDepartment) {
