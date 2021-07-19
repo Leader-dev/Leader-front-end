@@ -39,29 +39,42 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
-const Item = () => {
+const Item = ({
+  name,
+  icon,
+  link,
+}: {
+  name: string;
+  icon: string;
+  link?: string;
+}) => {
   return (
-    <IonCol style={{ textAlign: "center", padding: "16px" }}>
-      <div
-        style={{
-          borderRadius: "18px",
-          background: "var(--ion-color-primary)",
-          aspectRatio: "1/1",
-          display: "flex",
-          marginBottom: "4px",
-        }}
+    <IonCol style={{ textAlign: "center", padding: "16px" }} size="3">
+      <Link
+        to={link || ""}
+        style={{ textDecoration: "none", color: "inherit" }}
       >
-        <IonIcon
-          icon={megaphone}
+        <div
           style={{
-            color: "white",
-            margin: "auto",
+            borderRadius: "12px",
+            background: "var(--ion-color-primary)",
+            aspectRatio: "1/1",
+            display: "flex",
+            marginBottom: "6px",
             padding: "8px",
-            fontSize: "240%",
           }}
-        />
-      </div>
-      公告
+        >
+          <IonIcon
+            icon={icon}
+            style={{
+              color: "white",
+              margin: "auto",
+              fontSize: "180%",
+            }}
+          />
+        </div>
+        <span style={{ fontSize: "85%", margin: "0 -4px" }}>{name}</span>
+      </Link>
     </IonCol>
   );
 };
@@ -184,138 +197,28 @@ export default () => {
             </div>
             <IonGrid style={{ gap: "1rem" }}>
               <IonRow>
-                {/* TODO: extract component logic */}
-                <IonCol style={{ textAlign: "center", padding: "16px" }}>
-                  <div
-                    style={{
-                      borderRadius: "18px",
-                      background: "var(--ion-color-primary)",
-                      aspectRatio: "1/1",
-                      display: "flex",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    <IonIcon
-                      icon={megaphone}
-                      style={{
-                        color: "white",
-                        margin: "auto",
-                        padding: "8px",
-                        fontSize: "240%",
-                      }}
-                    />
-                  </div>
-                  公告
-                </IonCol>
-                <IonCol
-                  style={{ textAlign: "center", padding: "16px" }}
-                  size="3"
-                >
-                  <div
-                    style={{
-                      borderRadius: "18px",
-                      background: "var(--ion-color-primary)",
-                      aspectRatio: "1/1",
-                      display: "flex",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    <IonIcon
-                      icon={list}
-                      style={{
-                        color: "white",
-                        margin: "auto",
-                        padding: "8px",
-                        fontSize: "240%",
-                      }}
-                    />
-                  </div>
-                  任务
-                </IonCol>
-                <IonCol
-                  style={{ textAlign: "center", padding: "16px" }}
-                  size="3"
-                >
-                  <div
-                    style={{
-                      borderRadius: "18px",
-                      background: "var(--ion-color-primary)",
-                      aspectRatio: "1/1",
-                      display: "flex",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    <IonIcon
-                      icon={stopwatch}
-                      style={{
-                        color: "white",
-                        margin: "auto",
-                        padding: "8px",
-                        fontSize: "240%",
-                      }}
-                    />
-                  </div>
-                  考勤
-                </IonCol>
-                <IonCol
-                  style={{ textAlign: "center", padding: "16px" }}
-                  size="3"
-                >
-                  <div
-                    style={{
-                      borderRadius: "18px",
-                      background: "var(--ion-color-primary)",
-                      aspectRatio: "1/1",
-                      display: "flex",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    <IonIcon
-                      icon={today}
-                      style={{
-                        color: "white",
-                        margin: "auto",
-                        padding: "8px",
-                        fontSize: "240%",
-                      }}
-                    />
-                  </div>
-                  请假
-                </IonCol>
-                <IonCol
-                  style={{ textAlign: "center", padding: "16px" }}
-                  size="3"
-                >
-                  <Link
-                    to="members"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <div
-                      style={{
-                        borderRadius: "18px",
-                        background: "var(--ion-color-primary)",
-                        aspectRatio: "1/1",
-                        display: "flex",
-                        marginBottom: "4px",
-                      }}
-                    >
-                      <IonIcon
-                        icon={people}
-                        style={{
-                          color: "white",
-                          margin: "auto",
-                          padding: "8px",
-                          fontSize: "240%",
-                        }}
-                      />
-                    </div>
-                    社员
-                  </Link>
-                </IonCol>
+                <Item name="公告" icon={megaphone} />
+                <Item name="任务" icon={list} />
+                <Item name="考勤" icon={stopwatch} />
+                <Item name="请假" icon={today} />
+                <Item name="社员" icon={people} link="members" />
               </IonRow>
             </IonGrid>
           </div>
-        ) : null}
+        ) : (
+          <div>
+            <IonGrid style={{ gap: "1rem" }}>
+              <IonRow>
+                <Item name="公告管理" icon={megaphone} />
+                <Item name="任务管理" icon={list} />
+                <Item name="考勤管理" icon={stopwatch} />
+                <Item name="请假管理" icon={today} />
+                <Item name="时间线管理" icon={people} />
+                <Item name="招新管理" icon={people} link="recruit" />
+              </IonRow>
+            </IonGrid>
+          </div>
+        )}
       </IonContent>
     </IonPage>
   );
