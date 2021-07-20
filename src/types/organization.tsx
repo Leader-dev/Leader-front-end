@@ -1,5 +1,5 @@
 /** unix timestamp */
-type Timestamp = number;
+export type Timestamp = number;
 
 export interface OrgInfo {
   id: string;
@@ -15,6 +15,8 @@ export interface OrgInfo {
   posterUrl: string;
   memberCount: number;
 }
+
+export type ApplicationForm = Array<{ question: string; answer: string }>;
 
 export interface AdInfo {
   id: string;
