@@ -10,7 +10,7 @@ type CodeHandler = (props: CodeHandlerProps) => void;
 
 declare module "axios" {
   export interface AxiosRequestConfig {
-    codeHandlers: {
+    codeHandlers?: {
       [code: number]: CodeHandler;
     };
   }
@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
       saveKey(response.headers["set-api-token"]);
     }
     if (code && code !== 200) {
-      if (code in config.codeHandlers) {
+      if (config.codeHandlers && code in config.codeHandlers) {
         config.codeHandlers[code]({
           response,
           code,

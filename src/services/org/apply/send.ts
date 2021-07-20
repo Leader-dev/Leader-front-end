@@ -1,8 +1,5 @@
+import { ApplicationForm } from "@/types/organization";
 import axios from "@/utils/request";
-
-declare global {
-  type ApplicationForm = Array<{ question: string; answer: string }>;
-}
 
 interface ApplyToOrgParams {
   orgId: string;
