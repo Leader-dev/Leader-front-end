@@ -16,9 +16,9 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
   } = info;
   let posterProportion;
   if (size === "large") {
-    posterProportion = 86;
+    posterProportion = 83;
   } else {
-    posterProportion = 70;
+    posterProportion = 64;
   }
 
   const history = useHistory();
@@ -31,7 +31,6 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
         margin: 0,
       }}
       onClick={() => {
-        console.log(id);
         history.push({
           pathname: `/org/${id}/detail`,
         });
@@ -61,16 +60,17 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
       >
         <div
           style={{
-            fontSize: "10px",
-            fontWeight: "bolder",
+            color: "black",
+            fontSize: "75%",
+            fontWeight: "bold",
           }}
         >
           {name}
         </div>
         <div
           style={{
-            color: "darkgray",
-            fontSize: "10px",
+            color: "var(--ion-color-medium)",
+            fontSize: "70%",
           }}
         >
           {numberId}
@@ -79,7 +79,7 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
         <div
           style={{
             color: "cornflowerblue",
-            fontSize: "8px",
+            fontSize: "60%",
             display: "flex",
             alignItems: "center",
           }}
