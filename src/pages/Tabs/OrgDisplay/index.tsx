@@ -18,97 +18,98 @@ import RecommendOrganizationSkeleton from "./Component/RecommendOrganizationSkel
 import { useHomeOrg } from "@/services/org/home";
 
 export default () => {
-  // Test Data
-  // let orgRecommend = [
-  //     {
-  //       id: "xxx",
-  //       posterUrl:
-  //         "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
-  //       name: "这是一个社团",
-  //       numberId: 400031,
-  //       memberCount: 35,
-  //       instituteName: "深圳国际交流学院",
-  //       instituteAuth: "school",
-  //       typeAliases: [],
-  //     },
-  //     {
-  //       id: "xxx",
-  //       posterUrl:
-  //         "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
-  //       name: "这是一个社团",
-  //       numberId: 400032,
-  //       memberCount: 35,
-  //       instituteName: "深圳国际交流学院",
-  //       instituteAuth: "school",
-  //       typeAliases: [],
-  //     },
-  //     {
-  //       id: "xxx",
-  //       posterUrl:
-  //         "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
-  //       name: "这是一个社团",
-  //       numberId: 400033,
-  //       memberCount: 35,
-  //       instituteName: "深圳国际交流学院",
-  //       instituteAuth: "school",
-  //       typeAliases: [],
-  //     },
-  //     {
-  //       id: "xxx",
-  //       posterUrl: "http://placekitten.com/g/200/300",
-  //       name: "这是一个社团",
-  //       numberId: 400034,
-  //       memberCount: 35,
-  //       instituteName: "深圳国际交流学院",
-  //       instituteAuth: "school",
-  //       typeAliases: [],
-  //     },
-  //     {
-  //       id: "xxx",
-  //       posterUrl: "http://placekitten.com/g/200/300",
-  //       name: "这是一个社团",
-  //       numberId: 400035,
-  //       memberCount: 35,
-  //       instituteName: "深圳国际交流学院",
-  //       instituteAuth: "school",
-  //       typeAliases: [],
-  //     },
-  //     {
-  //       id: "xxx",
-  //       posterUrl: "http://placekitten.com/g/200/300",
-  //       name: "这是一个社团",
-  //       numberId: 400036,
-  //       memberCount: 35,
-  //       instituteName: "深圳国际交流学院",
-  //       instituteAuth: "school",
-  //       typeAliases: [],
-  //     },
-  //   ],
-  //   advertisement = [
-  //     {
-  //       id: "xxxxx",
-  //       posterUrl:
-  //         "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
-  //     },
-  //     {
-  //       id: "xxxxx",
-  //       posterUrl:
-  //         "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
-  //     },
-  //   ];
-
   // fetch data from back end
   const { data: homeInfo, error } = useHomeOrg();
-  if (error) return <div>failed to load</div>;
-
   let adList, orgList;
-  if (!homeInfo) {
-    // debugger
-    adList = <TopAdvertisementSkeleton />;
-    orgList = <RecommendOrganizationSkeleton />;
+  if (error) {
+    // Test Data
+    let list = [
+        {
+          id: "xxx",
+          posterUrl:
+            "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
+          name: "这是一个社团",
+          numberId: 400031,
+          memberCount: 35,
+          instituteName: "深圳国际交流学院",
+          instituteAuth: "school",
+          typeAliases: [],
+        },
+        {
+          id: "xxx",
+          posterUrl:
+            "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
+          name: "这是一个社团",
+          numberId: 400032,
+          memberCount: 35,
+          instituteName: "深圳国际交流学院",
+          instituteAuth: "school",
+          typeAliases: [],
+        },
+        {
+          id: "xxx",
+          posterUrl:
+            "https://tva1.sinaimg.cn/large/008i3skNgy1gqnjj5kw0mj306v0bc753.jpg",
+          name: "这是一个社团",
+          numberId: 400033,
+          memberCount: 35,
+          instituteName: "深圳国际交流学院",
+          instituteAuth: "school",
+          typeAliases: [],
+        },
+        {
+          id: "xxx",
+          posterUrl: "http://placekitten.com/g/200/300",
+          name: "这是一个社团",
+          numberId: 400034,
+          memberCount: 35,
+          instituteName: "深圳国际交流学院",
+          instituteAuth: "school",
+          typeAliases: [],
+        },
+        {
+          id: "xxx",
+          posterUrl: "http://placekitten.com/g/200/300",
+          name: "这是一个社团",
+          numberId: 400035,
+          memberCount: 35,
+          instituteName: "深圳国际交流学院",
+          instituteAuth: "school",
+          typeAliases: [],
+        },
+        {
+          id: "xxx",
+          posterUrl: "http://placekitten.com/g/200/300",
+          name: "这是一个社团",
+          numberId: 400036,
+          memberCount: 35,
+          instituteName: "深圳国际交流学院",
+          instituteAuth: "school",
+          typeAliases: [],
+        },
+      ],
+      pic = [
+        {
+          id: "xxxxx",
+          posterUrl:
+            "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
+        },
+        {
+          id: "xxxxx",
+          posterUrl:
+            "https://tva1.sinaimg.cn/large/008i3skNgy1gr2n1qv6o5j30zk0mugx5.jpg",
+        },
+      ];
+    adList = <TopAdvertisement info={pic} />;
+    orgList = <RecommendOrganization info={list} />;
   } else {
-    adList = <TopAdvertisement info={homeInfo.pic} />;
-    orgList = <RecommendOrganization info={homeInfo.list} />;
+    if (!homeInfo) {
+      adList = <TopAdvertisementSkeleton />;
+      orgList = <RecommendOrganizationSkeleton />;
+    } else {
+      adList = <TopAdvertisement info={homeInfo.pic} />;
+      orgList = <RecommendOrganization info={homeInfo.list} />;
+    }
   }
 
   return (
