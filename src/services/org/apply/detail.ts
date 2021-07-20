@@ -1,5 +1,5 @@
 import axios from "@/utils/request";
-import { OrgInfo } from "@/types/organization";
+import { ApplicationForm, OrgInfo } from "@/types/organization";
 
 interface GetApplicationDetailResult {
   id: string;
