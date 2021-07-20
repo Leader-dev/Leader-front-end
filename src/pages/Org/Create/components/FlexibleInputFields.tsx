@@ -1,7 +1,6 @@
 import { IonButton, IonIcon, IonInput, IonItem, IonNote } from "@ionic/react";
 import * as React from "react";
 import { closeCircle } from "ionicons/icons";
-import { useState } from "react";
 
 type TextFieldTypes =
   | "date"
@@ -16,6 +15,7 @@ type TextFieldTypes =
   | "time"
   | "url"
   | "week";
+
 type KeyBoardTypes =
   | "decimal"
   | "email"
@@ -27,37 +27,44 @@ type KeyBoardTypes =
   | "url"
   | undefined;
 
-export default ({
-  textFieldType,
-  keyBoardType,
-  buttonText,
-}: {
-  textFieldType: TextFieldTypes;
-  keyBoardType: KeyBoardTypes;
-  buttonText: string;
-}) => {
-  const [inputList, setInputList] = useState<string[]>([]);
+type inputSettings = {
+  type: TextFieldTypes;
+  inputMode: KeyBoardTypes;
+  minLength?: number | undefined;
+  maxLength?: number | undefined;
+};
 
+export default ({
+  states,
+  setStates,
+  buttonText,
+  settings,
+}: {
+  states: string[];
+  setStates: any;
+  buttonText: string;
+  settings: inputSettings;
+}) => {
   const handleInputChange = (e: any, index: number) => {
-    const newList = [...inputList];
+    const newList = [...states];
     newList[index] = e.target.value;
-    setInputList(newList);
+    setStates(newList);
   };
 
   const handleAdd = () => {
-    setInputList([...inputList, ""]);
+    setStates([...states, ""]);
   };
 
   const handleRemove = (index: number) => {
     console.log(index);
-    const newList = [...inputList];
+    const newList = [...states];
     newList.splice(index, 1);
-    setInputList(newList);
+    setStates(newList);
   };
 
   return (
     <div>
-      {inputList.map((item, index) => (
+      {states.map((item, index) => (
         <IonItem style={{ display: "flex", justifyContent: "space-between" }}>
           <IonButton
             size="small"
@@ -69,8 +76,10 @@ export default ({
           </IonButton>
           <IonInput
             required={true}
-            type={textFieldType}
-            inputmode={keyBoardType}
+            type={settings.type}
+            inputmode={settings.inputMode}
+            minlength={settings.minLength}
+            maxlength={settings.maxLength}
             value={item}
             onIonChange={(e) => {
               handleInputChange(e, index);

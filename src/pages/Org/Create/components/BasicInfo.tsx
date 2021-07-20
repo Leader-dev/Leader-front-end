@@ -12,6 +12,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import FlexibleInputFields from "./FlexibleInputFields";
+import "./BasicInfo.css";
 
 export default () => {
   const [detail, setDetail] = useState({
@@ -21,19 +22,26 @@ export default () => {
     introduction: "",
   });
 
-  function handleDetailChange(e: any) {
+  const handleDetailChange = (e: any) => {
     setDetail({
       ...detail,
       [e.target.name]: e.target.value,
     });
-  }
+  };
+
+  const [emails, setEmails] = useState<string[]>([]);
+  const [phones, setPhones] = useState<string[]>([]);
 
   return (
-    <form>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+      }}
+    >
       <IonList>
         <IonListHeader>
           一、基础信息填写
-          <IonBadge color="primary" style={{ margin: "auto 10px" }}>
+          <IonBadge color="primary" style={{ margin: "0 0 2px 10px" }}>
             1/3 步
           </IonBadge>
         </IonListHeader>
@@ -53,6 +61,7 @@ export default () => {
             请填写您社团组织所在的固定活动地点
           </IonLabel>
           <IonInput
+            className="my-input"
             required={true}
             name="instituteName"
             value={detail.instituteName}
@@ -64,6 +73,7 @@ export default () => {
         <IonItem>
           <IonLabel position="stacked">请填写您社团组织所在的具体城市</IonLabel>
           <IonInput
+            className="my-input"
             required={true}
             name="address"
             value={detail.address}
@@ -90,16 +100,26 @@ export default () => {
 
         <IonListHeader>设置邮箱地址</IonListHeader>
         <FlexibleInputFields
-          textFieldType={"email"}
-          keyBoardType={"email"}
           buttonText={"添加邮箱"}
+          states={emails}
+          setStates={setEmails}
+          settings={{
+            inputMode: "email",
+            type: "email",
+          }}
         />
 
         <IonListHeader>设置联系电话</IonListHeader>
         <FlexibleInputFields
-          textFieldType={"number"}
-          keyBoardType={"numeric"}
           buttonText={"添加号码"}
+          states={phones}
+          setStates={setPhones}
+          settings={{
+            inputMode: "tel",
+            type: "tel",
+            minLength: 11,
+            maxLength: 11,
+          }}
         />
       </IonList>
 
