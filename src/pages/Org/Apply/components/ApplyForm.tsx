@@ -124,7 +124,7 @@ export default ({
               answer: answer,
             })),
           });
-          history.go(-1);
+          history.goBack();
           event.preventDefault();
         }
         //   applyToOrg({
