@@ -1,14 +1,6 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
-
-interface OrgType {
-  name: string;
-  alias: string;
-}
-
-interface OrgTypes {
-  [key: string]: OrgType;
-}
+import { OrgTypes } from "@/types/organization";
 
 export const getOrgTypes = async () => {
   return (await axios.post("/org/types")).data.types as OrgTypes;
