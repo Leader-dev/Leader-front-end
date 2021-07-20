@@ -9,6 +9,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import BasicInfo from "./components/BasicInfo";
+import { chevronBack } from "ionicons/icons";
 
 export default () => {
   return (
@@ -16,7 +17,7 @@ export default () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" text="" />
+            <IonBackButton defaultHref="/" icon={chevronBack} text="" />
           </IonButtons>
           <IonTitle>申请成立</IonTitle>
         </IonToolbar>
