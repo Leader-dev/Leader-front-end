@@ -30,8 +30,8 @@ type KeyBoardTypes =
 type inputSettings = {
   type: TextFieldTypes;
   inputMode: KeyBoardTypes;
-  minLength?: number | undefined;
-  maxLength?: number | undefined;
+  minLength?: number;
+  maxLength?: number;
 };
 
 export default ({
@@ -56,7 +56,6 @@ export default ({
   };
 
   const handleRemove = (index: number) => {
-    console.log(index);
     const newList = [...states];
     newList.splice(index, 1);
     setStates(newList);

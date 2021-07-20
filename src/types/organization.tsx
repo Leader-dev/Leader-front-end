@@ -69,3 +69,12 @@ export interface MemberInfo {
   phone: string[];
   email: string[];
 }
+
+interface OrgType {
+  name: string;
+  alias: string;
+}
+
+export interface OrgTypes {
+  [key: string]: OrgType;
+}
