@@ -2,7 +2,10 @@ import { useState } from "react";
 import * as React from "react";
 import {
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
+  IonIcon,
   IonLabel,
   IonPage,
   IonSegment,
@@ -15,6 +18,7 @@ import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
 
 import { ECACard, ECARequestCard } from "./components/ecaLink";
 import { useJoinedOrgList } from "@/services/org/joined";
+import { add } from "ionicons/icons";
 
 const Management: React.FC = () => {
   const [tab, setTab] = useState<"joined" | "apply">("joined");
@@ -48,6 +52,11 @@ const Management: React.FC = () => {
           </IonSegment>
         }
       >
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton routerLink="/org/create">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
         {tab === "joined" ? (
           loading ? null : (
             orgList?.map(
