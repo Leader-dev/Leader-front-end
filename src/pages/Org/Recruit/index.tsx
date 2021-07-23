@@ -1,20 +1,31 @@
 import { useOrgApplicationDetail } from "@/services/org/manage/apply/detail";
 import { useOrgReceivedApplications } from "@/services/org/manage/apply/listReceived";
+import { respondToOrgApplication } from "@/services/org/manage/apply/sendResult";
 import { OrgApplication } from "@/types/organization";
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
+  IonIcon,
+  IonInput,
   IonItem,
   IonLabel,
   IonList,
+  IonListHeader,
+  IonNote,
   IonPage,
+  IonRow,
   IonSegment,
   IonSegmentButton,
+  IonTextarea,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { add } from "ionicons/icons";
 import { Fragment, useMemo, useState } from "react";
 import { Route, Switch, useParams } from "react-router";
 
@@ -37,9 +48,11 @@ const RecruitManage = () => {
     },
   ];
   const pendingApplications = useMemo(() => {
+    if (!applications) return [];
     return applications.filter((a) => a.status === "pending");
   }, [applications]);
   const reviewedApplications = useMemo(() => {
+    if (!applications) return [];
     return applications.filter((a) => a.status !== "pending");
   }, [applications]);
   console.log({ applications });
@@ -132,6 +145,7 @@ const AppDetail = () => {
       applicationId: string;
       orgId: string;
     }>();
+  const [loading, setLoading] = useState(false);
   // const { data: details } = useOrgApplicationDetail({ orgId, applicationId });
   type Details = NonNullable<
     ReturnType<typeof useOrgApplicationDetail>["data"]
@@ -166,33 +180,163 @@ const AppDetail = () => {
     ],
   };
 
+  if (!details) {
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton />
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>Loading...</IonContent>
+      </IonPage>
+    );
+  }
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons>
+          <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>
           <IonTitle>加入申请</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <div style={{ margin: "16px" }}>
-          <h1 style={{ margin: "24px auto", textAlign: "center" }}>加入申请</h1>
-          <CustomLabel title="申请时间">
-            {new Date(details.sendDate).toLocaleDateString()}
-          </CustomLabel>
-          <CustomLabel title="申请人">{details.name}</CustomLabel>
-          <h3>申请内容：</h3>
-          {details.applicationForm.map(({ question, answer }) => {
-            return (
-              <div style={{ margin: "6px" }} key={question}>
-                <h5 style={{ marginBottom: "3px" }}>{question}</h5>
-                <p style={{ marginTop: "3px" }}>{answer}</p>
-              </div>
-            );
-          })}
+      <IonContent fullscreen>
+        <div
+          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        >
+          <div style={{ margin: "16px", flex: "1 0 auto" }}>
+            <h1 style={{ margin: "24px auto", textAlign: "center" }}>
+              加入申请
+            </h1>
+            <CustomLabel title="申请时间">
+              {new Date(details.sendDate).toLocaleDateString()}
+            </CustomLabel>
+            <CustomLabel title="申请人">{details.name}</CustomLabel>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-end",
+                marginBottom: "6px",
+              }}
+            >
+              <h3 style={{ flexGrow: 1, margin: 0, padding: "8px 0 6px" }}>
+                通知：
+              </h3>
+              <IonButton
+                slot="end"
+                shape="round"
+                size="small"
+                routerLink={`/org/${orgId}/recruit/${applicationId}/add`}
+              >
+                <IonIcon icon={add} />
+              </IonButton>
+            </div>
+            {/* TODO: Add notifications display */}
+            <h3>申请内容：</h3>
+            {details.applicationForm.map(({ question, answer }) => {
+              return (
+                <div style={{ margin: "6px" }} key={question}>
+                  <h5 style={{ marginBottom: "3px" }}>{question}</h5>
+                  <p style={{ marginTop: "3px" }}>{answer}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonButton
+                    onClick={() => {
+                      setLoading(true);
+                      respondToOrgApplication({
+                        applicationId,
+                        orgId,
+                        result: "pass",
+                      }).then(() => {
+                        setLoading(false);
+                      });
+                    }}
+                    color="primary"
+                    expand="block"
+                    disabled={loading}
+                  >
+                    通过
+                  </IonButton>
+                </IonCol>
+                <IonCol>
+                  <IonButton
+                    onClick={() => {
+                      setLoading(true);
+                      respondToOrgApplication({
+                        applicationId,
+                        orgId,
+                        result: "reject",
+                      }).then(() => {
+                        setLoading(false);
+                      });
+                    }}
+                    color="primary"
+                    expand="block"
+                    fill="outline"
+                    disabled={loading}
+                  >
+                    拒绝
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </div>
         </div>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export const AddNotification = () => {
+  const { applicationId, orgId } =
+    useParams<{
+      applicationId: string;
+      orgId: string;
+    }>();
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
+          <IonTitle>发布通知</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonList style={{ paddingTop: "24px" }}>
+          <IonListHeader>
+            <IonLabel>通知标题</IonLabel>
+          </IonListHeader>
+          <IonItem>
+            <IonInput placeholder="面试通知" />
+          </IonItem>
+          <IonListHeader>
+            <IonLabel>通知内容</IonLabel>
+          </IonListHeader>
+          <IonItem>
+            <IonLabel>上传文字</IonLabel>
+            <IonTextarea rows={4} placeholder="可以多行输入哦" />
+          </IonItem>
+          <IonItem>
+            <IonLabel>上传图片</IonLabel>
+            <IonButton shape="round">
+              0/4
+              <IonIcon icon={add} />
+            </IonButton>
+          </IonItem>
+        </IonList>
       </IonContent>
     </IonPage>
   );
@@ -201,6 +345,10 @@ const AppDetail = () => {
 export default () => {
   return (
     <Switch>
+      <Route
+        path="/org/:orgId/recruit/:applicationId/add"
+        component={AddNotification}
+      />
       <Route path="/org/:orgId/recruit/:applicationId" component={AppDetail} />
       <Route component={RecruitManage} />
     </Switch>
