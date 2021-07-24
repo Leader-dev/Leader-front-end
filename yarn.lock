@@ -1317,6 +1317,27 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@ionic-native/core@^5.34.0":
+  version "5.34.0"
+  resolved "https://registry.nlark.com/@ionic-native/core/download/@ionic-native/core-5.34.0.tgz#80d91bfd49a8d67965c2bb9ecc8e9803ff23d3e1"
+  integrity sha1-gNkb/Umo1nllwruezI6YA/8j0+E=
+  dependencies:
+    "@types/cordova" latest
+
+"@ionic-native/crop@^5.34.0":
+  version "5.34.0"
+  resolved "https://registry.nlark.com/@ionic-native/crop/download/@ionic-native/crop-5.34.0.tgz#afeff8aa0bc5f89dbc7f6bae26f3e29e6b612a05"
+  integrity sha1-r+/4qgvF+J28f2uuJvPinmthKgU=
+  dependencies:
+    "@types/cordova" latest
+
+"@ionic-native/image-picker@^5.34.0":
+  version "5.34.0"
+  resolved "https://registry.nlark.com/@ionic-native/image-picker/download/@ionic-native/image-picker-5.34.0.tgz#8ab8ec5d4eccf8719f2c55d3caaca81ab68b83d6"
+  integrity sha1-irjsXU7M+HGfLFXTyqyoGraLg9Y=
+  dependencies:
+    "@types/cordova" latest
+
 "@ionic/core@5.6.7":
   version "5.6.7"
   resolved "https://registry.nlark.com/@ionic/core/download/@ionic/core-5.6.7.tgz"
@@ -1830,6 +1851,11 @@
   integrity sha1-ZU9sT2dWjiTCOzZ+lHCYxiBvpjk=
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/cordova@latest":
+  version "0.0.34"
+  resolved "https://registry.nlark.com/@types/cordova/download/@types/cordova-0.0.34.tgz?cache=0&sync_timestamp=1621241870140&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fcordova%2Fdownload%2F%40types%2Fcordova-0.0.34.tgz#ea7addf74ecec3d7629827a0c39e2c9addc73d04"
+  integrity sha1-6nrd907Ow9dimCegw54smt3HPQQ=
 
 "@types/eslint@^7.2.6":
   version "7.2.12"
@@ -3740,6 +3766,16 @@ copy-descriptor@^0.1.0:
   version "0.1.1"
   resolved "https://registry.npm.taobao.org/copy-descriptor/download/copy-descriptor-0.1.1.tgz"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
+
+cordova-plugin-crop@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.nlark.com/cordova-plugin-crop/download/cordova-plugin-crop-0.4.0.tgz#4d9e8982ccfb38e04fa909c87b4bec06e2d1d92b"
+  integrity sha1-TZ6Jgsz7OOBPqQnIe0vsBuLR2Ss=
+
+cordova-plugin-telerik-imagepicker@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.npm.taobao.org/cordova-plugin-telerik-imagepicker/download/cordova-plugin-telerik-imagepicker-2.3.6.tgz#37e2a29200efec9228a716334a99e044df89167a"
+  integrity sha1-N+KikgDv7JIopxYzSpngRN+JFno=
 
 core-js-compat@^3.6.2, core-js-compat@^3.9.0, core-js-compat@^3.9.1:
   version "3.13.0"
