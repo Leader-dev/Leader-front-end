@@ -5,10 +5,10 @@ export interface CreateOrgArgs {
   instituteName: string;
   address: string;
   introduction: string;
-  phone: string;
-  email: string;
+  phone: string[];
+  email: string[];
   typeAliases: string[];
-  posterUrl: string[];
+  posterUrl: string;
 }
 
 export const createOrg = async (data: CreateOrgArgs) => {
