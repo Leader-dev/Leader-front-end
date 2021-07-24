@@ -30,10 +30,10 @@ export default () => {
   const [typeAliases, setTypeAliases] = useState<string[]>([]);
   const [posterUrl, setPosterUrl] = useState<string>(AddButton);
 
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(1);
 
   const { data: orgTypes, error } = useOrgTypes();
-  // if (error || !orgTypes) return <div> Failed to load </div>;
+  if (error || !orgTypes) return <div> Failed to load </div>;
 
   const history = useHistory();
 
