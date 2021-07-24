@@ -26,6 +26,7 @@ import OrgApply from "@/pages/Org/Apply";
 import OrgCreate from "@/pages/Org/Create";
 import RecruitManage from "@/pages/Org/Recruit";
 import WIPIndicator from "@/pages/Tabs/Cooperation";
+import NewTrend from "@/pages/Trends/New";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -70,6 +71,7 @@ export const AppRouter: React.FC = () => {
         <Route exact path="/notab" component={NoTabPage} />
         <Route path="/tabs" component={TabsRoute} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/trends/new" component={NewTrend} />
         <Route path="/org/create" component={OrgCreate} />
         <Route path="/org/:orgId/detail" component={OrgDetail} />
         <Route path="/org/:ordId/apply" component={OrgApply} />
