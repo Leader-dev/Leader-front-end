@@ -81,13 +81,12 @@ export default () => {
     }
   }
 
-  // TODO routing animation for back button
   return (
     <IonPage>
       <IonHeader
         style={{
           backgroundImage: 'url("' + backgroundUrl + '")',
-          height: "40vh",
+          height: "80vw",
         }}
       >
         <div
