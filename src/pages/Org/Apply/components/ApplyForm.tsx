@@ -114,28 +114,29 @@ export default ({
 
   return (
     <form
-      onSubmit={
-        (event) => {
-          console.log({
-            orgId: detail.id,
-            departmentId: selectedDepartment.id,
-            applicationForm: answers.map((answer, index) => ({
-              question: questions[index].question,
-              answer: answer,
-            })),
-          });
-          history.goBack();
-          event.preventDefault();
-        }
-        //   applyToOrg({
+      onSubmit={(event) => {
+        //   console.log({
         //     orgId: detail.id,
         //     departmentId: selectedDepartment.id,
-        //     applicationForm: answers.map((answer, index) => ({question: questions[index].question, answer: answer}))
-        //   }).then(r =>
-        //       history.go(-1)
-        //       event.preventDefault()
-        //       )
-      }
+        //     applicationForm: answers.map((answer, index) => ({
+        //       question: questions[index].question,
+        //       answer: answer,
+        //     })),
+        //   });
+        //   history.goBack();
+        //   event.preventDefault();
+        // }
+        applyToOrg({
+          orgId: detail.id,
+          departmentId: selectedDepartment.id,
+          applicationForm: answers.map((answer, index) => ({
+            question: questions[index].question,
+            answer: answer,
+          })),
+        });
+        history.goBack();
+        event.preventDefault();
+      }}
     >
       <IonList style={{ lineHeight: fontSize }}>
         <IonItem>
