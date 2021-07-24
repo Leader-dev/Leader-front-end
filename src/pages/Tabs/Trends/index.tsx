@@ -21,7 +21,7 @@ import {
 import "./index.css";
 import { add, person, personCircleOutline } from "ionicons/icons";
 import { RefresherEventDetail } from "@ionic/core";
-import * as React from "react";
+import React, { useState } from "react";
 
 import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
 
@@ -31,6 +31,7 @@ import MomentCardSkeleton from "./Component/MomentCardSkeleton";
 import TopMomentItemSkeleton from "./Component/TopMomentItemSkeleton";
 import { Route, RouteComponentProps } from "react-router-dom";
 import NewMoment from "./Component/NewMoment";
+import { useTrendList } from "@/services/trend/list";
 
 interface TrendsProps extends RouteComponentProps {}
 
@@ -41,7 +42,7 @@ interface TrendsState {
   moments: MomentInfo[];
 }
 
-class Trends extends React.Component<TrendsProps, TrendsState> {
+class T extends React.Component<TrendsProps, TrendsState> {
   async fetchData() {
     // TODO replace this piece of code with real data fetching action
     return new Promise<void>((r) => {
@@ -191,7 +192,6 @@ class Trends extends React.Component<TrendsProps, TrendsState> {
         )
         .map((info) => <MomentCard info={info} />);
     }
-    console.log(process.env);
     return (
       <IonPage>
         <TitledSearchBarWrapper
@@ -239,5 +239,104 @@ class Trends extends React.Component<TrendsProps, TrendsState> {
     );
   }
 }
+
+const Section = ({ page, onNext }: { page: number; onNext?: () => void }) => {
+  const { data: cardList, isValidating } = useTrendList({
+    pageNumber: page,
+    pageSize: 24,
+  });
+
+  if (isValidating) {
+    return (
+      <>
+        <MomentCardSkeleton />
+        <MomentCardSkeleton />
+        <MomentCardSkeleton />
+      </>
+    );
+  }
+  if (!cardList) {
+    return <>End</>;
+  }
+
+  return (
+    <>
+      {cardList.map((info) => (
+        <MomentCard
+          info={{
+            ...info,
+            upCount: info.likeCount,
+            userAvatar: info.puppetInfo.avatarUrl,
+            username: info.puppetInfo.nickname,
+            userTitle: info.orgTitle,
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
+const Trends = () => {
+  const [searchText, setSearchText] = useState("");
+  const [l, setL] = useState(1);
+
+  const onNext = () => {
+    setL(l + 1);
+  };
+
+  return (
+    <IonPage>
+      <TitledSearchBarWrapper
+        title="动态"
+        searchbarPlaceholder="搜索动态"
+        value={searchText}
+        onValueChange={(e) => setSearchText(e.detail.value!)}
+        rightItems={
+          <IonButtons style={{ marginRight: 8 }} slot="primary">
+            <IonButton color="primary">
+              <IonIcon slot="icon-only" icon={personCircleOutline} />
+            </IonButton>
+          </IonButtons>
+        }
+      >
+        <IonRefresher
+          slot="fixed"
+          onIonRefresh={(event) => {
+            // refresh
+          }}
+        >
+          <IonRefresherContent pullingIcon="dots" refreshingSpinner="circles" />
+        </IonRefresher>
+        {/* <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>今日最佳</IonCardTitle>
+          </IonCardHeader>
+          {topItemList}
+        </IonCard> */}
+        {Array(l)
+          .fill(null)
+          .map((_, index) => {
+            return (
+              <Section
+                page={index}
+                onNext={index === l - 1 ? onNext : undefined}
+              />
+            );
+          })}
+        <div style={{ marginTop: 100 }} />
+        <IonFab
+          vertical="bottom"
+          horizontal="center"
+          style={{ bottom: 16 }}
+          slot="fixed"
+        >
+          <IonFabButton routerLink={`/trends/new`}>
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
+      </TitledSearchBarWrapper>
+    </IonPage>
+  );
+};
 
 export default Trends;

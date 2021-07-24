@@ -50,7 +50,7 @@ export const TitledSearchBarWrapper: React.FC<{
                 placeholder={searchbarPlaceholder}
                 value={value}
                 onIonChange={onValueChange}
-                style={{ "--background": "var(--ion-color-medium, #92949c)" }}
+                // style={{ "--background": "var(--ion-color-medium, #92949c)" }}
               />
               {rightItems}
             </IonToolbar>

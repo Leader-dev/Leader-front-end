@@ -17,9 +17,7 @@ declare module "axios" {
 }
 
 const axiosInstance = axios.create({
-  baseURL: "/api",
-  // baseURL: "https://leader-api.raywork.site/",
-  // baseURL: "http://8.210.136.102:8080/",
+  baseURL: process.env.REACT_APP_API_ENDPOINT,
   codeHandlers: {},
   method: "POST",
 });
@@ -44,7 +42,7 @@ axiosInstance.interceptors.response.use(
     if ("set-api-token" in response.headers) {
       saveKey(response.headers["set-api-token"]);
     }
-    if (code && code !== 200) {
+    if (code && (code < 200 || code >= 300)) {
       if (config.codeHandlers && code in config.codeHandlers) {
         config.codeHandlers[code]({
           response,
@@ -53,9 +51,8 @@ axiosInstance.interceptors.response.use(
         });
       } else {
         console.log({ env: process.env.NODE_ENV, response });
-        // throw 'fk'
         if (process.env.NODE_ENV === "development") {
-          throw new Error(response.data?.error || code);
+          throw new Error(response.data?.message || code);
         }
       }
     }
