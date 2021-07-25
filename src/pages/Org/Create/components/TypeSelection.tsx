@@ -46,6 +46,8 @@ export default ({
         "--border-radius": "12px",
         "--border-width": "2px",
         "--background": "#E3E9F4",
+        "--background-activated": "none",
+        "--color-activated": "black",
       },
     },
   };
@@ -81,36 +83,35 @@ export default ({
   ));
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        setStep(step + 1);
-      }}
-    >
-      <div style={{ padding: "10px 5vw" }}>
-        <div style={{ display: "flex", marginBottom: "8px" }}>
-          <h5>二、选择社团类型和招新信息</h5>
-          <IonBadge color="primary" style={{ margin: "auto 0 11px 10px" }}>
-            2/3 步
-          </IonBadge>
-        </div>
-        <div style={{ fontSize: "90%" }}>请选择您的社团组织类型（可多选）:</div>
-        <div
-          style={{
-            color: "var(--ion-color-primary)",
-            fontSize: "80%",
-            margin: "8px 0",
-          }}
-        >
-          本选择将直接影响其他用户对您社团组织的搜索结果，请认真、准确的进行选择。
-          后续如有需要更改，可在管理部分进行编辑。
-        </div>
-        <div>{content}</div>
+    <div style={{ padding: "10px 5vw" }}>
+      <div style={{ display: "flex", marginBottom: "8px" }}>
+        <h5>二、选择社团类型和招新信息</h5>
+        <IonBadge color="primary" style={{ margin: "auto 0 11px 10px" }}>
+          2/3 步
+        </IonBadge>
       </div>
+      <div style={{ fontSize: "90%" }}>请选择您的社团组织类型（可多选）:</div>
+      <div
+        style={{
+          color: "var(--ion-color-primary)",
+          fontSize: "80%",
+          margin: "8px 0",
+        }}
+      >
+        本选择将直接影响其他用户对您社团组织的搜索结果，请认真、准确的进行选择。
+        后续如有需要更改，可在管理部分进行编辑。
+      </div>
+      <div>{content}</div>
 
-      <IonButton style={{ margin: "25px 5vw" }} type="submit" expand="block">
+      <IonButton
+        style={{ marginTop: "25px" }}
+        expand="block"
+        onClick={() => {
+          setStep(step + 1);
+        }}
+      >
         下一步
       </IonButton>
-    </form>
+    </div>
   );
 };
