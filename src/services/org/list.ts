@@ -5,7 +5,8 @@ import { OrgInfo } from "@/types/organization";
 interface QueryOrgsParams {
   pageSize: number;
   pageNumber?: number;
-  // numberId: string;
+  /** 搜索社团 id */
+  numberId?: string;
   /** 搜索名字 */
   queryName?: string;
   /** 社团类别 */
