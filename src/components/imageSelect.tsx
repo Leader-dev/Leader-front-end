@@ -16,7 +16,7 @@ const ImageSelect: React.FC<{
           type="file"
           style={{ display: "none" }}
           onChange={(e) => {
-            onChange(Array.from(e.target.files || []));
+            onChange(Array.from(e.target.files || []).slice(0, count));
           }}
           accept="image/*"
           multiple={c === 1 ? undefined : true}
