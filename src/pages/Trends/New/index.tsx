@@ -1,3 +1,5 @@
+import ImageSelect from "@/components/imageSelect";
+import { promptSelectImages } from "@/utils/selectImage";
 import {
   IonBackButton,
   IonButton,
@@ -7,8 +9,10 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonContent,
+  IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
   IonList,
@@ -20,7 +24,7 @@ import {
   IonToggle,
   IonToolbar,
 } from "@ionic/react";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useMemo, useState } from "react";
 
 function toTitleCase(str: string) {
   return str.replace(/\w\S*/g, function (txt: string) {
@@ -49,14 +53,16 @@ const withBorder = (
   return r;
 };
 
-const Add = (props: { style: object }) => {
+const Add = (props: { style: object; onClick?: () => void }) => {
   return (
     <div
       style={{
         padding: "14px",
         border: "2px solid #ccc",
+        boxSizing: "border-box",
         ...props.style,
       }}
+      onClick={props.onClick}
     >
       <div
         style={{
@@ -76,6 +82,10 @@ const Add = (props: { style: object }) => {
 
 const NewTrend = () => {
   const [typing, setTyping] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
+  const imageUris = useMemo(() => {
+    return images.map((i) => URL.createObjectURL(i));
+  }, [images]);
   return (
     <IonPage>
       <IonHeader>
@@ -142,7 +152,40 @@ const NewTrend = () => {
                   onFocus={() => setTyping(true)}
                   onBlur={() => setTyping(false)}
                 />
-                <Add style={{ width: "64px" }} />
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {imageUris.map((url) => {
+                    return (
+                      <div
+                        key={url}
+                        style={{
+                          width: "calc(100%/3)",
+                          padding: "4px",
+                          aspectRatio: "1/1",
+                        }}
+                      >
+                        <IonImg style={{ objectFit: "crop" }} src={url} />
+                      </div>
+                    );
+                  })}
+                  {images.length === 9 || (
+                    <div
+                      style={{
+                        width: "calc(100%/3)",
+                        order: 99,
+                        padding: "4px",
+                      }}
+                    >
+                      <ImageSelect
+                        count={9 - images.length}
+                        onChange={(images) => {
+                          setImages((a) => a.concat(images));
+                        }}
+                      >
+                        <Add style={{ width: "100%", aspectRatio: "1/1" }} />
+                      </ImageSelect>
+                    </div>
+                  )}
+                </div>
               </IonCardContent>
             </IonCard>
           </div>

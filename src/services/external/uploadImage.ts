@@ -1,6 +1,9 @@
 import axios from "@/utils/request";
 import { getImageUploadURL } from "../service/image/getUploadUrl";
 
+/** Upload file
+ * @example const file = new File([blob], "image.jpg");
+ */
 export const uploadImage = async (file: File) => {
   const url = await getImageUploadURL();
   const k = axios.put(url, file, {
