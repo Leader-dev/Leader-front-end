@@ -27,6 +27,7 @@ import OrgCreate from "@/pages/Org/Create";
 import RecruitManage from "@/pages/Org/Recruit";
 import WIPIndicator from "@/pages/Tabs/Cooperation";
 import NewTrend from "@/pages/Trends/New";
+import PersonalFavorite from "@/pages/Personal/Favorite";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -78,6 +79,7 @@ export const AppRouter: React.FC = () => {
         <Route path="/org/:orgId/members" component={MemberManagement} />
         <Route path="/org/:orgId/recruit" component={RecruitManage} />
         <Route path="/org/:orgId/home" component={OrgHome} />
+        <Route path="/person/favorite" component={PersonalFavorite} />
         <Route exact path="/">
           <Redirect to="/tabs/trends" />
         </Route>
