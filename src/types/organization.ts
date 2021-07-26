@@ -58,6 +58,7 @@ interface OrgDetails extends OrgInfo {
 export interface OrgDetailsResult {
   detail: OrgDetails;
   applicationStatus: string;
+  favorite: boolean;
   /**
    * @value 用户是否能申请 ("closed” | “available” | “joined" | “applied”)
    */
