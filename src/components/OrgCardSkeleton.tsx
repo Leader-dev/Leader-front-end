@@ -3,32 +3,18 @@ import {
   IonCard,
   IonCol,
   IonGrid,
-  IonIcon,
-  IonImg,
   IonRow,
+  IonSkeletonText,
 } from "@ionic/react";
-import { checkmarkCircle, helpCircle, peopleSharp } from "ionicons/icons";
-import { OrgDetailsResult } from "@/types/organization";
 
-export default ({ info }: { info: OrgDetailsResult }) => {
-  const { detail } = info;
-  let authIcon, authColor;
-  if (detail.instituteAuth === "school") {
-    authIcon = (
-      <IonIcon icon={checkmarkCircle} style={{ marginRight: "2px" }} />
-    );
-    authColor = "var(--ion-color-primary)";
-  } else {
-    authIcon = <IonIcon icon={helpCircle} style={{ marginRight: "2px" }} />;
-    authColor = "var(--ion-color-warning)";
-  }
-
+export default () => {
   return (
     <IonCard style={{ margin: "10px 0" }}>
       <IonGrid style={{ padding: "12px" }}>
         <IonRow>
           <IonCol size="5">
-            <IonImg
+            <IonSkeletonText
+              animated
               style={{
                 borderRadius: "8px",
                 width: "100%",
@@ -36,7 +22,6 @@ export default ({ info }: { info: OrgDetailsResult }) => {
                 objectFit: "cover",
                 overflow: "hidden",
               }}
-              src={detail.posterUrl}
             />
           </IonCol>
           <IonCol
@@ -51,7 +36,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
                 lineHeight: "150%",
               }}
             >
-              {detail.name}
+              <IonSkeletonText animated style={{ width: "50%" }} />
             </div>
             <div
               style={{
@@ -60,23 +45,18 @@ export default ({ info }: { info: OrgDetailsResult }) => {
                 lineHeight: "140%",
               }}
             >
-              {detail.numberId}
+              <IonSkeletonText animated style={{ width: "30%" }} />
             </div>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                color: authColor,
               }}
             >
-              {authIcon}
-              {detail.instituteName}
+              <IonSkeletonText animated style={{ width: "40%" }} />
             </div>
             <div>
-              负责人：
-              <span style={{ color: "var(--ion-color-primary)" }}>
-                {detail.presidentName}
-              </span>
+              <IonSkeletonText animated style={{ width: "35%" }} />
             </div>
             <div
               style={{
@@ -85,8 +65,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
                 color: "var(--ion-color-primary)",
               }}
             >
-              <IonIcon icon={peopleSharp} style={{ marginRight: "2px" }} />
-              成员数 {detail.memberCount}
+              <IonSkeletonText animated style={{ width: "20%" }} />
             </div>
           </IonCol>
         </IonRow>
