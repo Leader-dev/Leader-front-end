@@ -1,3 +1,6 @@
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
+
 import ImageSelect from "@/components/imageSelect";
 import { promptSelectImages } from "@/utils/selectImage";
 import {
@@ -157,13 +160,22 @@ const NewTrend = () => {
                     return (
                       <div
                         key={url}
-                        style={{
+                        css={{
                           width: "calc(100%/3)",
                           padding: "4px",
                           aspectRatio: "1/1",
                         }}
                       >
-                        <IonImg style={{ objectFit: "crop" }} src={url} />
+                        <IonImg
+                          style={{ objectFit: "crop" }}
+                          src={url}
+                          css={css`
+                            height: 100%;
+                            &::part(image) {
+                              object-fit: cover;
+                            }
+                          `}
+                        />
                       </div>
                     );
                   })}
