@@ -14,6 +14,7 @@ export interface OrgInfo {
   /** 组织海报图片地址 url */
   posterUrl: string;
   memberCount: number;
+  presidentName: string;
 }
 
 export type ApplicationForm = Array<{ question: string; answer: string }>;
@@ -52,7 +53,6 @@ interface OrgDetails extends OrgInfo {
   status: string;
   applicationScheme: OrgApplicationScheme;
   /** 社长名称 */
-  presidentName: string;
 }
 
 export interface OrgDetailsResult {
