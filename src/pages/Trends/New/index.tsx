@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
-
+import useOnClickOutside from "use-onclickoutside";
+import autosize from "autosize";
 import ImageSelect from "@/components/imageSelect";
 import { promptSelectImages } from "@/utils/selectImage";
 import {
@@ -27,7 +28,7 @@ import {
   IonToggle,
   IonToolbar,
 } from "@ionic/react";
-import { CSSProperties, useMemo, useState } from "react";
+import { CSSProperties, useCallback, useMemo, useRef, useState } from "react";
 
 function toTitleCase(str: string) {
   return str.replace(/\w\S*/g, function (txt: string) {
@@ -86,9 +87,44 @@ const Add = (props: { style: object; onClick?: () => void }) => {
 const NewTrend = () => {
   const [typing, setTyping] = useState(false);
   const [images, setImages] = useState<File[]>([]);
+  const cardRef = useRef(null);
+  const inputRef = useCallback((node) => {
+    if (node) {
+      // const k = node.querySelector("textarea")
+      // console.log({node, k})
+      // autosize(k);
+      setTimeout(() => {
+        const l = node.querySelector("textarea");
+        if (l) {
+          autosize(l);
+          console.log({ l });
+          return;
+        }
+        const ob = new MutationObserver((mutationsList) => {
+          for (let mutation of mutationsList) {
+            console.log(mutation);
+            if (mutation.type === "childList") {
+              const k = Array.from(mutation.addedNodes).filter(
+                // @ts-ignore
+                (n) => n.firstChild?.type === "textarea"
+              );
+              if (k.length) {
+                // @ts-ignore
+                autosize(k[0].firstChild as Node);
+                ob.disconnect();
+              }
+            }
+          }
+        });
+
+        ob.observe(node, { childList: true });
+      });
+    }
+  }, []);
   const imageUris = useMemo(() => {
     return images.map((i) => URL.createObjectURL(i));
   }, [images]);
+  useOnClickOutside(cardRef, () => setTyping(false));
   return (
     <IonPage>
       <IonHeader>
@@ -132,6 +168,8 @@ const NewTrend = () => {
             }}
           >
             <IonCard
+              ref={cardRef}
+              onClick={() => setTyping(true)}
               style={{
                 borderRadius: "16px",
                 marginRight: 0,
@@ -151,9 +189,7 @@ const NewTrend = () => {
               <IonCardContent>
                 <IonTextarea
                   placeholder="在这里说点儿什么吧..."
-                  rows={6}
-                  onFocus={() => setTyping(true)}
-                  onBlur={() => setTyping(false)}
+                  ref={inputRef}
                 />
                 <div style={{ display: "flex", flexWrap: "wrap" }}>
                   {imageUris.map((url) => {
