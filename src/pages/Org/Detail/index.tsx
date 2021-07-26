@@ -18,7 +18,7 @@ import {
   heartOutline,
   warningOutline,
 } from "ionicons/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useOrgDetails } from "@/services/org/detail";
 import OrgDetailInfo from "./components/Info";
@@ -33,9 +33,13 @@ export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: orgDetail, error: detailError } = useOrgDetails({ orgId });
   const [tab, setTab] = useState<"info" | "contact">("info");
-  const [favorite, setFavorite] = useState<boolean>(
-    orgDetail ? orgDetail.favorite : false
-  );
+  const [favorite, setFavorite] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (orgDetail) {
+      setFavorite(orgDetail.favorite);
+    }
+  }, [orgDetail]);
 
   let orgContent, backgroundUrl;
   if (detailError) return <div> Failed to load</div>;
