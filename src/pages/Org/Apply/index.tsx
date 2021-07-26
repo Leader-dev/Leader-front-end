@@ -54,10 +54,21 @@ export default () => {
         },
       },
       applicationStatus: "available",
+      favorite: true,
     };
-  }
-
-  if (!details || !departments) {
+    let testDepartments = [
+      {
+        id: "1111",
+        name: "技术部",
+      },
+    ];
+    content = (
+      <>
+        <OrgCard info={testDetails.detail} interactive={false} />
+        <ApplyForm details={testDetails} departments={testDepartments} />
+      </>
+    );
+  } else if (!details || !departments) {
     content = <div> Skeleton </div>;
   } else {
     content = (

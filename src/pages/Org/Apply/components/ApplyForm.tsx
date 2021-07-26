@@ -138,7 +138,7 @@ export default ({
         event.preventDefault();
       }}
     >
-      <IonList style={{ lineHeight: fontSize }}>
+      <IonList>
         <IonItem>
           <IonLabel position="stacked" style={{ fontSize: fontSize }}>
             您的姓名
