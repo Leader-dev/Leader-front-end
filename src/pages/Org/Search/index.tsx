@@ -21,6 +21,7 @@ export default () => {
       console.log("enter pressed");
       const reg = /^[0-9]{6}$/;
       if (reg.test(searchText)) {
+        // @ts-ignore
         const numberId = reg.exec(searchText)[0];
         useQueryOrgs({ pageSize: 99, numberId: numberId });
       } else {
