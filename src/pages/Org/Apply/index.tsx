@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import {
   IonBackButton,
   IonButtons,
@@ -9,7 +9,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import OrgCard from "./components/OrgCard";
+import OrgCard from "@/components/OrgCard";
 import ApplyForm from "./components/ApplyForm";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { chevronBack } from "ionicons/icons";
@@ -55,29 +55,17 @@ export default () => {
       },
       applicationStatus: "available",
     };
+  }
 
-    let testDepartments = [
-      { id: "1111", name: "技术部" },
-      { id: "1112", name: "学术部" },
-    ];
-
+  if (!details || !departments) {
+    content = <div> Skeleton </div>;
+  } else {
     content = (
       <>
-        <OrgCard info={testDetails} />
-        <ApplyForm details={testDetails} departments={testDepartments} />
+        <OrgCard info={details.detail} interactive={false} />
+        <ApplyForm details={details} departments={departments} />
       </>
     );
-  } else {
-    if (!details || !departments) {
-      content = <div> Skeleton </div>;
-    } else {
-      content = (
-        <>
-          <OrgCard info={details} />
-          <ApplyForm details={details} departments={departments} />
-        </>
-      );
-    }
   }
 
   return (
