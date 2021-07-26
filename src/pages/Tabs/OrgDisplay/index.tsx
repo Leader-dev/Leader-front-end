@@ -34,6 +34,7 @@ export default () => {
           instituteName: "深圳国际交流学院",
           instituteAuth: "school",
           typeAliases: [],
+          presidentName: "",
         },
         {
           id: "xxx",
@@ -45,6 +46,7 @@ export default () => {
           instituteName: "深圳国际交流学院",
           instituteAuth: "school",
           typeAliases: [],
+          presidentName: "",
         },
         {
           id: "xxx",
@@ -56,6 +58,7 @@ export default () => {
           instituteName: "深圳国际交流学院",
           instituteAuth: "school",
           typeAliases: [],
+          presidentName: "",
         },
         {
           id: "xxx",
@@ -66,6 +69,7 @@ export default () => {
           instituteName: "深圳国际交流学院",
           instituteAuth: "school",
           typeAliases: [],
+          presidentName: "",
         },
         {
           id: "xxx",
@@ -76,6 +80,7 @@ export default () => {
           instituteName: "深圳国际交流学院",
           instituteAuth: "school",
           typeAliases: [],
+          presidentName: "",
         },
         {
           id: "xxx",
@@ -86,6 +91,7 @@ export default () => {
           instituteName: "深圳国际交流学院",
           instituteAuth: "school",
           typeAliases: [],
+          presidentName: "",
         },
       ],
       pic = [
