@@ -10,11 +10,16 @@ import {
   IonTitle,
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryOrgs } from "@/services/org/list";
+import { OrgInfo } from "@/types/organization";
+import OrgCard from "@/components/OrgCard";
 
 export default () => {
   const [searchText, setSearchText] = useState<string>("");
+  const [searchResult, setSearchResult] = useState<OrgInfo[]>([]);
+
+  let numberId = "";
 
   const handleKeyPress = (event: any) => {
     if (event.key === "Enter") {
@@ -22,10 +27,8 @@ export default () => {
       const reg = /^[0-9]{6}$/;
       if (reg.test(searchText)) {
         // @ts-ignore
-        const numberId = reg.exec(searchText)[0];
-        useQueryOrgs({ pageSize: 99, numberId: numberId });
-      } else {
-        useQueryOrgs({ pageSize: 99, queryName: searchText });
+        numberId = reg.exec(searchText)[0];
+        console.log(numberId);
       }
     }
   };
@@ -33,7 +36,12 @@ export default () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
-        <IonToolbar style={{ "--background": "var(--ion-color-blue)" }}>
+        <IonToolbar
+          style={{
+            "--background": "var(--ion-color-blue)",
+            "--color": "white",
+          }}
+        >
           <IonButtons>
             <IonBackButton icon={chevronBack} text="" />
           </IonButtons>
@@ -49,7 +57,11 @@ export default () => {
           />
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen></IonContent>
+      <IonContent fullscreen>
+        {searchResult.map((org) => (
+          <OrgCard info={org} interactive={true} />
+        ))}
+      </IonContent>
     </IonPage>
   );
 };
