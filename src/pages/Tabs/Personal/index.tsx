@@ -12,6 +12,7 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  useIonRouter,
 } from "@ionic/react";
 import {
   alertCircleOutline,
@@ -186,7 +187,7 @@ const ContactUs: React.FC = () => {
           background: "#000",
           transition: "opacity 0.3s ease-in-out",
           opacity: popUpOpen ? 0.2 : 0,
-          // display: popUpOpen ? "default" : "none",
+          display: popUpOpen ? "block" : "none",
         }}
         onClick={(e) => {
           if (popUpOpen) {
@@ -196,7 +197,7 @@ const ContactUs: React.FC = () => {
         }}
       ></div>
       <div
-        id="fk"
+        id="placeholder"
         style={{
           position: "fixed",
           left: fabRect?.x,
