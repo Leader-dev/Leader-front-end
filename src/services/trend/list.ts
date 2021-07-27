@@ -26,7 +26,7 @@ type AnonymousTrend = Overwrite<
     puppetId: null;
     puppetInfo: null;
     orgName: null;
-    orgtitle: null;
+    orgTitle: null;
   }
 >;
 

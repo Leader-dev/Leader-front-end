@@ -71,7 +71,7 @@ const MomentCard = ({ info }: { info: MomentInfo }) => {
         </IonLabel>
         <div slot="end">
           <IonLabel>
-            <IonText color="primary">
+            <IonText color="primary" onClick={() => {}}>
               <p>
                 确实
                 <IonIcon slot="end" icon={arrowUp} />
