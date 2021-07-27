@@ -1,27 +1,17 @@
 import {
   IonButton,
   IonButtons,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonContent,
   IonFab,
   IonFabButton,
-  IonHeader,
   IonIcon,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonRouterOutlet,
-  IonSearchbar,
-  IonTitle,
-  IonToolbar,
-  isPlatform,
 } from "@ionic/react";
 import { mutateMany } from "swr-mutate-many";
 
 import "./index.css";
-import { add, person, personCircleOutline } from "ionicons/icons";
+import { add, personCircleOutline } from "ionicons/icons";
 import { RefresherEventDetail } from "@ionic/core";
 import React, { useState } from "react";
 
@@ -74,7 +64,9 @@ const Section = ({ page, onNext }: { page: number; onNext?: () => void }) => {
               info.puppetInfo?.avatarUrl ??
               "http://5b0988e595225.cdn.sohucs.com/images/20180702/0a5cab43989c428286a58d5e81cf2445.png",
             username: info.puppetInfo?.nickname ?? "鳞者用户",
-            userTitle: info.orgTitle,
+            userTitle: info.anonymous
+              ? "已隐藏"
+              : `${info.orgTitle ?? "社员"} - ${info.orgName}`,
           }}
         />
       ))}
