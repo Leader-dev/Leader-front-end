@@ -5611,6 +5611,11 @@ glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@~5.1.0:
   dependencies:
     is-glob "^4.0.1"
 
+glob-to-regexp@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.npmjs.org/glob-to-regexp/-/glob-to-regexp-0.4.1.tgz#c75297087c851b9a578bd217dd59a92f59fe546e"
+  integrity sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==
+
 glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
   version "7.1.7"
   resolved "https://registry.nlark.com/glob/download/glob-7.1.7.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fglob%2Fdownload%2Fglob-7.1.7.tgz"
@@ -10994,6 +10999,13 @@ svgo@^1.0.0, svgo@^1.2.2:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+swr-mutate-many@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/swr-mutate-many/-/swr-mutate-many-1.0.0.tgz#4748977f3e93629b3419cbf967c3d56e783a3b6e"
+  integrity sha512-VMqmhrzOuk3TF9LD12DrpBa/e9bseHpEJc1Gpg3D1XSip5gCQjFKFEjnqxJJCCxBngdO7BJWYaiHYkkeOxA8NA==
+  dependencies:
+    glob-to-regexp "^0.4.1"
 
 swr@^0.5.6:
   version "0.5.6"

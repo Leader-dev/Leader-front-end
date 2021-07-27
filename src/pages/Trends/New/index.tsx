@@ -20,6 +20,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonNote,
   IonPage,
   IonSelect,
   IonSelectOption,
@@ -27,8 +28,13 @@ import {
   IonTitle,
   IonToggle,
   IonToolbar,
+  useIonLoading,
+  useIonRouter,
 } from "@ionic/react";
 import { CSSProperties, useCallback, useMemo, useRef, useState } from "react";
+import { sendTrendPost } from "@/services/trend/send";
+import { useOrgTitles } from "@/services/puppet/getTitles";
+import { useToast } from "@/utils/toast";
 
 function toTitleCase(str: string) {
   return str.replace(/\w\S*/g, function (txt: string) {
@@ -40,9 +46,6 @@ const withBorder = (
   sides: Array<"top" | "bottom" | "left" | "right">
 ): CSSProperties => {
   const r: CSSProperties = {
-    // aspectRatio: "1/1",
-    // maxWidth: "50%",
-    // maxHeight: "100%",
     boxSizing: "border-box",
   };
   sides.forEach((side) => {
@@ -57,42 +60,76 @@ const withBorder = (
   return r;
 };
 
-const Add = (props: { style: object; onClick?: () => void }) => {
+const Square = (props: any) => {
   return (
     <div
-      style={{
-        padding: "14px",
-        border: "2px solid #ccc",
-        boxSizing: "border-box",
-        ...props.style,
-      }}
-      onClick={props.onClick}
-    >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          aspectRatio: "1/1",
-        }}
-      >
-        <div style={{ ...withBorder(["bottom", "right"]) }} />
-        <div style={{ ...withBorder(["bottom", "left"]) }} />
-        <div style={{ ...withBorder(["top", "right"]) }} />
-        <div style={{ ...withBorder(["top", "left"]) }} />
-      </div>
+      css={css`
+        box-sizing: border-box;
+        --aspect-ratio: 1/1;
+        & > :first-of-type {
+          width: 100%;
+        }
+        & > img {
+          height: auto;
+        }
+        @supports (--custom: property) {
+          & {
+            position: relative;
+          }
+          &::before {
+            content: "";
+            display: block;
+            padding-bottom: calc(100% / (var(--aspect-ratio)));
+          }
+          & > :first-of-type {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+          }
+        }
+        ${{ ...props.style }}
+      `}
+      {...props}
+    />
+  );
+};
+
+const Add = (props: { style: object; onClick?: () => void }) => {
+  return (
+    <div style={{ padding: "4px" }}>
+      <Square onClick={props.onClick}>
+        <div
+          css={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            "--aspect-ratio": "1/1",
+            padding: "14px",
+          }}
+        >
+          <div style={{ ...withBorder(["bottom", "right"]) }} />
+          <div style={{ ...withBorder(["bottom", "left"]) }} />
+          <div style={{ ...withBorder(["top", "right"]) }} />
+          <div style={{ ...withBorder(["top", "left"]) }} />
+        </div>
+      </Square>
     </div>
   );
 };
 
 const NewTrend = () => {
+  const [toast] = useToast();
   const [typing, setTyping] = useState(false);
   const [images, setImages] = useState<File[]>([]);
+  const [content, setContent] = useState("");
+  const [anonymous, setAnonymous] = useState(false);
+  const { data: titles } = useOrgTitles();
+  const [orgId, setOrgId] = useState<string | null>(null);
+  const [present, dismiss] = useIonLoading();
+  const router = useIonRouter();
   const cardRef = useRef(null);
   const inputRef = useCallback((node) => {
     if (node) {
-      // const k = node.querySelector("textarea")
-      // console.log({node, k})
-      // autosize(k);
       setTimeout(() => {
         const l = node.querySelector("textarea");
         if (l) {
@@ -125,6 +162,25 @@ const NewTrend = () => {
     return images.map((i) => URL.createObjectURL(i));
   }, [images]);
   useOnClickOutside(cardRef, () => setTyping(false));
+  const onSubmit = () => {
+    if (!orgId) {
+      toast({ message: "需要选择身份", color: "warning" });
+      return;
+    } else if (!content.replace(/\s+/g, "").length && !images.length) {
+      toast({ message: "内容不得为空", color: "warning" });
+      return;
+    }
+    present({ message: "发布中" });
+    sendTrendPost({
+      orgId,
+      anonymous,
+      content,
+      images,
+    }).then(() => {
+      dismiss();
+      router.goBack();
+    });
+  };
   return (
     <IonPage>
       <IonHeader>
@@ -134,7 +190,7 @@ const NewTrend = () => {
           </IonButtons>
           <IonTitle>发布动态</IonTitle>
           <IonButtons slot="end">
-            <IonButton>发布</IonButton>
+            <IonButton onClick={onSubmit}>发布</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -149,14 +205,29 @@ const NewTrend = () => {
         >
           <IonList>
             <IonItem>
-              <IonLabel>匿名发布</IonLabel>
-              <IonToggle value="pepperoni" />
+              <IonLabel>
+                <div>匿名发布</div>
+                {anonymous && <IonNote>身份将不会展示给其他用户</IonNote>}
+              </IonLabel>
+              <IonToggle
+                checked={anonymous}
+                onIonChange={(e) => setAnonymous(e.detail.checked)}
+              />
             </IonItem>
             <IonItem>
               <IonLabel>选择身份</IonLabel>
-              <IonSelect placeholder="无">
-                <IonSelectOption value="female">计算机协会会长</IonSelectOption>
-                <IonSelectOption value="male">一般男性</IonSelectOption>
+              <IonSelect
+                placeholder="无"
+                value={orgId}
+                onIonChange={(e) => setOrgId(e.detail.value)}
+              >
+                {titles?.map((t) => {
+                  return (
+                    <IonSelectOption value={t.orgId} key={t.orgId}>
+                      {t.title ?? "社员"} - {t.orgName}
+                    </IonSelectOption>
+                  );
+                })}
               </IonSelect>
             </IonItem>
           </IonList>
@@ -189,17 +260,17 @@ const NewTrend = () => {
               <IonCardContent>
                 <IonTextarea
                   placeholder="在这里说点儿什么吧..."
+                  value={content}
+                  onIonChange={(e) => setContent(e.detail.value!)}
                   ref={inputRef}
                 />
                 <div style={{ display: "flex", flexWrap: "wrap" }}>
                   {imageUris.map((url) => {
                     return (
-                      <div
+                      <Square
                         key={url}
                         css={{
                           width: "calc(100%/3)",
-                          padding: "4px",
-                          aspectRatio: "1/1",
                         }}
                       >
                         <IonImg
@@ -210,9 +281,10 @@ const NewTrend = () => {
                             &::part(image) {
                               object-fit: cover;
                             }
+                            padding: 4px;
                           `}
                         />
-                      </div>
+                      </Square>
                     );
                   })}
                   {images.length === 9 || (
@@ -220,7 +292,8 @@ const NewTrend = () => {
                       style={{
                         width: "calc(100%/3)",
                         order: 99,
-                        padding: "4px",
+
+                        border: "2px solid #ccc",
                       }}
                     >
                       <ImageSelect
@@ -229,7 +302,7 @@ const NewTrend = () => {
                           setImages((a) => a.concat(images));
                         }}
                       >
-                        <Add style={{ width: "100%", aspectRatio: "1/1" }} />
+                        <Add style={{ width: "100%", padding: "4px" }} />
                       </ImageSelect>
                     </div>
                   )}
