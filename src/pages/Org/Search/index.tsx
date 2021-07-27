@@ -21,6 +21,7 @@ export default () => {
 
   let numberId = "";
 
+  // TODO use API
   const handleKeyPress = (event: any) => {
     if (event.key === "Enter") {
       console.log("enter pressed");
