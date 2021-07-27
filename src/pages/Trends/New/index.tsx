@@ -40,9 +40,6 @@ const withBorder = (
   sides: Array<"top" | "bottom" | "left" | "right">
 ): CSSProperties => {
   const r: CSSProperties = {
-    // aspectRatio: "1/1",
-    // maxWidth: "50%",
-    // maxHeight: "100%",
     boxSizing: "border-box",
   };
   sides.forEach((side) => {
@@ -57,29 +54,59 @@ const withBorder = (
   return r;
 };
 
-const Add = (props: { style: object; onClick?: () => void }) => {
+const Square = (props: any) => {
   return (
     <div
-      style={{
-        padding: "14px",
-        border: "2px solid #ccc",
-        boxSizing: "border-box",
-        ...props.style,
-      }}
-      onClick={props.onClick}
-    >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          aspectRatio: "1/1",
-        }}
-      >
-        <div style={{ ...withBorder(["bottom", "right"]) }} />
-        <div style={{ ...withBorder(["bottom", "left"]) }} />
-        <div style={{ ...withBorder(["top", "right"]) }} />
-        <div style={{ ...withBorder(["top", "left"]) }} />
-      </div>
+      css={css`
+        box-sizing: border-box;
+        --aspect-ratio: 1/1;
+        & > :first-of-type {
+          width: 100%;
+        }
+        & > img {
+          height: auto;
+        }
+        @supports (--custom: property) {
+          & {
+            position: relative;
+          }
+          &::before {
+            content: "";
+            display: block;
+            padding-bottom: calc(100% / (var(--aspect-ratio)));
+          }
+          & > :first-of-type {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+          }
+        }
+        ${{ ...props.style }}
+      `}
+      {...props}
+    />
+  );
+};
+
+const Add = (props: { style: object; onClick?: () => void }) => {
+  return (
+    <div style={{ padding: "4px" }}>
+      <Square onClick={props.onClick}>
+        <div
+          css={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            "--aspect-ratio": "1/1",
+            padding: "14px",
+          }}
+        >
+          <div style={{ ...withBorder(["bottom", "right"]) }} />
+          <div style={{ ...withBorder(["bottom", "left"]) }} />
+          <div style={{ ...withBorder(["top", "right"]) }} />
+          <div style={{ ...withBorder(["top", "left"]) }} />
+        </div>
+      </Square>
     </div>
   );
 };
@@ -194,12 +221,10 @@ const NewTrend = () => {
                 <div style={{ display: "flex", flexWrap: "wrap" }}>
                   {imageUris.map((url) => {
                     return (
-                      <div
+                      <Square
                         key={url}
                         css={{
                           width: "calc(100%/3)",
-                          padding: "4px",
-                          aspectRatio: "1/1",
                         }}
                       >
                         <IonImg
@@ -210,9 +235,10 @@ const NewTrend = () => {
                             &::part(image) {
                               object-fit: cover;
                             }
+                            padding: 4px;
                           `}
                         />
-                      </div>
+                      </Square>
                     );
                   })}
                   {images.length === 9 || (
@@ -220,7 +246,8 @@ const NewTrend = () => {
                       style={{
                         width: "calc(100%/3)",
                         order: 99,
-                        padding: "4px",
+
+                        border: "2px solid #ccc",
                       }}
                     >
                       <ImageSelect
@@ -229,7 +256,7 @@ const NewTrend = () => {
                           setImages((a) => a.concat(images));
                         }}
                       >
-                        <Add style={{ width: "100%", aspectRatio: "1/1" }} />
+                        <Add style={{ width: "100%", padding: "4px" }} />
                       </ImageSelect>
                     </div>
                   )}
