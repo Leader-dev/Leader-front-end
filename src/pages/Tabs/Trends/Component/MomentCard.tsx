@@ -2,12 +2,13 @@ import {
   IonCard,
   IonCardContent,
   IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
   IonText,
   useIonActionSheet,
 } from "@ionic/react";
-import * as React from "react";
+import React from "react";
 import User, { UserInfo } from "./User";
 import {
   arrowUp,
@@ -15,15 +16,18 @@ import {
   ellipseOutline,
   ellipsisHorizontal,
 } from "ionicons/icons";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 export interface MomentInfo extends UserInfo {
   content: string;
   upCount: number;
+  imageUrls: string[];
 }
 
-export default ({ info }: { info: MomentInfo }) => {
-  const { content, upCount } = info;
+const MomentCard = ({ info }: { info: MomentInfo }) => {
+  const { content, upCount, imageUrls } = info;
   const [present, dismiss] = useIonActionSheet();
+  const { data: startUrl } = useStartUrl();
   return (
     <IonCard>
       <IonItem style={{ marginTop: 8 }} onClick={() => {}} lines="none">
@@ -51,7 +55,16 @@ export default ({ info }: { info: MomentInfo }) => {
           </IonLabel>
         </div>
       </IonItem>
-      <IonCardContent>{content}</IonCardContent>
+      <IonCardContent>
+        <div>{content}</div>
+        {!!imageUrls.length && (
+          <div style={{ height: "128px" }}>
+            {imageUrls.slice(0, 3).map((url) => (
+              <IonImg src={startUrl + url} />
+            ))}
+          </div>
+        )}
+      </IonCardContent>
       <IonItem>
         <IonLabel>
           <p>2021年</p>
@@ -71,3 +84,4 @@ export default ({ info }: { info: MomentInfo }) => {
     </IonCard>
   );
 };
+export default MomentCard;

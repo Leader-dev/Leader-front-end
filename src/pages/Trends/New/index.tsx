@@ -20,6 +20,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonNote,
   IonPage,
   IonSelect,
   IonSelectOption,
@@ -27,8 +28,13 @@ import {
   IonTitle,
   IonToggle,
   IonToolbar,
+  useIonLoading,
+  useIonRouter,
 } from "@ionic/react";
 import { CSSProperties, useCallback, useMemo, useRef, useState } from "react";
+import { sendTrendPost } from "@/services/trend/send";
+import { useOrgTitles } from "@/services/puppet/getTitles";
+import { useToast } from "@/utils/toast";
 
 function toTitleCase(str: string) {
   return str.replace(/\w\S*/g, function (txt: string) {
@@ -112,14 +118,18 @@ const Add = (props: { style: object; onClick?: () => void }) => {
 };
 
 const NewTrend = () => {
+  const [toast] = useToast();
   const [typing, setTyping] = useState(false);
   const [images, setImages] = useState<File[]>([]);
+  const [content, setContent] = useState("");
+  const [anonymous, setAnonymous] = useState(false);
+  const { data: titles } = useOrgTitles();
+  const [orgId, setOrgId] = useState<string | null>(null);
+  const [present, dismiss] = useIonLoading();
+  const router = useIonRouter();
   const cardRef = useRef(null);
   const inputRef = useCallback((node) => {
     if (node) {
-      // const k = node.querySelector("textarea")
-      // console.log({node, k})
-      // autosize(k);
       setTimeout(() => {
         const l = node.querySelector("textarea");
         if (l) {
@@ -152,6 +162,25 @@ const NewTrend = () => {
     return images.map((i) => URL.createObjectURL(i));
   }, [images]);
   useOnClickOutside(cardRef, () => setTyping(false));
+  const onSubmit = () => {
+    if (!orgId) {
+      toast({ message: "需要选择身份", color: "warning" });
+      return;
+    } else if (!content.replace(/\s+/g, "").length && !images.length) {
+      toast({ message: "内容不得为空", color: "warning" });
+      return;
+    }
+    present({ message: "发布中" });
+    sendTrendPost({
+      orgId,
+      anonymous,
+      content,
+      images,
+    }).then(() => {
+      dismiss();
+      router.goBack();
+    });
+  };
   return (
     <IonPage>
       <IonHeader>
@@ -161,7 +190,7 @@ const NewTrend = () => {
           </IonButtons>
           <IonTitle>发布动态</IonTitle>
           <IonButtons slot="end">
-            <IonButton>发布</IonButton>
+            <IonButton onClick={onSubmit}>发布</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -176,14 +205,29 @@ const NewTrend = () => {
         >
           <IonList>
             <IonItem>
-              <IonLabel>匿名发布</IonLabel>
-              <IonToggle value="pepperoni" />
+              <IonLabel>
+                <div>匿名发布</div>
+                {anonymous && <IonNote>身份将不会展示给其他用户</IonNote>}
+              </IonLabel>
+              <IonToggle
+                checked={anonymous}
+                onIonChange={(e) => setAnonymous(e.detail.checked)}
+              />
             </IonItem>
             <IonItem>
               <IonLabel>选择身份</IonLabel>
-              <IonSelect placeholder="无">
-                <IonSelectOption value="female">计算机协会会长</IonSelectOption>
-                <IonSelectOption value="male">一般男性</IonSelectOption>
+              <IonSelect
+                placeholder="无"
+                value={orgId}
+                onIonChange={(e) => setOrgId(e.detail.value)}
+              >
+                {titles?.map((t) => {
+                  return (
+                    <IonSelectOption value={t.orgId} key={t.orgId}>
+                      {t.title ?? "社员"} - {t.orgName}
+                    </IonSelectOption>
+                  );
+                })}
               </IonSelect>
             </IonItem>
           </IonList>
@@ -216,6 +260,8 @@ const NewTrend = () => {
               <IonCardContent>
                 <IonTextarea
                   placeholder="在这里说点儿什么吧..."
+                  value={content}
+                  onIonChange={(e) => setContent(e.detail.value!)}
                   ref={inputRef}
                 />
                 <div style={{ display: "flex", flexWrap: "wrap" }}>
