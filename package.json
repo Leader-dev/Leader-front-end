@@ -23,6 +23,7 @@
     "@types/react-router-dom": "^5.1.7",
     "autosize": "^5.0.1",
     "axios": "^0.21.1",
+    "browser-image-compression": "^1.0.14",
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-telerik-imagepicker": "^2.3.6",
     "http-proxy-middleware": "^2.0.0",

@@ -75,6 +75,7 @@ export const TitledSearchBarWrapper: React.FC<{
             />
             {rightItems}
           </IonToolbar>
+          {layer && <IonToolbar>{layer}</IonToolbar>}
         </IonHeader>
         <IonContent fullscreen>{children}</IonContent>
       </>
