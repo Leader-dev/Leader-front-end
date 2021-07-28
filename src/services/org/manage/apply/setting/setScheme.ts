@@ -1,11 +1,5 @@
 import axios from "@/utils/request";
-
-interface OrgRecruitSetting {
-  open: boolean;
-  maximumApplication: number;
-  appointDepartment: number;
-  questions: { questions: string; required: boolean }[];
-}
+import { OrgRecruitSetting } from "@/types/recruit";
 
 export const setOrgRecruitSetting = async ({
   orgId,

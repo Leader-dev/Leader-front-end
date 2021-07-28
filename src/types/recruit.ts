@@ -1,8 +1,8 @@
-interface OrgRecruitSetting {
+export interface OrgRecruitSetting {
   open: boolean;
   maximumApplication: number;
   appointDepartment: number;
-  questions: { questions: string; required: boolean }[];
+  questions: { question: string; required: boolean }[];
 }
 
 export interface useOrgRecruitSetting {
