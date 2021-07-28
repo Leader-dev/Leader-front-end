@@ -25,6 +25,7 @@ import OrgHome from "@/pages/Org/Home";
 import OrgApply from "@/pages/Org/Apply";
 import OrgCreate from "@/pages/Org/Create";
 import RecruitManage from "@/pages/Org/Recruit";
+import RecruitSettings from "@/pages/Org/Recruit/Settings";
 import WIPIndicator from "@/pages/Tabs/Cooperation";
 import NewTrend from "@/pages/Trends/New";
 import PersonalFavorite from "@/pages/Personal/Favorite";
@@ -80,6 +81,10 @@ export const AppRouter: React.FC = () => {
         <Route path="/org/:ordId/apply" component={OrgApply} />
         <Route path="/org/:orgId/members" component={MemberManagement} />
         <Route path="/org/:orgId/recruit" component={RecruitManage} />
+        <Route
+          path="/org/:orgId/recruit/settings"
+          component={RecruitSettings}
+        />
         <Route path="/org/:orgId/home" component={OrgHome} />
         <Route path="/person/favorite" component={PersonalFavorite} />
         <Route exact path="/">
