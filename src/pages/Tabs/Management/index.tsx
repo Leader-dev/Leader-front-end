@@ -15,16 +15,27 @@ import {
 } from "@ionic/react";
 import "./index.css";
 import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
-
 import { ECACard, ECARequestCard } from "./components/ecaLink";
 import { useJoinedOrgList } from "@/services/org/joined";
 import { add } from "ionicons/icons";
+import { useMyApplicationList } from "@/services/org/apply/list";
 
 const Management: React.FC = () => {
   const [tab, setTab] = useState<"joined" | "apply">("joined");
   const [search, setSearch] = useState("");
-  const { data: orgList, error, isValidating } = useJoinedOrgList();
-  const loading = !error && isValidating;
+  const {
+    data: orgList,
+    error: orgError,
+    isValidating: orgValidating,
+  } = useJoinedOrgList();
+  const {
+    data: applicationList,
+    error: applicationError,
+    isValidating: applicationValidating,
+  } = useMyApplicationList();
+  const loading =
+    (!orgError && orgValidating) ||
+    (!applicationError && applicationValidating);
   return (
     <IonPage>
       <TitledSearchBarWrapper
@@ -60,35 +71,19 @@ const Management: React.FC = () => {
         {tab === "joined"
           ? loading
             ? null
-            : orgList?.map((org) => {
-                if (org.status === "joined") {
-                  return <ECACard info={org} key={org.id} />;
-                }
-              })
-          : // <>
-          //   <ECARequestCard
-          //     info={{
-          //       id: "",
-          //       name: "Leader 开发组",
-          //       numberId: 114514,
-          //       posterUrl: "v1_9w8xDVon5GnbCHCAPxVLLWPPowdXILcJ",
-          //       instituteName: "深圳国际交流学院",
-          //       instituteAuth: "school",
-          //       memberCount: 1919,
-          //       presidentName: "米老鼠",
-          //       notificationCount: 3,
-          //       status: "pending",
-          //       typeAliases: [],
-          //     }}
-          //   />
-          // </>
-          loading
+            : orgList?.map((org) => <ECACard info={org} key={org.id} />)
+          : loading
           ? null
-          : orgList?.map((org) => {
-              if (org.status !== "joined") {
-                return <ECACard info={org} key={org.id} />;
-              }
-            })}
+          : applicationList?.map((application) => (
+              <ECARequestCard
+                info={Object.assign(
+                  application.orgInfo,
+                  application.status,
+                  application.unreadCount
+                )}
+                key={application.id}
+              />
+            ))}
       </TitledSearchBarWrapper>
     </IonPage>
   );
