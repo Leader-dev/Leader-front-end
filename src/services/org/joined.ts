@@ -3,13 +3,8 @@ import useSWR from "swr";
 import { OrgInfo } from "@/types/organization";
 
 interface GetJoinedOrgListItem extends OrgInfo {
-  address: string;
-  addressAuth: string;
-  /**
-   * @value 如果为 “school” 则为学校认证
-   */
   status: string;
-  presidentName: string;
+  notificationCount: number;
 }
 
 export const getJoinedOrgList = async () => {
