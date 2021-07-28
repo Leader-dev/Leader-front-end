@@ -18,7 +18,7 @@ import { useOrgApplicationSetting } from "@/services/org/manage/apply/setting/ge
 import { Route, Switch, useParams } from "react-router";
 import SettingForm from "./components/SettingForm";
 
-const RecruitSettings = () => {
+export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data, error } = useOrgApplicationSetting({ orgId });
 
@@ -40,13 +40,5 @@ const RecruitSettings = () => {
       </IonHeader>
       <IonContent fullscreen>{content}</IonContent>
     </IonPage>
-  );
-};
-
-export default () => {
-  return (
-    <Switch>
-      <Route path="/org/:orgId/recruit/settings" component={RecruitSettings} />
-    </Switch>
   );
 };
