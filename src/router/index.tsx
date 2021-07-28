@@ -19,7 +19,7 @@ import Management from "@/pages/Tabs/Management";
 import Coop from "@/pages/Tabs/Cooperation";
 import Personal from "@/pages/Tabs/Personal";
 import SignUp from "@/pages/SignUp";
-import MemberManagement from "@/pages/Org/ManageMember";
+import Member from "@/pages/Org/Member";
 import OrgDetail from "@/pages/Org/Detail";
 import OrgHome from "@/pages/Org/Home";
 import OrgApply from "@/pages/Org/Apply";
@@ -29,6 +29,7 @@ import WIPIndicator from "@/pages/Tabs/Cooperation";
 import NewTrend from "@/pages/Trends/New";
 import PersonalFavorite from "@/pages/Personal/Favorite";
 import OrgSearch from "@/pages/Org/Search";
+import ManageMemberPage from "@/pages/Org/ManageMember";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -78,7 +79,8 @@ export const AppRouter: React.FC = () => {
         <Route path="/org/search" component={OrgSearch} />
         <Route path="/org/:orgId/detail" component={OrgDetail} />
         <Route path="/org/:ordId/apply" component={OrgApply} />
-        <Route path="/org/:orgId/members" component={MemberManagement} />
+        <Route path="/org/:orgId/members" component={Member} />
+        <Route path="/org/:orgId/manage-members" component={ManageMemberPage} />
         <Route path="/org/:orgId/recruit" component={RecruitManage} />
         <Route path="/org/:orgId/home" component={OrgHome} />
         <Route path="/person/favorite" component={PersonalFavorite} />
