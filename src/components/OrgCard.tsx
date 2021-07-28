@@ -14,11 +14,9 @@ import { useHistory } from "react-router";
 export default ({
   info,
   interactive,
-  maxHeight = "10vh",
 }: {
   info: OrgInfo;
   interactive: boolean;
-  maxHeight?: string;
 }) => {
   let authIcon, authColor;
   if (info.instituteAuth === "school") {
@@ -46,8 +44,7 @@ export default ({
               style={{
                 borderRadius: "8px",
                 width: "100%",
-                height: "100%",
-                maxHeight: maxHeight,
+                height: "12vh",
                 objectFit: "cover",
                 overflow: "hidden",
               }}
@@ -57,7 +54,7 @@ export default ({
           <IonCol
             className="ion-align-self-center"
             size="6"
-            style={{ fontSize: "80%", color: "black" }}
+            style={{ fontSize: "80%", color: "black", lineHeight: "150%" }}
           >
             <div
               style={{
