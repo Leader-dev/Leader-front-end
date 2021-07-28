@@ -10,7 +10,7 @@ interface OrgMember {
   id: string;
   name: string;
   title: string;
-  portraitUrl: string;
+  avatarUrl: string;
   roleName: "general_manager" | "department_manager" | "member";
 }
 
