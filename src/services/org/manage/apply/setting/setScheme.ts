@@ -4,7 +4,7 @@ interface OrgRecruitSetting {
   open: boolean;
   maximumApplication: number;
   appointDepartment: number;
-  questions: { questions: string; required: boolean };
+  questions: { questions: string; required: boolean }[];
 }
 
 export const setOrgRecruitSetting = async ({
