@@ -1,5 +1,6 @@
 import { promptSelectImages } from "@/utils/selectImage";
 import { isPlatform } from "@ionic/react";
+import React from "react";
 
 const ImageSelect: React.FC<{
   onChange: (images: File[]) => void;
@@ -16,6 +17,7 @@ const ImageSelect: React.FC<{
           type="file"
           style={{ display: "none" }}
           onChange={(e) => {
+            console.log("YAY");
             onChange(Array.from(e.target.files || []).slice(0, count));
           }}
           accept="image/*"
@@ -24,16 +26,19 @@ const ImageSelect: React.FC<{
       </label>
     );
   } else {
+    const onClick = () => {
+      promptSelectImages(c)
+        .then((blobs) => blobs.map((blob) => new File([blob], "image.jpg")))
+        .then(onChange);
+    };
     return (
-      <div
-        style={style}
-        onClick={() => {
-          promptSelectImages(c)
-            .then((blobs) => blobs.map((blob) => new File([blob], "image.jpg")))
-            .then(onChange);
-        }}
-      >
-        {children}
+      <div style={style}>
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child, { onClick });
+          }
+          return child;
+        })}
       </div>
     );
   }

@@ -1,9 +1,15 @@
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
+import { Add } from "@/components/add";
+import ImageSelect from "@/components/imageSelect";
+import { Square } from "@/components/square";
 import { useOrgApplicationDetail } from "@/services/org/manage/apply/detail";
 import { useOrgReceivedApplications } from "@/services/org/manage/apply/listReceived";
 import { respondToOrgApplication } from "@/services/org/manage/apply/sendResult";
 import { OrgApplication } from "@/types/organization";
 import {
   IonBackButton,
+  IonBadge,
   IonButton,
   IonButtons,
   IonCol,
@@ -11,6 +17,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonInput,
   IonItem,
   IonLabel,
@@ -24,10 +31,13 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
+  useIonRouter,
 } from "@ionic/react";
 import { add } from "ionicons/icons";
 import { Fragment, useMemo, useState } from "react";
 import { Route, Switch, useParams } from "react-router";
+import { sendApplicationNotification } from "@/services/org/manage/apply/sendNotification";
+import { useToast } from "@/utils/toast";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -304,6 +314,14 @@ export const AddNotification = () => {
       applicationId: string;
       orgId: string;
     }>();
+  const [toast] = useToast();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [images, setImages] = useState<File[]>([]);
+  const router = useIonRouter();
+  const imageUris = useMemo(() => {
+    return images.map((i) => URL.createObjectURL(i));
+  }, [images]);
   return (
     <IonPage>
       <IonHeader>
@@ -315,28 +333,113 @@ export const AddNotification = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonList style={{ paddingTop: "24px" }}>
+        <IonList style={{ paddingTop: "24px", marginBottom: "24px" }}>
           <IonListHeader>
             <IonLabel>通知标题</IonLabel>
           </IonListHeader>
           <IonItem>
-            <IonInput placeholder="面试通知" />
+            <IonInput
+              placeholder="面试通知"
+              value={title}
+              onIonChange={(e) => setTitle(e.detail.value!)}
+            />
           </IonItem>
           <IonListHeader>
             <IonLabel>通知内容</IonLabel>
           </IonListHeader>
           <IonItem>
             <IonLabel>上传文字</IonLabel>
-            <IonTextarea rows={4} placeholder="可以多行输入哦" />
+            <IonTextarea
+              rows={4}
+              placeholder="可以多行输入哦"
+              value={content}
+              onIonChange={(e) => setContent(e.detail.value!)}
+            />
           </IonItem>
+          <IonListHeader>
+            <IonLabel>
+              上传图片
+              <IonBadge>{images.length}/4</IonBadge>
+            </IonLabel>
+          </IonListHeader>
           <IonItem>
-            <IonLabel>上传图片</IonLabel>
-            <IonButton shape="round">
-              0/4
-              <IonIcon icon={add} />
-            </IonButton>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                width: "100%",
+                padding: "18px",
+              }}
+            >
+              {imageUris.map((url) => {
+                return (
+                  <Square
+                    key={url}
+                    css={{
+                      width: "calc(100%/3)",
+                    }}
+                  >
+                    <IonImg
+                      style={{ objectFit: "crop" }}
+                      src={url}
+                      css={css`
+                        height: 100%;
+                        &::part(image) {
+                          object-fit: cover;
+                        }
+                        padding: 4px;
+                      `}
+                    />
+                  </Square>
+                );
+              })}
+              {images.length === 4 || (
+                <div
+                  style={{
+                    width: "calc(100%/3)",
+                    order: 99,
+
+                    border: "2px solid #ccc",
+                  }}
+                >
+                  <ImageSelect
+                    count={4 - images.length}
+                    onChange={(images) => {
+                      setImages((a) => a.concat(images));
+                    }}
+                  >
+                    <Add style={{ width: "100%", padding: "4px" }} />
+                  </ImageSelect>
+                </div>
+              )}
+            </div>
           </IonItem>
         </IonList>
+        {/* <IonItem> */}
+        <IonButton
+          fill="solid"
+          expand="block"
+          onClick={() => {
+            sendApplicationNotification({
+              orgId,
+              applicationId,
+              title,
+              content,
+              images,
+            })
+              .then(() => {
+                toast({ message: "发送成功", color: "success" });
+              })
+              .catch(() => {
+                toast({ message: "发送失败", color: "danger" });
+              });
+
+            router.goBack();
+          }}
+        >
+          确认发布
+        </IonButton>
+        {/* </IonItem> */}
       </IonContent>
     </IonPage>
   );
