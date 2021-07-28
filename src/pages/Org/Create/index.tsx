@@ -7,6 +7,8 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonAlert,
+  useIonRouter,
 } from "@ionic/react";
 import BasicInfo from "./components/BasicInfo";
 import { chevronBack } from "ionicons/icons";
@@ -14,8 +16,7 @@ import { useState } from "react";
 import TypeSelection from "./components/TypeSelection";
 import { useOrgTypes } from "@/services/org/types";
 import PosterSelection from "./components/PosterSelection";
-import AddButton from "./AddButton.jpeg";
-import { createOrg } from "../../../services/org/create";
+import { createOrg } from "@/services/org/create";
 import { useHistory } from "react-router";
 
 export default () => {
@@ -28,14 +29,15 @@ export default () => {
   const [emails, setEmails] = useState<string[]>([]);
   const [phones, setPhones] = useState<string[]>([]);
   const [typeAliases, setTypeAliases] = useState<string[]>([]);
-  const [posterUrl, setPosterUrl] = useState<string>(AddButton);
+  const [poster, setPoster] = useState<File>();
 
   const [step, setStep] = useState<number>(1);
+  const [present, dismiss] = useIonAlert();
 
   const { data: orgTypes, error } = useOrgTypes();
   if (error || !orgTypes) return <div> Failed to load </div>;
 
-  const history = useHistory();
+  const router = useIonRouter();
 
   let content;
   if (step === 1) {
@@ -56,24 +58,29 @@ export default () => {
   } else if (step == 3) {
     content = (
       <PosterSelection
-        states={[posterUrl, step]}
-        setStates={[setPosterUrl, setStep]}
+        states={[poster, step]}
+        setStates={[setPoster, setStep]}
+        onFinalSubmit={(event: any) => {
+          event.preventDefault();
+          present({ message: "发布中" });
+          console.log(detail, typeAliases, poster);
+          createOrg({
+            name: detail.name,
+            instituteName: detail.instituteName,
+            address: detail.address,
+            introduction: detail.introduction,
+            email: emails,
+            phone: phones,
+            typeAliases: typeAliases,
+            // @ts-ignore
+            poster: poster,
+          }).then(() => {
+            dismiss();
+            router.goBack();
+          });
+        }}
       />
     );
-  } else {
-    content = <div>正在提交</div>;
-    createOrg({
-      name: detail.name,
-      instituteName: detail.instituteName,
-      address: detail.address,
-      introduction: detail.introduction,
-      email: emails,
-      phone: phones,
-      typeAliases: typeAliases,
-      posterUrl: posterUrl,
-    }).then(() => {
-      history.push("/tabs/management");
-    });
   }
 
   return (
