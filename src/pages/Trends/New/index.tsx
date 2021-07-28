@@ -35,6 +35,7 @@ import { CSSProperties, useCallback, useMemo, useRef, useState } from "react";
 import { sendTrendPost } from "@/services/trend/send";
 import { useOrgTitles } from "@/services/puppet/getTitles";
 import { useToast } from "@/utils/toast";
+import { Square } from "@/components/square";
 
 function toTitleCase(str: string) {
   return str.replace(/\w\S*/g, function (txt: string) {
@@ -58,41 +59,6 @@ const withBorder = (
     ] = "1px solid #ccc";
   });
   return r;
-};
-
-const Square = (props: any) => {
-  return (
-    <div
-      css={css`
-        box-sizing: border-box;
-        --aspect-ratio: 1/1;
-        & > :first-of-type {
-          width: 100%;
-        }
-        & > img {
-          height: auto;
-        }
-        @supports (--custom: property) {
-          & {
-            position: relative;
-          }
-          &::before {
-            content: "";
-            display: block;
-            padding-bottom: calc(100% / (var(--aspect-ratio)));
-          }
-          & > :first-of-type {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-          }
-        }
-        ${{ ...props.style }}
-      `}
-      {...props}
-    />
-  );
 };
 
 const Add = (props: { style: object; onClick?: () => void }) => {
