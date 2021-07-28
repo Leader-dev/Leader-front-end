@@ -15,9 +15,10 @@ import {
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
 import { useOrgApplicationSetting } from "@/services/org/manage/apply/setting/getScheme";
-import { useParams } from "react-router";
+import { Route, Switch, useParams } from "react-router";
+import SettingForm from "./components/SettingForm";
 
-export default () => {
+const RecruitSettings = () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data, error } = useOrgApplicationSetting({ orgId });
 
@@ -25,7 +26,7 @@ export default () => {
   if (!data) {
     content = "";
   } else {
-    content = "";
+    content = <SettingForm recruitInfo={data} />;
   }
   return (
     <IonPage>
@@ -39,5 +40,13 @@ export default () => {
       </IonHeader>
       <IonContent fullscreen>{content}</IonContent>
     </IonPage>
+  );
+};
+
+export default () => {
+  return (
+    <Switch>
+      <Route path="/org/:orgId/recruit/settings" component={RecruitSettings} />
+    </Switch>
   );
 };
