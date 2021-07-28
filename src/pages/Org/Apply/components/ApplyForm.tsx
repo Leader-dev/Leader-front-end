@@ -56,22 +56,23 @@ export default ({
   let inputList = questions
     ? questions.map((q, index) => {
         let required = q.required;
-        let requiredHint = required ? (
-          <span
-            style={{
-              color: "var(--ion-color-primary)",
-              marginLeft: "3px",
-              fontWeight: "bold",
-            }}
-          >
-            *
-          </span>
-        ) : null;
         return (
           <IonItem>
             <IonLabel position="stacked" style={{ fontSize: fontSize }}>
               {q.question}
-              {requiredHint}
+              {required ? (
+                <span
+                  style={{
+                    color: "var(--ion-color-primary)",
+                    marginLeft: "3px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  *
+                </span>
+              ) : (
+                ""
+              )}
             </IonLabel>
             <IonTextarea
               required={required}
