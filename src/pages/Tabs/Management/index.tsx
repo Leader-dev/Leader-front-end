@@ -57,31 +57,38 @@ const Management: React.FC = () => {
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
-        {tab === "joined" ? (
-          loading ? null : (
-            orgList?.map((org) => {
-              return <ECACard info={org} key={org.id} />;
-            })
-          )
-        ) : (
-          <>
-            <ECARequestCard
-              info={{
-                id: "",
-                name: "Leader 开发组",
-                numberId: 114514,
-                posterUrl: "v1_9w8xDVon5GnbCHCAPxVLLWPPowdXILcJ",
-                instituteName: "深圳国际交流学院",
-                instituteAuth: "school",
-                memberCount: 1919,
-                presidentName: "米老鼠",
-                notificationCount: 3,
-                status: "pending",
-                typeAliases: [],
-              }}
-            />
-          </>
-        )}
+        {tab === "joined"
+          ? loading
+            ? null
+            : orgList?.map((org) => {
+                if (org.status === "joined") {
+                  return <ECACard info={org} key={org.id} />;
+                }
+              })
+          : // <>
+          //   <ECARequestCard
+          //     info={{
+          //       id: "",
+          //       name: "Leader 开发组",
+          //       numberId: 114514,
+          //       posterUrl: "v1_9w8xDVon5GnbCHCAPxVLLWPPowdXILcJ",
+          //       instituteName: "深圳国际交流学院",
+          //       instituteAuth: "school",
+          //       memberCount: 1919,
+          //       presidentName: "米老鼠",
+          //       notificationCount: 3,
+          //       status: "pending",
+          //       typeAliases: [],
+          //     }}
+          //   />
+          // </>
+          loading
+          ? null
+          : orgList?.map((org) => {
+              if (org.status !== "joined") {
+                return <ECACard info={org} key={org.id} />;
+              }
+            })}
       </TitledSearchBarWrapper>
     </IonPage>
   );
