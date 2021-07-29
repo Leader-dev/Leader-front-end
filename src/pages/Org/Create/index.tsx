@@ -55,7 +55,7 @@ export default () => {
         orgTypes={orgTypes}
       />
     );
-  } else if (step == 3) {
+  } else if (step === 3) {
     content = (
       <PosterSelection
         states={[poster, step]}
@@ -63,7 +63,7 @@ export default () => {
         onFinalSubmit={(event: any) => {
           event.preventDefault();
           present({ message: "发布中" });
-          console.log(detail, typeAliases, poster);
+          // console.log(detail, typeAliases, poster);
           createOrg({
             name: detail.name,
             instituteName: detail.instituteName,
