@@ -10,8 +10,15 @@ import {
   useIonRouter,
   createAnimation,
   AnimationBuilder,
+  useIonModal,
+  IonFooter,
+  IonToolbar,
+  IonTitle,
+  IonHeader,
+  IonButtons,
 } from "@ionic/react";
 import { MouseEventHandler, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import Joi from "joi";
 
 import { useToast } from "@/utils/toast";
@@ -24,6 +31,8 @@ import {
 } from "@/services/user";
 import coffeeImage from "./coffee.jpg";
 import { checkAuthcode } from "@/services/user/changePassword";
+import { usePrivacyAgreement } from "@/services/app/privacy";
+import { useUserAgreement } from "@/services/app/agreement";
 
 interface SVGIndicatorProps {
   position: 0 | 1;
@@ -99,7 +108,7 @@ const BackgroundSwipeTabs: React.FC<BackgroundSwipeTabsProps> = ({
   titleRight,
   titleLeft,
 }) => {
-  const [index, setIndex] = useState<0 | 1>(0);
+  const [index, setIndex] = useState<0 | 1>(1);
   const height = 36;
   const duration = 0.75;
   const getTitleStyles = (active: boolean): React.CSSProperties => {
@@ -282,10 +291,10 @@ const LoginByPass: React.FC<LoginSectionProps> = ({ cb, onStatChange }) => {
               .catch((err) => {
                 switch (err) {
                   case "password_incorrect":
-                    present({ message: "手机号或密码错误" });
+                    present({ message: "手机号或密码错误", color: "warning" });
                     break;
                   case "user_not_exist":
-                    present({ message: "手机号错误" });
+                    present({ message: "手机号错误", color: "warning" });
                     break;
                   default:
                     present({ message: err });
@@ -382,6 +391,10 @@ const LoginByAuth: React.FC<LoginSectionProps> = ({ cb, onStatChange }) => {
                     break;
                   case "authcode_incorrect":
                     present({ message: "验证码错误" });
+                    break;
+                  case "need_info":
+                    present({ message: "需要补充个人信息", color: "warning" });
+                    window.location.reload();
                     break;
                   default:
                     present({ message: err });
@@ -595,6 +608,17 @@ const StageOne: React.FC<{ cb: (params: StageOneCallbackParams) => void }> = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+
+  const { data: privacyTerms } = usePrivacyAgreement();
+  const { data: EULA } = useUserAgreement();
+  const [presentEULA, closeEULA] = useIonModal(MarkdownModal, {
+    md: EULA,
+    onClick: () => closeEULA(),
+  });
+  const [presentPrivacy, closePrivacy] = useIonModal(MarkdownModal, {
+    md: privacyTerms,
+    onClick: () => closePrivacy(),
+  });
   const [present] = useToast();
   return (
     <>
@@ -628,11 +652,18 @@ const StageOne: React.FC<{ cb: (params: StageOneCallbackParams) => void }> = ({
             marginRight: "4px",
           }}
           checked={agreed}
-          onClick={() => {
-            setAgreed(!agreed);
+          onIonChange={(e) => {
+            setAgreed(e.detail.checked);
           }}
         />
-        我已阅读并同意<IonText color="primary">用户协议</IonText>
+        我已阅读并同意
+        <IonText color="primary" onClick={() => presentEULA()}>
+          用户协议
+        </IonText>
+        与
+        <IonText color="primary" onClick={() => presentPrivacy()}>
+          隐私协议
+        </IonText>
       </div>
       <div style={{ margin: "24px 32px" }}>
         <IonButton
@@ -767,6 +798,34 @@ const StageThree: React.FC<{
           完成
         </IonButton>
       </div>
+    </>
+  );
+};
+
+const MarkdownModal = ({
+  md,
+  onClick,
+}: {
+  md: string;
+  onClick?: () => void;
+}) => {
+  return (
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>协议</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={onClick}>确定</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+        <div style={{ padding: "18px" }}>
+          <IonText>
+            <ReactMarkdown>{md}</ReactMarkdown>
+          </IonText>
+        </div>
+      </IonContent>
     </>
   );
 };
