@@ -51,7 +51,7 @@ export default () => {
 
         <IonToolbar>
           <IonSegment
-            mode="md"
+            // mode="md"
             value={tab}
             onIonChange={(e) => {
               setTab(e.detail.value as "org" | "project");
