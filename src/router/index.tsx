@@ -31,6 +31,7 @@ import NewTrend from "@/pages/Trends/New";
 import PersonalFavorite from "@/pages/Personal/Favorite";
 import OrgSearch from "@/pages/Org/Search";
 import ManageMemberPage from "@/pages/Org/ManageMember";
+import AccountRouter from "@/pages/Personal/Account";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -89,6 +90,7 @@ export const AppRouter: React.FC = () => {
         />
         <Route path="/org/:orgId/home" component={OrgHome} />
         <Route path="/person/favorite" component={PersonalFavorite} />
+        <Route path="/person/account" component={AccountRouter} />
         <Route exact path="/">
           <Redirect to="/tabs/trends" />
         </Route>
