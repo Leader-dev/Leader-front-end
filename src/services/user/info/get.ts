@@ -5,11 +5,11 @@ interface UserInfoResult {
   id: string;
   uid: number;
   nickname: string;
-  portraitUrl: string;
+  avatarUrl: string;
 }
 
 export const useUserInfo = () => {
   return useSWR("/user/info/get", (d) =>
-    axios(d).then((res) => res.data.info as UserInfoResult)
+    axios(d).then((res) => res.data.data.info as UserInfoResult)
   );
 };
