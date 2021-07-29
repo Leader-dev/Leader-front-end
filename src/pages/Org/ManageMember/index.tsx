@@ -3,6 +3,7 @@ import { createOrgDepartment } from "@/services/org/manage/structure/createDepar
 import { dismissOrgMember } from "@/services/org/manage/structure/dismiss";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
+import { useToast } from "@/utils/toast";
 import {
   IonAvatar,
   IonBackButton,
@@ -119,6 +120,7 @@ const ManageMemberPage = () => {
   >([undefined]);
   const departmentId = crumb[crumb.length - 1]?.id;
   const [presentAlert] = useIonAlert();
+  const [toast] = useToast();
 
   const { data: currentOrg } = useOrgDetails({ orgId });
   const { data: departments, mutate: mutateDepartmentList } = useDepartmentList(
@@ -240,7 +242,15 @@ const ManageMemberPage = () => {
                           {
                             text: "确定",
                             handler: () => {
-                              dismissOrgMember({ orgId, memberId: member.id });
+                              dismissOrgMember({
+                                orgId,
+                                memberId: member.id,
+                              }).then(() => {
+                                toast({
+                                  message: "移除成功",
+                                  color: "success",
+                                });
+                              });
                             },
                           },
                         ],
