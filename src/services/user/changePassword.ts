@@ -13,7 +13,7 @@ export const checkAuthcode = async (data: CheckAuthcodeProps) => {
 };
 
 interface ChangePasswordProps {
-  phone: string;
+  phone: string | null;
   password: string;
 }
 
