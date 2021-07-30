@@ -7,6 +7,7 @@ import { useOrgApplicationDetail } from "@/services/org/manage/apply/detail";
 import { useOrgReceivedApplications } from "@/services/org/manage/apply/listReceived";
 import { respondToOrgApplication } from "@/services/org/manage/apply/sendResult";
 import { OrgApplication } from "@/types/organization";
+import RecruitSettings from "./Settings/index";
 import {
   IonBackButton,
   IonBadge,
@@ -25,6 +26,7 @@ import {
   IonListHeader,
   IonNote,
   IonPage,
+  IonRouterOutlet,
   IonRow,
   IonSegment,
   IonSegmentButton,
@@ -33,11 +35,13 @@ import {
   IonToolbar,
   useIonRouter,
 } from "@ionic/react";
-import { add } from "ionicons/icons";
+import { add, settings } from "ionicons/icons";
 import { Fragment, useMemo, useState } from "react";
 import { Route, Switch, useParams } from "react-router";
 import { sendApplicationNotification } from "@/services/org/manage/apply/sendNotification";
 import { useToast } from "@/utils/toast";
+import { IonReactRouter } from "@ionic/react-router";
+import * as React from "react";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -66,6 +70,8 @@ const RecruitManage = () => {
     return applications.filter((a) => a.status !== "pending");
   }, [applications]);
   console.log({ applications });
+
+  const history = useIonRouter();
 
   return (
     <IonPage>
@@ -138,6 +144,13 @@ const RecruitManage = () => {
             })}
           </IonList>
         )}
+        <IonButton
+          slot={"fixed"}
+          style={{ bottom: "25px", margin: "0 15px", width: "90vw" }}
+          onClick={() => history.push("recruit/settings")}
+        >
+          <IonIcon slot={"icon-only"} icon={settings} />
+        </IonButton>
       </IonContent>
     </IonPage>
   );
@@ -447,13 +460,22 @@ export const AddNotification = () => {
 
 export default () => {
   return (
-    <Switch>
-      <Route
-        path="/org/:orgId/recruit/:applicationId/add"
-        component={AddNotification}
-      />
-      <Route path="/org/:orgId/recruit/:applicationId" component={AppDetail} />
-      <Route component={RecruitManage} />
-    </Switch>
+    <IonPage>
+      <IonRouterOutlet>
+        <Route
+          path="/org/:orgId/recruit/:applicationId/add"
+          component={AddNotification}
+        />
+        <Route
+          path="/org/:orgId/recruit/:applicationId"
+          component={AppDetail}
+        />
+        <Route exact path={"/org/:orgId/recruit"} component={RecruitManage} />
+        <Route
+          path="/org/:orgId/recruit/settings"
+          component={RecruitSettings}
+        />
+      </IonRouterOutlet>
+    </IonPage>
   );
 };
