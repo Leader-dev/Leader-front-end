@@ -4,7 +4,7 @@ import { getPublicKey } from "./key";
 import JSEncrypt from "jsencrypt";
 
 interface CheckAuthcodeProps {
-  phone: string;
+  phone: string | null;
   authcode: string;
 }
 
@@ -21,11 +21,18 @@ interface ChangePasswordProps {
 }
 
 export const changePassword = async (data: ChangePasswordProps) => {
-  const publicKey = await getPublicKey();
-  const encrypt = new JSEncrypt({});
-  encrypt.setKey(publicKey);
-  data.password = encrypt.encrypt(data.password) || undefined;
-  const d = (await axios.post("/user/change-password", data)).data;
+  const { password } = data;
+  const p = getPublicKey();
+  const crypt = new JSEncrypt({});
+  const publicKey = await p;
+  crypt.setKey(publicKey);
+  const encryptedPassword = crypt.encrypt(password);
+  const d = (
+    await axios.post("/user/change-password", {
+      phone: data.phone,
+      password: encryptedPassword,
+    })
+  ).data;
   if (d.code !== 200) {
     throw d.error;
   }
