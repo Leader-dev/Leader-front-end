@@ -11,7 +11,7 @@ interface OrgMember {
   name: string;
   title: string;
   avatarUrl: string;
-  roleName: "general_manager" | "department_manager" | "member";
+  roleName: "general-manager" | "department-manager" | "member";
 }
 
 export const listOrgMembers = async ({
