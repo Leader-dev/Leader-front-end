@@ -7,6 +7,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  useIonModal,
 } from "@ionic/react";
 import { mutateMany } from "swr-mutate-many";
 
@@ -18,21 +19,13 @@ import React, { useState } from "react";
 import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
 
 import MomentCard, { MomentInfo } from "./Component/MomentCard";
-import TopMomentItem, { TopMomentInfo } from "./Component/TopMomentItem";
+
 import MomentCardSkeleton from "./Component/MomentCardSkeleton";
 import TopMomentItemSkeleton from "./Component/TopMomentItemSkeleton";
 import { Route, RouteComponentProps } from "react-router-dom";
-import NewMoment from "./Component/NewMoment";
 import { useTrendList } from "@/services/trend/list";
 
 interface TrendsProps extends RouteComponentProps {}
-
-interface TrendsState {
-  loadingFirstTime: boolean;
-  searchText: string;
-  topMoments: TopMomentInfo[];
-  moments: MomentInfo[];
-}
 
 const Section = ({ page, onNext }: { page: number; onNext?: () => void }) => {
   const { data: cardList, isValidating } = useTrendList({
@@ -56,19 +49,7 @@ const Section = ({ page, onNext }: { page: number; onNext?: () => void }) => {
   return (
     <>
       {cardList.map((info) => (
-        <MomentCard
-          info={{
-            ...info,
-            upCount: info.likeCount,
-            userAvatar:
-              info.puppetInfo?.avatarUrl ??
-              "http://5b0988e595225.cdn.sohucs.com/images/20180702/0a5cab43989c428286a58d5e81cf2445.png",
-            username: info.puppetInfo?.nickname ?? "鳞者用户",
-            userTitle: info.anonymous
-              ? "已隐藏"
-              : `${info.orgTitle ?? "社员"} - ${info.orgName}`,
-          }}
-        />
+        <MomentCard info={info} />
       ))}
     </>
   );

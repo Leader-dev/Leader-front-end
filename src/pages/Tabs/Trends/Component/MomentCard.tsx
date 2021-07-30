@@ -9,6 +9,8 @@ import {
   IonLabel,
   IonText,
   useIonActionSheet,
+  useIonModal,
+  useIonRouter,
 } from "@ionic/react";
 import React from "react";
 import User, { UserInfo } from "./User";
@@ -21,6 +23,8 @@ import {
 } from "ionicons/icons";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { Square } from "@/components/square";
+import { AnonymousTrend, Trend } from "@/types/trend";
+import { PostDetail } from "./Detail";
 
 export interface MomentInfo extends UserInfo {
   content: string;
@@ -28,14 +32,19 @@ export interface MomentInfo extends UserInfo {
   imageUrls: string[];
 }
 
-const MomentCard = ({ info }: { info: MomentInfo }) => {
-  const { content, upCount, imageUrls } = info;
+const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
+  const router = useIonRouter();
+  const { content, likeCount: upCount, imageUrls } = info;
   const [present, dismiss] = useIonActionSheet();
   const { data: startUrl } = useStartUrl();
+  const [presentPostModal, dismissPostModal] = useIonModal(PostDetail, {
+    post: info,
+    onClose: () => dismissPostModal(),
+  });
   return (
     <IonCard>
       <IonItem style={{ marginTop: 8 }} onClick={() => {}} lines="none">
-        <User info={info} />
+        <User post={info} />
         <div slot="end">
           <IonLabel>
             <IonIcon
@@ -59,7 +68,7 @@ const MomentCard = ({ info }: { info: MomentInfo }) => {
           </IonLabel>
         </div>
       </IonItem>
-      <IonCardContent>
+      <IonCardContent onClick={() => presentPostModal()}>
         <div>{content}</div>
         {!!imageUrls.length && (
           <div
