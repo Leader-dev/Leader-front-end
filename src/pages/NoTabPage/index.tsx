@@ -1,4 +1,4 @@
-import { updateUserPortrait } from "@/services/user/info/updatePortrait";
+import { updateUserPortrait } from "@/services/user/info/updateAvatar";
 import { IonPage, IonContent } from "@ionic/react";
 import { useState } from "react";
 import * as React from "react";
