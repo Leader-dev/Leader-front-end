@@ -547,6 +547,19 @@ const ManageMemberPage = () => {
   );
 };
 
+const Label = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div style={{ margin: "12px 16px" }}>
+    <h3>{title}：</h3>
+    <div>{children}</div>
+  </div>
+);
+
 const MemberDetailPage = () => {
   const { orgId, memberId } = useParams<{ orgId: string; memberId: string }>();
   const { data: info } = useOrgMemberInfo({ orgId, memberId });
@@ -560,6 +573,7 @@ const MemberDetailPage = () => {
           <IonTitle>{info?.departmentName ?? "无部门成员"}</IonTitle>
         </IonToolbar>
       </IonHeader>
+      {/* TODO: Check for if can modify title and has title */}
       <IonContent>
         <div style={{ textAlign: "center", margin: "32px 0" }}>
           <div style={{ fontSize: "24px", marginBottom: "8px" }}>
@@ -567,6 +581,14 @@ const MemberDetailPage = () => {
           </div>
           <div>{info?.numberId}</div>
         </div>
+        <Label title="姓名">{info?.name}</Label>
+        <Label title="联系电话">
+          {info?.phone?.map((p) => <div key={p}>{p}</div>) ?? "无"}
+        </Label>
+        <Label title="邮箱">
+          {info?.email?.map((p) => <div key={p}>{p}</div>) ?? "无"}
+        </Label>
+        <Label title="现任部门名称">{info?.departmentName ?? "无"}</Label>
       </IonContent>
     </IonPage>
   );

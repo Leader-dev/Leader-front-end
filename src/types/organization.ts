@@ -67,10 +67,10 @@ export interface OrgDetailsResult {
 export interface MemberInfo {
   name: string;
   numberId: number;
-  title: string;
-  departmentName: string;
-  phone: string[];
-  email: string[];
+  title: string | null;
+  departmentName: string | null;
+  phone: string[] | null;
+  email: string[] | null;
 }
 
 interface OrgType {
