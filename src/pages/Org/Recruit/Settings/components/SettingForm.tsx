@@ -4,20 +4,21 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonItemDivider,
   IonLabel,
+  IonListHeader,
   IonNote,
   IonToggle,
   isPlatform,
 } from "@ionic/react";
 import { CSSProperties, useState } from "react";
-import { chevronForward } from "ionicons/icons";
+import { checkmarkCircle, chevronForward } from "ionicons/icons";
 import { useOrgRecruitSetting } from "@/types/recruit";
 import RecruitQuestions from "./RecruitQuestions";
 
 export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
   const { scheme, receivedApplicationCount } = recruitInfo;
-  const [open, setOpen] = useState<boolean>(scheme.open);
-  // const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(true);
   const [maximumApplication, setMaximumApplication] = useState<number>(
     scheme.maximumApplication
   );
@@ -27,34 +28,27 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
   const [questions, setQuestions] = useState<
     { question: string; required: boolean }[]
   >(scheme.questions);
-  // const [questions, setQuestions] = useState<
-  //   { question: string; required: boolean }[]
-  // >([{question: "a", required: true}]);
   const [received, setReceived] = useState<number>(receivedApplicationCount);
   let reset = false;
-
-  // const platform = isPlatform("ios")
-
-  const iOSToggleStyle = {
-    height: "20px",
-    width: "45px",
-    "--handle-width": "35%",
-  };
 
   return (
     <form>
       <IonItem>
         <IonLabel>是否开启主页申请通道</IonLabel>
-        <IonToggle checked={open} onIonChange={() => setOpen(!open)} />
+        <IonNote slot={"end"}>
+          <IonToggle checked={open} onIonChange={() => setOpen(!open)} />
+        </IonNote>
       </IonItem>
       {open ? (
         <>
-          <IonItem style={{ "--border-style": "none" }}>
+          <IonItem>
             <IonLabel>是否限制招新名额上限制</IonLabel>
-            <IonToggle
-              checked={limitChecked}
-              onIonChange={(e) => setLimitChecked(e.detail.checked)}
-            />
+            <IonNote slot={"end"}>
+              <IonToggle
+                checked={limitChecked}
+                onIonChange={(e) => setLimitChecked(e.detail.checked)}
+              />
+            </IonNote>
           </IonItem>
           {limitChecked ? (
             <IonItem>
@@ -66,7 +60,7 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
               />
             </IonItem>
           ) : (
-            <IonItem disabled>
+            <IonItem>
               <IonLabel>招新人数上限：</IonLabel>
               <IonInput
                 style={{ marginLeft: "-7px" }}
@@ -75,10 +69,10 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
             </IonItem>
           )}
           <IonItem>
-            <IonLabel>已用招新名额：{received}</IonLabel>
+            <IonLabel color={"medium"}>已用招新名额：{received}</IonLabel>
             <IonNote slot="end">
               <IonButton
-                color="warning"
+                color="danger"
                 onClick={() => {
                   reset = true;
                   setReceived(0);
@@ -89,22 +83,26 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
             </IonNote>
           </IonItem>
 
-          <h5 style={{ marginLeft: "15px", marginTop: "30px" }}>申请者审核:</h5>
+          <IonListHeader style={{ marginTop: 20, marginBottom: 0 }}>
+            <h5>申请者审核:</h5>
+          </IonListHeader>
+
           <IonItem>
-            <IonLabel style={{ color: "primary" }}>
-              <span
-                style={{
-                  color: "red",
-                  marginLeft: "14px",
-                  marginRight: "4px",
-                  fontWeight: "bold",
-                }}
-              >
-                *
-              </span>
+            <IonLabel style={{ color: "primary", marginLeft: 25 }}>
               1.
-              <span style={{ marginLeft: "6px" }}>您的姓名</span>
+              <span style={{ marginLeft: 6 }}>您的姓名</span>
             </IonLabel>
+            <IonNote slot="end">
+              <IonButton
+                color={"primary"}
+                fill="clear"
+                size="small"
+                style={{ fontSize: "15px", marginRight: "-1vw" }}
+              >
+                必填
+                <IonIcon style={{ marginLeft: 2 }} icon={checkmarkCircle} />
+              </IonButton>
+            </IonNote>
           </IonItem>
 
           <RecruitQuestions questions={questions} setQuestions={setQuestions} />

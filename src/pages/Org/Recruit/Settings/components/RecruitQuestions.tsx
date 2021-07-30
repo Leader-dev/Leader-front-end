@@ -4,6 +4,7 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonList,
   IonNote,
 } from "@ionic/react";
 import * as React from "react";
@@ -43,18 +44,15 @@ export default ({
   };
 
   return (
-    <div>
+    <IonList>
       {questions
         ? questions.map((item, index) => (
-            <IonItem
-              className="ion-no-padding"
-              style={{ marginLeft: "2px" }}
-              key={index}
-            >
+            <IonItem className="ion-no-padding" key={index}>
               <IonButton
                 size="small"
                 color="medium"
                 fill="clear"
+                style={{ marginLeft: 7 }}
                 onClick={() => handleRemove(index)}
               >
                 <IonIcon slot="icon-only" icon={closeCircle} />
@@ -76,10 +74,7 @@ export default ({
                   style={{ fontSize: "15px", marginRight: "-1vw" }}
                 >
                   必填
-                  <IonIcon
-                    style={{ marginLeft: "2px" }}
-                    icon={checkmarkCircle}
-                  />
+                  <IonIcon style={{ marginLeft: 2 }} icon={checkmarkCircle} />
                 </IonButton>
               </IonNote>
             </IonItem>
@@ -88,10 +83,10 @@ export default ({
 
       <IonIcon
         color="primary"
-        style={{ fontSize: "30px", marginLeft: "31px", marginTop: "3px" }}
+        style={{ fontSize: "30px", marginLeft: 35, marginTop: 4 }}
         icon={addCircle}
         onClick={handleAdd}
       />
-    </div>
+    </IonList>
   );
 };
