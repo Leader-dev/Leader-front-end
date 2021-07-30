@@ -8,9 +8,12 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
+  IonRow,
+  IonCol,
+  useIonRouter,
 } from "@ionic/react";
 import "./index.css";
-import { filterOutline } from "ionicons/icons";
+import { filterOutline, search } from "ionicons/icons";
 import TopAdvertisement from "./Component/TopAdvertisement";
 import TopAdvertisementSkeleton from "./Component/TopAdvertisementSkeleton";
 import RecommendOrganization from "./Component/RecommendOrganization";
@@ -20,6 +23,7 @@ import { useHomeOrg } from "@/services/org/home";
 export default () => {
   // fetch data from back end
   const { data: homeInfo, error } = useHomeOrg();
+  const history = useIonRouter();
   let adList, orgList;
   if (error) {
     // Test Data
@@ -122,11 +126,27 @@ export default () => {
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar className="blue-toolbar">
-          <IonSearchbar
-            placeholder="搜索社团"
-            style={{ "--background": "white" }}
-          />
-          <IonButtons style={{ marginRight: 8 }} slot="primary">
+          <IonRow>
+            <IonCol
+              onClick={() => {
+                history.push("/org/search");
+              }}
+              style={{
+                marginLeft: "4vw",
+                background: "white",
+                borderRadius: 12,
+                width: "100%",
+                padding: 3,
+              }}
+            >
+              <IonIcon
+                color={"medium"}
+                style={{ marginLeft: 4, marginBottom: -1, fontSize: "120%" }}
+                icon={search}
+              />
+            </IonCol>
+          </IonRow>
+          <IonButtons style={{ marginRight: "2vw" }} slot={"end"}>
             <IonButton color="light">
               <IonIcon slot="icon-only" icon={filterOutline} />
             </IonButton>

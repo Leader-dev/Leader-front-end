@@ -6,30 +6,33 @@ import {
   IonPage,
   IonSearchbar,
   IonToolbar,
-  IonBackButton,
-  IonTitle,
+  IonButton,
+  useIonRouter,
 } from "@ionic/react";
-import { chevronBack } from "ionicons/icons";
-import { useEffect, useState } from "react";
-import { useQueryOrgs } from "@/services/org/list";
+import { useState } from "react";
 import { OrgInfo } from "@/types/organization";
 import OrgCard from "@/components/OrgCard";
+import { queryOrgs } from "@/services/org/list";
 
 export default () => {
   const [searchText, setSearchText] = useState<string>("");
   const [searchResult, setSearchResult] = useState<OrgInfo[]>([]);
+  const history = useIonRouter();
 
-  let numberId = "";
-
-  // TODO use API
   const handleKeyPress = (event: any) => {
     if (event.key === "Enter") {
       console.log("enter pressed");
       const reg = /^[0-9]{6}$/;
       if (reg.test(searchText)) {
         // @ts-ignore
-        numberId = reg.exec(searchText)[0];
-        console.log(numberId);
+        let numberId = reg.exec(searchText)[0];
+        queryOrgs({ pageSize: 99, numberId: numberId }).then((r) =>
+          setSearchResult(r.list)
+        );
+      } else {
+        queryOrgs({ pageSize: 99, queryName: searchText }).then((r) =>
+          setSearchResult(r.list)
+        );
       }
     }
   };
@@ -37,25 +40,22 @@ export default () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
-        <IonToolbar
-          style={{
-            "--background": "var(--ion-color-blue)",
-            "--color": "white",
-          }}
-        >
-          <IonButtons>
-            <IonBackButton icon={chevronBack} text="" />
-          </IonButtons>
-          <IonTitle>社团组织</IonTitle>
-        </IonToolbar>
         <IonToolbar style={{ "--background": "var(--ion-color-blue)" }}>
           <IonSearchbar
-            placeholder="社团名称/社团号"
-            style={{ "--background": "white" }}
+            placeholder="请输入社团名称/社团号"
+            style={{ "--background": "white", "--border-radius": "12px" }}
             value={searchText}
             onIonChange={(e) => setSearchText(e.detail.value!)}
             onKeyPress={handleKeyPress}
           />
+          <IonButtons slot={"end"}>
+            <IonButton
+              style={{ "--color": "white", marginRight: "8px" }}
+              onClick={() => history.goBack()}
+            >
+              取消
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
