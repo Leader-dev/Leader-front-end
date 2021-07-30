@@ -8,14 +8,18 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { construct } from "ionicons/icons";
+import { useLocation } from "react-router";
 
 export const WIPIndicator = () => {
+  const location = useLocation();
   return (
     <IonPage>
       <IonToolbar>
-        <IonButtons slot="start">
-          <IonBackButton defaultHref="/" />
-        </IonButtons>
+        {location.pathname.startsWith("/tabs") ? null : (
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
+        )}
         <IonTitle>糟糕</IonTitle>
       </IonToolbar>
       <IonContent fullscreen>
