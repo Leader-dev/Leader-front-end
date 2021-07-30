@@ -1,5 +1,6 @@
 import { useOrgDetails } from "@/services/org/detail";
 import { createOrgDepartment } from "@/services/org/manage/structure/createDepartment";
+import { deleteOrgDepartment } from "@/services/org/manage/structure/deleteDepartment";
 import { dismissOrgMember } from "@/services/org/manage/structure/dismiss";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
@@ -125,15 +126,18 @@ const EditDepartment = ({
   child,
   onClose,
   onSubmit,
+  onDelete,
 }: {
   onClose?: () => void;
   onSubmit: (data: { name: string }) => void;
+  onDelete: () => void;
   name: string;
   members: Array<any>;
-  previous: string;
+  previous: string | null;
   child: string[];
 }) => {
   const [n, setN] = useState(name);
+  const [presentAlert] = useIonAlert();
   useEffect(() => {
     setN(name);
   }, [name]);
@@ -198,7 +202,7 @@ const EditDepartment = ({
         <IonItem>
           <IonLabel>
             <h3>上级部门</h3>
-            {previous}
+            {previous ?? "无"}
           </IonLabel>
         </IonItem>
         <IonListHeader>
@@ -209,6 +213,37 @@ const EditDepartment = ({
         ) : (
           <IonItem>无</IonItem>
         )}
+        {previous ? (
+          <div
+            style={{
+              marginLeft: "18px",
+              marginRight: "18px",
+              marginTop: "32px",
+            }}
+          >
+            <IonButton
+              expand="block"
+              color="danger"
+              onClick={() => {
+                presentAlert({
+                  header: `注销部门`,
+                  message: `确定要注销${name}吗？`,
+                  buttons: [
+                    "取消",
+                    {
+                      text: "确定",
+                      handler: () => {
+                        onDelete();
+                      },
+                    },
+                  ],
+                });
+              }}
+            >
+              注销部门
+            </IonButton>
+          </div>
+        ) : null}
       </IonContent>
     </>
   );
@@ -273,9 +308,21 @@ const ManageMemberPage = () => {
     onClose: () => {
       dismissEditModal();
     },
+    onDelete: () => {
+      if (departmentId)
+        deleteOrgDepartment({ orgId, departmentId }).then(() => {
+          mutateDepartmentList();
+          setCrumb((c) => c.slice(0, c.length - 1));
+          toast({ message: "部门已删除", color: "success" });
+          dismissEditModal();
+        });
+    },
     name: !departmentId ? currentOrg?.detail.name : departmentName,
     members: memberList,
-    previous: crumb[crumb.length - 2]?.name ?? currentOrg?.detail.name,
+    previous:
+      crumb.length > 1
+        ? crumb[crumb.length - 2]?.name ?? currentOrg?.detail.name
+        : null,
     child: departments?.map((d) => d.name),
   });
   console.log({
