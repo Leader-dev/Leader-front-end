@@ -5,6 +5,7 @@ import { useDepartmentList } from "@/services/org/manage/structure/listDepartmen
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import { useOrgMemberInfo } from "@/services/org/manage/structure/memberInfo";
 import { editDepartmentName } from "@/services/org/manage/structure/renameDepartment";
+import { MemberInfo } from "@/types/organization";
 import { useToast } from "@/utils/toast";
 import {
   IonAvatar,
@@ -119,7 +120,7 @@ const NewDepartment = ({
 
 const EditDepartment = ({
   name,
-  memberCount,
+  members,
   previous,
   child,
   onClose,
@@ -128,7 +129,7 @@ const EditDepartment = ({
   onClose?: () => void;
   onSubmit: (data: { name: string }) => void;
   name: string;
-  memberCount: number;
+  members: Array<any>;
   previous: string;
   child: string[];
 }) => {
@@ -164,15 +165,48 @@ const EditDepartment = ({
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonListHeader>
+          <IonLabel>基本信息</IonLabel>
+        </IonListHeader>
         <IonItem>
-          <IonLabel>部门名称</IonLabel>
-          <IonInput
-            value={n}
-            onIonChange={(e) => {
-              setN(e.detail.value!);
-            }}
-          />
+          <IonLabel>
+            <h3>部门名称</h3>
+            <IonInput
+              value={n}
+              onIonChange={(e) => {
+                setN(e.detail.value!);
+              }}
+            />
+          </IonLabel>
         </IonItem>
+        <IonItem>
+          <IonLabel>
+            <h3>部门总人数</h3>
+            {members.length}
+          </IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>
+            <h3>部门管理员数</h3>
+            {
+              members.filter(
+                (member) => member.roleName === "department-manager"
+              ).length
+            }
+          </IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>
+            <h3>上级部门</h3>
+            {previous}
+          </IonLabel>
+        </IonItem>
+        <IonListHeader>
+          <IonLabel>子部门</IonLabel>
+        </IonListHeader>
+        {child.map((i) => (
+          <IonItem key={i}>{i}</IonItem>
+        ))}
       </IonContent>
     </>
   );
@@ -234,10 +268,10 @@ const ManageMemberPage = () => {
     onClose: () => {
       dismissEditModal();
     },
-    name: !departmentId ? "" : departmentName,
-    memberCount: memberList?.length,
-    previous: crumb[crumb.length - 2],
-    child: departments,
+    name: !departmentId ? currentOrg?.detail.name : departmentName,
+    members: memberList,
+    previous: departmentId ? crumb[crumb.length - 2]?.name : "无",
+    child: departments?.map((d) => d.name),
   });
   console.log({
     memberList,
@@ -451,7 +485,7 @@ const ManageMemberPage = () => {
           <IonButton
             style={{ width: "50%", flexGrow: 1 }}
             onClick={() => presentEditModal()}
-            disabled={!departmentId}
+            // disabled={!departmentId}
           >
             部门管理
           </IonButton>
