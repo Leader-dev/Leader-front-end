@@ -178,6 +178,10 @@ const EditDepartment = ({
   );
 };
 
+const AddManager = ({}: { onSubmit: string; onClose: () => void }) => {
+  return;
+};
+
 const ManageMemberPage = () => {
   console.log("DUH");
   const router = useIonRouter();
@@ -252,26 +256,28 @@ const ManageMemberPage = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <Breadcrumb
-          path={[
-            {
-              name: currentOrg?.detail.name!,
-              onClick: () => {
-                setCrumb([undefined]);
+        <div style={{ padding: "8px 18px" }}>
+          <Breadcrumb
+            path={[
+              {
+                name: currentOrg?.detail.name!,
+                onClick: () => {
+                  setCrumb([undefined]);
+                },
               },
-            },
-            ...(crumb.slice(1) as { name: string; id: string }[]).map(
-              (item, index) => {
-                return {
-                  ...item,
-                  onClick: () => {
-                    setCrumb((s) => s.slice(0, index + 2));
-                  },
-                };
-              }
-            ),
-          ]}
-        />
+              ...(crumb.slice(1) as { name: string; id: string }[]).map(
+                (item, index) => {
+                  return {
+                    ...item,
+                    onClick: () => {
+                      setCrumb((s) => s.slice(0, index + 2));
+                    },
+                  };
+                }
+              ),
+            ]}
+          />
+        </div>
         <IonList>
           <IonListHeader>
             <IonLabel>子部门</IonLabel>
