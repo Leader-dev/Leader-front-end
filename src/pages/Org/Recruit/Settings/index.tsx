@@ -15,8 +15,9 @@ import {
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
 import { useOrgApplicationSetting } from "@/services/org/manage/apply/setting/getScheme";
-import { Route, Switch, useParams } from "react-router";
+import { useParams } from "react-router";
 import SettingForm from "./components/SettingForm";
+import { ToolbarWithBackButton } from "../../../../components/ToolbarWithBackButton";
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -31,12 +32,7 @@ export default () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons>
-            <IonBackButton text="" icon={chevronBack} />
-          </IonButtons>
-          <IonTitle>招新设置</IonTitle>
-        </IonToolbar>
+        <ToolbarWithBackButton title={"招新设置"} />
       </IonHeader>
       <IonContent fullscreen>{content}</IonContent>
     </IonPage>
