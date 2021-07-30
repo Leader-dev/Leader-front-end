@@ -204,9 +204,11 @@ const EditDepartment = ({
         <IonListHeader>
           <IonLabel>子部门</IonLabel>
         </IonListHeader>
-        {child.map((i) => (
-          <IonItem key={i}>{i}</IonItem>
-        ))}
+        {child.length ? (
+          child.map((i) => <IonItem key={i}>{i}</IonItem>)
+        ) : (
+          <IonItem>无</IonItem>
+        )}
       </IonContent>
     </>
   );
@@ -261,6 +263,9 @@ const ManageMemberPage = () => {
           orgId,
           departmentId,
           name,
+        }).then(() => {
+          setCrumb((c) => c.slice(0, c.length - 1));
+          mutateDepartmentList();
         });
       }
       dismissEditModal();
@@ -270,11 +275,11 @@ const ManageMemberPage = () => {
     },
     name: !departmentId ? currentOrg?.detail.name : departmentName,
     members: memberList,
-    previous: departmentId ? crumb[crumb.length - 2]?.name : "无",
+    previous: crumb[crumb.length - 2]?.name ?? currentOrg?.detail.name,
     child: departments?.map((d) => d.name),
   });
   console.log({
-    memberList,
+    crumb,
   });
   return (
     <IonPage>
