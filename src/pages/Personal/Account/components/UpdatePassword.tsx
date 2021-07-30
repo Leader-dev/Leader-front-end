@@ -15,6 +15,7 @@ import { sendPhoneAuthCode } from "@/services/user";
 import { useToast } from "@/utils/toast";
 import { checkAuthcode } from "@/services/user/changePassword";
 import { changePassword } from "@/services/user";
+import { useUserPhone } from "@/services/user/phone";
 
 const CheckAuth = ({
   states,
@@ -30,11 +31,11 @@ const CheckAuth = ({
   const [setAuthCode, setStep] = setStates;
 
   const handleOnClick = () => {
-    checkAuthcode({ phone: phone, authcode: authCode })
+    checkAuthcode({ phone: null, authcode: authCode })
       .then(() => setStep(step + 1))
       .catch((err) => {
         switch (err) {
-          case "user_not_exist":
+          case "phone_not_exist":
             present({ message: "手机号错误" });
             break;
           case "authcode_incorrect":
@@ -48,11 +49,18 @@ const CheckAuth = ({
 
   return (
     <>
-      <div style={{ textAlign: "center" }}>
-        为了您的账户安全，需要验证您的手机
-      </div>
-      <div style={{ textAlign: "center" }}>
-        {phone.slice(0, 4)}*****{phone.slice(-3)}
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: "90%",
+          marginTop: "25px",
+          marginBottom: "15px",
+        }}
+      >
+        <div>为了您的账户安全，需要验证您的手机</div>
+        <div>
+          {phone.slice(0, 4)}*****{phone.slice(-3)}
+        </div>
       </div>
       <IonItem>
         <IonLabel>验证码</IonLabel>
@@ -93,7 +101,6 @@ const CheckAuth = ({
   );
 };
 
-// TODO password encryption
 const ChangePass = () => {
   const Joi = require("joi");
   const [present] = useToast();
@@ -113,7 +120,7 @@ const ChangePass = () => {
           present({ message: "修改成功" });
           history.push("info-security");
         })
-        .catch((err) => present({ message: "error" }));
+        .catch((err) => present({ message: err }));
     } else {
       switch (error.details[0].message) {
         case '"password" is not allowed to be empty':
@@ -166,7 +173,11 @@ const ChangePass = () => {
 export default () => {
   const [authCode, setAuthCode] = useState<number>();
   const [step, setStep] = useState<number>(1);
-  const phone = "13530425596";
+  let { data: phone, error } = useUserPhone();
+
+  if (!phone) {
+    return <div>loading</div>;
+  }
 
   let content;
   if (step === 1) {
