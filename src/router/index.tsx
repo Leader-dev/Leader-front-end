@@ -91,9 +91,6 @@ export const AppRouter: React.FC = () => {
         <Route path="/org/:orgId/home" component={OrgHome} />
         <Route path="/person/favorite" component={PersonalFavorite} />
         <Route path="/person/account" component={AccountRouter} />
-        <Route exact path="/">
-          <Redirect to="/tabs/trends" />
-        </Route>
         <Route component={WIPIndicator} />
       </IonRouterOutlet>
     </IonReactRouter>
