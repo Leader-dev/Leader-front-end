@@ -22,11 +22,11 @@ interface QueryOrgsResult {
 }
 
 export const queryOrgs = async (data: QueryOrgsParams) => {
-  return (await axios.post("/org/list", data)).data.data as QueryOrgsResult;
+  return (await axios.post("/org/list", data)).data.result as QueryOrgsResult;
 };
 
 export const useQueryOrgs = (data: QueryOrgsParams) => {
   return useSWR(["/org/list", data], (url, d) =>
-    axios.post(url, d).then((res) => res.data.data as QueryOrgsResult)
+    axios.post(url, d).then((res) => res.data.result as QueryOrgsResult)
   );
 };
