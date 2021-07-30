@@ -33,6 +33,10 @@ import {
   alert as alertIcon,
   people,
   today,
+  gitCompareOutline,
+  reorderFour,
+  reader,
+  shieldCheckmark,
 } from "ionicons/icons";
 import * as React from "react";
 import { useState } from "react";
@@ -43,21 +47,23 @@ const Item = ({
   name,
   icon,
   link,
+  background,
 }: {
   name: string;
   icon: string;
   link?: string;
+  background?: string;
 }) => {
   return (
     <IonCol style={{ textAlign: "center", padding: "16px" }} size="3">
       <Link
-        to={link || ""}
+        to={link || "/"}
         style={{ textDecoration: "none", color: "inherit" }}
       >
         <div
           style={{
             borderRadius: "12px",
-            background: "var(--ion-color-primary)",
+            background: background ?? "var(--ion-color-primary)",
             aspectRatio: "1/1",
             display: "flex",
             marginBottom: "6px",
@@ -209,12 +215,40 @@ export default () => {
           <div>
             <IonGrid style={{ gap: "1rem" }}>
               <IonRow>
-                <Item name="公告管理" icon={megaphone} />
-                <Item name="任务管理" icon={list} />
-                <Item name="考勤管理" icon={stopwatch} />
-                <Item name="请假管理" icon={today} />
-                <Item name="时间线管理" icon={people} />
-                <Item name="招新管理" icon={people} link="recruit" />
+                <Item name="公告管理" icon={megaphone} background="#5bc44c" />
+                <Item name="任务管理" icon={list} background="#5bc44c" />
+                <Item name="考勤管理" icon={stopwatch} background="#5bc44c" />
+                <Item name="请假管理" icon={today} background="#5bc44c" />
+                <Item
+                  name="时间线管理"
+                  icon={reorderFour}
+                  background="#5bc44c"
+                />
+                <Item
+                  name="招新管理"
+                  icon={people}
+                  link="recruit"
+                  background="#5bc44c"
+                />
+              </IonRow>
+              <IonRow>
+                <Item
+                  name="转移本人权限"
+                  icon={gitCompareOutline}
+                  background="#434343"
+                />
+                <Item
+                  name="架构与成员"
+                  icon={people}
+                  link="manage-members"
+                  background="#434343"
+                />
+                <Item name="对外资料" icon={reader} background="#434343" />
+                <Item
+                  name="核心认证"
+                  icon={shieldCheckmark}
+                  background="#434343"
+                />
               </IonRow>
             </IonGrid>
           </div>
