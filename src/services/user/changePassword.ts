@@ -1,5 +1,8 @@
 import axios from "@/utils/request";
 
+import { getPublicKey } from "./key";
+import JSEncrypt from "jsencrypt";
+
 interface CheckAuthcodeProps {
   phone: string;
   authcode: string;
@@ -18,6 +21,10 @@ interface ChangePasswordProps {
 }
 
 export const changePassword = async (data: ChangePasswordProps) => {
+  const publicKey = await getPublicKey();
+  const encrypt = new JSEncrypt({});
+  encrypt.setKey(publicKey);
+  data.password = encrypt.encrypt(data.password) || undefined;
   const d = (await axios.post("/user/change-password", data)).data;
   if (d.code !== 200) {
     throw d.error;
