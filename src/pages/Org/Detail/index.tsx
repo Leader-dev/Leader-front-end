@@ -29,6 +29,7 @@ import {
   addOrgToFavorite,
   removeOrgFromFavorite,
 } from "@/services/org/favorite";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -108,11 +109,13 @@ export default () => {
     }
   };
 
+  const startUrl = useStartUrl();
+
   return (
     <IonPage>
       <IonHeader
         style={{
-          backgroundImage: 'url("' + backgroundUrl + '")',
+          backgroundImage: 'url("' + startUrl + backgroundUrl + '")',
           height: "80vw",
         }}
       >
@@ -145,11 +148,10 @@ export default () => {
                 }}
                 onClick={handleFavorite}
               >
-                {favorite ? (
-                  <IonIcon slot="icon-only" icon={heart} />
-                ) : (
-                  <IonIcon slot="icon-only" icon={heartOutline} />
-                )}
+                <IonIcon
+                  slot="icon-only"
+                  icon={favorite ? heart : heartOutline}
+                />
               </IonButton>
               <IonButton
                 shape="round"
