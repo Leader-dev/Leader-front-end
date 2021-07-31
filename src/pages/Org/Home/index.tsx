@@ -96,11 +96,9 @@ export default () => {
   console.log({ orgDetails, startUrl });
   return (
     <IonPage>
-      <IonContent>
-        <div style={{ position: "relative", color: "white" }}>
-          <IonToolbar
-            style={{ justifyContent: "space-between", "--background": "none" }}
-          >
+      <IonHeader style={{ height: "65vw" }}>
+        <div style={{ color: "white", position: "relative", height: "100%" }}>
+          <IonToolbar style={{ "--background": "none" }}>
             <IonButtons slot="start">
               <IonBackButton
                 style={{ width: "38", "--color": "white" }}
@@ -108,24 +106,6 @@ export default () => {
                 text=""
               />
             </IonButtons>
-            {isIos && (
-              <IonSegment
-                value={tab}
-                style={{
-                  "--background": "rgba(146, 148, 156, 0.8)",
-                }}
-                onIonChange={(e) => {
-                  setTab(e.detail.value as "user" | "manage");
-                }}
-              >
-                <IonSegmentButton value="user">
-                  <IonLabel>成员功能</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="manage">
-                  <IonLabel>社团管理</IonLabel>
-                </IonSegmentButton>
-              </IonSegment>
-            )}
             <IonButtons slot="end">
               <IonButton style={{ width: "38" }}>
                 <IonIcon style={{ color: "white" }} icon={person} />
@@ -141,38 +121,60 @@ export default () => {
               zIndex: -1,
               filter: "brightness(50%)",
               position: "absolute",
-              width: "100%",
-              height: "100%",
+              width: "100vw",
+              height: "65vw",
               objectFit: "cover",
             }}
           />
-          <div style={{ padding: "46px", textAlign: "center" }}>
+          <div
+            style={{
+              position: "absolute",
+              top: "38%",
+              width: "100%",
+              textAlign: "center",
+            }}
+          >
             <h3>{orgDetails?.name}</h3>
           </div>
           <div
-            style={{ padding: "8px", fontSize: "120%", textAlign: "center" }}
+            style={{
+              position: "absolute",
+              bottom: "30px",
+              width: "100%",
+              fontSize: "120%",
+              textAlign: "center",
+            }}
           >
             {userInfo?.nickname}
           </div>
-          <div style={{ padding: "8px", fontSize: "70%", textAlign: "center" }}>
+          <div
+            style={{
+              position: "absolute",
+              bottom: "10px",
+              width: "100%",
+              fontSize: "85%",
+              textAlign: "center",
+            }}
+          >
             {userInfo?.uid}
           </div>
         </div>
-        {!isIos && (
-          <IonSegment
-            value={tab}
-            onIonChange={(e) => {
-              setTab(e.detail.value as "user" | "manage");
-            }}
-          >
-            <IonSegmentButton value="user">
-              <IonLabel>成员功能</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="manage">
-              <IonLabel>社团管理</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        )}
+      </IonHeader>
+      <IonContent fullscreen>
+        <IonSegment
+          mode={"md"}
+          value={tab}
+          onIonChange={(e) => {
+            setTab(e.detail.value as "user" | "manage");
+          }}
+        >
+          <IonSegmentButton value="user">
+            <IonLabel style={{ fontSize: "120%" }}>成员功能</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="manage">
+            <IonLabel style={{ fontSize: "120%" }}>社团管理</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
         {tab === "user" ? (
           <div>
             <div>
