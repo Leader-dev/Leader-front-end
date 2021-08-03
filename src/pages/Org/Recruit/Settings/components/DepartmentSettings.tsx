@@ -162,11 +162,7 @@ export const DepartmentSettings = () => {
     content = departments.map((department, index) => {
       // const {data, error} = useRecruitManagerInfo({orgId: orgId, departmentId: department.id})
       return (
-        <IonItem
-          key={index}
-          button
-          routerLink={`/departments/${department.id}`}
-        >
+        <IonItem key={index} button routerLink={`departments/${department.id}`}>
           <IonLabel>{department}</IonLabel>
           {/*<IonBadge slot={"end"} color={"primary"}>*/}
           {/*  {data.memberId ? data.memberId.length : 0}*/}
