@@ -14,6 +14,7 @@ import {
   IonNote,
   IonPage,
   IonText,
+  useIonRouter,
 } from "@ionic/react";
 import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
@@ -23,6 +24,7 @@ import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import { OrgMember } from "@/types/organization";
 import { checkmarkCircle } from "ionicons/icons";
 import { useEffect, useState } from "react";
+import { setRecruitMangerInfo } from "@/services/org/manage/apply/setting/setRecruitMangerInfo";
 
 const MemberCard = ({
   memberInfo,
@@ -32,7 +34,7 @@ const MemberCard = ({
 }: {
   memberInfo: OrgMember;
   index: number;
-  select: boolean[];
+  select: { memberId: string; selectState: boolean };
   onSelect: any;
 }) => {
   return (
@@ -50,7 +52,7 @@ const MemberCard = ({
           {memberInfo.id}
         </p>
       </IonLabel>
-      {select[index] ? (
+      {select.selectState ? (
         <IonNote slot={"end"}>
           <IonIcon color={"primary"} icon={checkmarkCircle} />
         </IonNote>
@@ -70,13 +72,19 @@ export const DepartmentPage = () => {
   });
   const { data: recruitManager, error: recruitManagerError } =
     useRecruitManagerInfo({ orgId: orgId, departmentId: departmentId });
-  const [select, setSelect] = useState<boolean[]>([]);
+  const [select, setSelect] = useState<
+    { memberId: string; selectState: boolean }[]
+  >([]);
 
   useEffect(() => {
     if (members) {
-      setSelect(Array(members.length).fill(false));
+      setSelect(
+        members.map((member) => ({ memberId: member.id, selectState: false }))
+      );
     }
   }, [members]);
+
+  const history = useIonRouter();
 
   let content;
   let departmentName = "";
@@ -87,17 +95,17 @@ export const DepartmentPage = () => {
       arr.reduce((a, v) => (v === value ? a + 1 : a), 0);
 
     const checkSelect = (index: any) => {
-      if (select[index]) {
+      if (select[index].selectState) {
         if (
           counts(select, true) <= recruitManager.departments.recruitManagerCount
         ) {
           let newSelect = [...select];
-          newSelect[index] = !newSelect[index];
+          newSelect[index].selectState = !newSelect[index];
           setSelect(newSelect);
         }
       } else {
         let newSelect = [...select];
-        newSelect[index] = !newSelect[index];
+        newSelect[index].selectState = !newSelect[index];
         setSelect(newSelect);
       }
     };
@@ -107,30 +115,37 @@ export const DepartmentPage = () => {
         <IonList>
           <IonListHeader>
             <h5>添加招新审核人：</h5>
-            <IonBadge>
-              {" "}
-              {recruitManager.memberId
-                ? recruitManager.memberId.length
-                : 0}/1{" "}
-            </IonBadge>
+            <IonBadge>{counts(select, true)}/1</IonBadge>
           </IonListHeader>
           {members.map((member, index) => {
             if (recruitManager.memberId.indexOf(member.id) !== -1) {
               let newSelect = [...select];
-              newSelect[index] = true;
+              newSelect[index].selectState = true;
               setSelect(newSelect);
             }
             return (
               <MemberCard
                 memberInfo={member}
                 index={index}
-                select={select}
+                select={select[index]}
                 onSelect={() => checkSelect(index)}
               />
             );
           })}
         </IonList>
-        <IonButton style={{ margin: "25px 15px" }} expand="block">
+        <IonButton
+          style={{ margin: "25px 15px" }}
+          expand="block"
+          onClick={() => {
+            setRecruitMangerInfo({
+              orgId: orgId,
+              departmentId: departmentId,
+              memberId: select
+                .filter((member) => member.selectState === true)
+                .map((member) => member.memberId),
+            }).then(() => history.goBack());
+          }}
+        >
           确认
         </IonButton>
       </>
