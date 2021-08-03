@@ -27,3 +27,8 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+
+# Deployment
+.firebaserc
+my-release-key.keystore
+/firebase.json
