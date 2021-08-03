@@ -4,21 +4,19 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonItemDivider,
   IonLabel,
   IonListHeader,
   IonNote,
   IonToggle,
-  isPlatform,
 } from "@ionic/react";
-import { CSSProperties, useState } from "react";
+import { useState } from "react";
 import { checkmarkCircle, chevronForward } from "ionicons/icons";
 import { useOrgRecruitSetting } from "@/types/recruit";
 import RecruitQuestions from "./RecruitQuestions";
 
 export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
   const { scheme, receivedApplicationCount } = recruitInfo;
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(scheme.open);
   const [maximumApplication, setMaximumApplication] = useState<number>(
     scheme.maximumApplication
   );
@@ -109,7 +107,7 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
 
           <IonItem>
             <IonLabel>添加各部门招新审核人</IonLabel>
-            <IonButton fill="clear">
+            <IonButton fill="clear" routerLink={"departments"}>
               点击设置
               <IonIcon icon={chevronForward} />
             </IonButton>

@@ -40,8 +40,11 @@ import { Fragment, useMemo, useState } from "react";
 import { Route, Switch, useParams } from "react-router";
 import { sendApplicationNotification } from "@/services/org/manage/apply/sendNotification";
 import { useToast } from "@/utils/toast";
-import { IonReactRouter } from "@ionic/react-router";
 import * as React from "react";
+import {
+  DepartmentSettings,
+  DepartmentPage,
+} from "./Settings/components/DepartmentSettings";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -474,6 +477,14 @@ export default () => {
         <Route
           path="/org/:orgId/recruit/settings"
           component={RecruitSettings}
+        />
+        <Route
+          path="/org/:orgId/recruit/departments"
+          component={DepartmentSettings}
+        />
+        <Route
+          path="/org/:orgId/recruit/departments/:departmentId"
+          component={DepartmentPage}
         />
       </IonRouterOutlet>
     </IonPage>
