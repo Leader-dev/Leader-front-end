@@ -1,17 +1,10 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
+import { OrgMember } from "@/types/organization";
 
 interface ListOrgMembersParams {
   departmentId?: string;
   orgId: string;
-}
-
-interface OrgMember {
-  id: string;
-  name: string;
-  title: string;
-  avatarUrl: string;
-  roleName: "general-manager" | "department-manager" | "member";
 }
 
 export const listOrgMembers = async ({
