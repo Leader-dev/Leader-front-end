@@ -130,7 +130,7 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
           {appointDepartment ? (
             <IonItem>
               <IonLabel>添加各部门招新审核人</IonLabel>
-              <IonButton fill="clear" routerLink={"departments"}>
+              <IonButton fill="clear" routerLink={"settings/departments"}>
                 点击设置
                 <IonIcon icon={chevronForward} />
               </IonButton>

@@ -45,6 +45,7 @@ import {
   DepartmentSettings,
   DepartmentPage,
 } from "./Settings/components/DepartmentSettings";
+import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -79,13 +80,7 @@ const RecruitManage = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons>
-            <IonBackButton />
-          </IonButtons>
-
-          <IonTitle>招新</IonTitle>
-        </IonToolbar>
+        <ToolbarWithBackButton title={"招新管理"} />
       </IonHeader>
       <IonContent>
         <IonSegment
@@ -102,11 +97,7 @@ const RecruitManage = () => {
               const time = new Date(a.sendDate);
               console.log({ time });
               return (
-                <IonItem
-                  key={a.id}
-                  detail
-                  routerLink={`/org/${orgId}/recruit/${a.id}`}
-                >
+                <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
                   <IonLabel>
                     <h2>{a.name}</h2>
                     <div>申请人：{a.applicantInfo.nickname}</div>
@@ -127,11 +118,7 @@ const RecruitManage = () => {
               const time = new Date(a.sendDate);
               console.log({ time });
               return (
-                <IonItem
-                  key={a.id}
-                  detail
-                  routerLink={`/org/${orgId}/recruit/${a.id}`}
-                >
+                <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
                   <IonLabel>
                     <h2>{a.name}</h2>
                     <div>申请人：{a.applicantInfo.nickname}</div>
@@ -150,7 +137,7 @@ const RecruitManage = () => {
         <IonButton
           slot={"fixed"}
           style={{ bottom: "25px", margin: "0 15px", width: "90vw" }}
-          onClick={() => history.push("recruit/settings")}
+          routerLink={"recruit/settings"}
         >
           <IonIcon slot={"icon-only"} icon={settings} />
         </IonButton>
@@ -224,12 +211,7 @@ const AppDetail = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton />
-          </IonButtons>
-          <IonTitle>加入申请</IonTitle>
-        </IonToolbar>
+        <ToolbarWithBackButton title={"加入申请"} />
       </IonHeader>
       <IonContent fullscreen>
         <div
@@ -257,7 +239,7 @@ const AppDetail = () => {
                 slot="end"
                 shape="round"
                 size="small"
-                routerLink={`/org/${orgId}/recruit/${applicationId}/add`}
+                routerLink={`add`}
               >
                 <IonIcon icon={add} />
               </IonButton>
@@ -341,12 +323,7 @@ export const AddNotification = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton />
-          </IonButtons>
-          <IonTitle>发布通知</IonTitle>
-        </IonToolbar>
+        <ToolbarWithBackButton title={"发布通知"} />
       </IonHeader>
       <IonContent>
         <IonList style={{ paddingTop: "24px", marginBottom: "24px" }}>
@@ -364,10 +341,9 @@ export const AddNotification = () => {
             <IonLabel>通知内容</IonLabel>
           </IonListHeader>
           <IonItem>
-            <IonLabel>上传文字</IonLabel>
             <IonTextarea
               rows={4}
-              placeholder="可以多行输入哦"
+              placeholder="可以输入多行哦"
               value={content}
               onIonChange={(e) => setContent(e.detail.value!)}
             />
@@ -435,6 +411,7 @@ export const AddNotification = () => {
         <IonButton
           fill="solid"
           expand="block"
+          style={{ margin: "15px 25px" }}
           onClick={() => {
             sendApplicationNotification({
               orgId,
@@ -465,25 +442,26 @@ export default () => {
   return (
     <IonPage>
       <IonRouterOutlet>
+        <Route exact path={"/org/:orgId/recruit"} component={RecruitManage} />
         <Route
           path="/org/:orgId/recruit/:applicationId/add"
           component={AddNotification}
         />
         <Route
-          path="/org/:orgId/recruit/:applicationId"
+          path="/org/:orgId/recruit/:applicationId/home"
           component={AppDetail}
         />
-        <Route exact path={"/org/:orgId/recruit"} component={RecruitManage} />
         <Route
+          exact
           path="/org/:orgId/recruit/settings"
           component={RecruitSettings}
         />
         <Route
-          path="/org/:orgId/recruit/departments"
+          path="/org/:orgId/recruit/settings/departments"
           component={DepartmentSettings}
         />
         <Route
-          path="/org/:orgId/recruit/departments/:departmentId"
+          path="/org/:orgId/recruit/settings/departments/:departmentId"
           component={DepartmentPage}
         />
       </IonRouterOutlet>
