@@ -1,23 +1,9 @@
 import * as React from "react";
-import {
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonToolbar,
-  IonBackButton,
-  IonTitle,
-  IonLabel,
-  IonToggle,
-  IonItem,
-  IonInput,
-  IonButton,
-} from "@ionic/react";
-import { chevronBack } from "ionicons/icons";
+import { IonContent, IonHeader, IonPage } from "@ionic/react";
 import { useOrgApplicationSetting } from "@/services/org/manage/apply/setting/getScheme";
 import { useParams } from "react-router";
 import SettingForm from "./components/SettingForm";
-import { ToolbarWithBackButton } from "../../../../components/ToolbarWithBackButton";
+import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
