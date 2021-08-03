@@ -81,3 +81,11 @@ interface OrgType {
 export interface OrgTypes {
   [key: string]: OrgType;
 }
+
+export interface OrgMember {
+  id: string;
+  name: string;
+  title: string;
+  avatarUrl: string;
+  roleName: "general-manager" | "department-manager" | "member";
+}
