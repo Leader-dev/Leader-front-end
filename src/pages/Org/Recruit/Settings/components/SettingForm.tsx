@@ -152,8 +152,7 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
                   questions: questions,
                 },
                 resetReceivedApplicationCount: received === 0,
-              });
-              history.goBack();
+              }).then(() => history.goBack());
             }}
           >
             确认
