@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { OrgInfo } from "@/types/organization";
-import OrgCard from "@/components/OrgCard";
+import OrgCard from "@/pages/Org/components/OrgCard";
 import { queryOrgs } from "@/services/org/list";
 
 export default () => {
