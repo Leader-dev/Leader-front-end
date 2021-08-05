@@ -4,6 +4,7 @@ import useSWR from "swr";
 interface GetOrgPublicInfoResult {
   name: string;
   address: string;
+  instituteName: string;
   introduction: string;
   phone: string[];
   email: string[];
