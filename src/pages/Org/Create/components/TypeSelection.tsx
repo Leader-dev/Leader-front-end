@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  IonBadge,
-  IonButton,
-  IonItem,
-  IonItemDivider,
-  IonLabel,
-  IonList,
-  IonListHeader,
-} from "@ionic/react";
+import { IonBadge, IonButton } from "@ionic/react";
 import { useState } from "react";
 import { OrgTypes } from "@/types/organization";
 
@@ -59,7 +51,7 @@ export default ({
       newTypeAliases.push(type);
     } else {
       newButtonsStyle[index] = "default";
-      newTypeAliases.filter(function (item) {
+      newTypeAliases = newTypeAliases.filter(function (item) {
         return item !== type;
       });
     }
