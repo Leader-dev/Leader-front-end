@@ -10,7 +10,7 @@ import {
   IonText,
   IonTextarea,
 } from "@ionic/react";
-import FlexibleInputFields from "./FlexibleInputFields";
+import FlexibleInputFields from "@/components/FlexibleInputFields";
 import "./BasicInfo.css";
 
 export default ({ states, setStates }: { states: any[]; setStates: any[] }) => {
