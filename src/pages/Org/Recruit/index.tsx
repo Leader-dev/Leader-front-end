@@ -41,10 +41,7 @@ import { Route, Switch, useParams } from "react-router";
 import { sendApplicationNotification } from "@/services/org/manage/apply/sendNotification";
 import { useToast } from "@/utils/toast";
 import * as React from "react";
-import {
-  DepartmentSettings,
-  DepartmentPage,
-} from "./Settings/components/DepartmentSettings";
+import DepartmentSettings from "./Settings/components/DepartmentSettings";
 import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
 
 const RecruitManage = () => {
@@ -459,10 +456,6 @@ export default () => {
         <Route
           path="/org/:orgId/recruit/settings/departments"
           component={DepartmentSettings}
-        />
-        <Route
-          path="/org/:orgId/recruit/settings/departments/:departmentId"
-          component={DepartmentPage}
         />
       </IonRouterOutlet>
     </IonPage>

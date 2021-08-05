@@ -1,205 +1,81 @@
 import * as React from "react";
 import {
-  IonAvatar,
   IonBadge,
-  IonButton,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonImg,
   IonItem,
   IonLabel,
-  IonList,
-  IonListHeader,
-  IonNote,
   IonPage,
-  IonText,
   useIonRouter,
 } from "@ionic/react";
 import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
-import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useParams } from "react-router";
 import { useRecruitManagerInfo } from "@/services/org/manage/apply/setting/getRecruitManagerInfo";
-import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import { OrgMember } from "@/types/organization";
-import { checkmarkCircle } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { setRecruitMangerInfo } from "@/services/org/manage/apply/setting/setRecruitMangerInfo";
+import SelectMembers from "@/pages/Org/components/SelectMembers";
 
-const MemberCard = ({
-  memberInfo,
-  index,
-  select,
-  onSelect,
-}: {
-  memberInfo: OrgMember;
-  index: number;
-  select: { memberId: string; selectState: boolean };
-  onSelect: any;
-}) => {
-  return (
-    <IonItem key={index} onClick={onSelect}>
-      <IonAvatar slot={"start"}>
-        <IonImg src={memberInfo.avatarUrl} />
-      </IonAvatar>
-      <IonLabel>
-        <h3>
-          {memberInfo.name}
-          <IonText color={"primary"}>{memberInfo.title}</IonText>
-        </h3>
-        <p>
-          <IonText color={"primary"}>成员号:</IonText>
-          {memberInfo.id}
-        </p>
-      </IonLabel>
-      {select.selectState ? (
-        <IonNote slot={"end"}>
-          <IonIcon color={"primary"} icon={checkmarkCircle} />
-        </IonNote>
-      ) : (
-        ""
-      )}
-    </IonItem>
-  );
-};
-
-export const DepartmentPage = () => {
+export default () => {
   const { orgId } = useParams<{ orgId: string }>();
-  const { departmentId } = useParams<{ departmentId: string }>();
-  const { data: members, error: membersError } = useOrgMemberList({
-    orgId: orgId,
-    departmentId: departmentId,
-  });
-  const { data: recruitManager, error: recruitManagerError } =
-    useRecruitManagerInfo({ orgId: orgId, departmentId: departmentId });
-  const [select, setSelect] = useState<
-    { memberId: string; selectState: boolean }[]
-  >([]);
-
-  useEffect(() => {
-    if (members) {
-      setSelect(
-        members.map((member) => ({ memberId: member.id, selectState: false }))
-      );
-    }
-  }, [members]);
+  const { data: rootManagerInfo, error: rootMangerInfoError } =
+    useRecruitManagerInfo({ orgId: orgId, departmentId: null });
+  const [selectedMembers, setSelectedMembers] = useState<OrgMember[]>([]);
+  const [currDepartment, setCurrentDepartment] =
+    useState<{ id: string; name: string } | undefined>(undefined);
 
   const history = useIonRouter();
 
-  let content;
-  let departmentName = "";
-  if (recruitManager && members) {
-    departmentName = recruitManager.departments.name;
-
-    const counts = (arr: Array<any>, value: any) =>
-      arr.reduce((a, v) => (v === value ? a + 1 : a), 0);
-
-    const checkSelect = (index: any) => {
-      if (select[index].selectState) {
-        if (
-          counts(select, true) <= recruitManager.departments.recruitManagerCount
-        ) {
-          let newSelect = [...select];
-          newSelect[index].selectState = !newSelect[index];
-          setSelect(newSelect);
-        }
-      } else {
-        let newSelect = [...select];
-        newSelect[index].selectState = !newSelect[index];
-        setSelect(newSelect);
-      }
-    };
-
-    content = (
-      <>
-        <IonList>
-          <IonListHeader>
-            <h5>添加招新审核人：</h5>
-            <IonBadge>{counts(select, true)}/1</IonBadge>
-          </IonListHeader>
-          {members.map((member, index) => {
-            if (recruitManager.memberId.indexOf(member.id) !== -1) {
-              let newSelect = [...select];
-              newSelect[index].selectState = true;
-              setSelect(newSelect);
-            }
-            return (
-              <MemberCard
-                memberInfo={member}
-                index={index}
-                select={select[index]}
-                onSelect={() => checkSelect(index)}
-              />
-            );
-          })}
-        </IonList>
-        <IonButton
-          style={{ margin: "25px 15px" }}
-          expand="block"
-          onClick={() => {
-            setRecruitMangerInfo({
-              orgId: orgId,
-              departmentId: departmentId,
-              memberId: select
-                .filter((member) => member.selectState === true)
-                .map((member) => member.memberId),
-            }).then(() => history.goBack());
-          }}
-        >
-          确认
-        </IonButton>
-      </>
-    );
-  } else {
-    content = <div> Skeleton </div>;
-  }
-
-  return (
-    <IonPage>
-      <IonHeader>
-        <ToolbarWithBackButton title={departmentName} />
-      </IonHeader>
-      <IonContent fullscreen>{content}</IonContent>
-    </IonPage>
-  );
-};
-
-export const DepartmentSettings = () => {
-  const { orgId } = useParams<{ orgId: string }>();
-  const { data: departments, error: departmentsError } = useDepartmentList({
-    orgId,
+  useEffect(() => {
+    if (rootManagerInfo) {
+      setSelectedMembers([rootManagerInfo.manager]);
+    }
   });
 
-  let content;
-  if (!departments) {
-    content = <div>skeleton</div>;
-  } else {
-    content = departments.map((department, index) => {
-      // const {data, error} = useRecruitManagerInfo({orgId: orgId, departmentId: department.id})
-      return (
-        <IonItem key={index} button routerLink={`departments/${department.id}`}>
-          <IonLabel>{department}</IonLabel>
-          {/*<IonBadge slot={"end"} color={"primary"}>*/}
-          {/*  {data.memberId ? data.memberId.length : 0}*/}
-          {/*  /1*/}
-          {/*</IonBadge>*/}
-        </IonItem>
-      );
-    });
-  }
-  return (
-    <IonPage>
-      <IonHeader>
-        <ToolbarWithBackButton title={"添加各部门招新审核人"} />
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonListHeader>
-          <h5>选择部门</h5>
-        </IonListHeader>
-        {content}
-      </IonContent>
-    </IonPage>
-  );
-};
+  const handleOnSubmit = (departmentId: string) => {
+    setRecruitMangerInfo({
+      orgId: orgId,
+      departmentId: departmentId,
+      memberId: selectedMembers[0].id,
+    }).then(() => history.goBack());
+  };
 
-export default DepartmentSettings;
+  if (rootManagerInfo) {
+    if (!currDepartment) {
+      return (
+        <IonPage>
+          <IonHeader>
+            <ToolbarWithBackButton title={"添加各部门招新审核人"} />
+          </IonHeader>
+          <IonContent fullscreen>
+            {rootManagerInfo.departments?.map((department) => (
+              <IonItem button onClick={() => setCurrentDepartment(department)}>
+                <IonLabel>{department.name}</IonLabel>
+                <IonBadge slot={"end"} color={"primary"}>
+                  {department.recruitManagerCount}/1
+                </IonBadge>
+              </IonItem>
+            ))}
+          </IonContent>
+        </IonPage>
+      );
+    } else {
+      return (
+        <SelectMembers
+          selectedMembers={selectedMembers}
+          setSelectedMembers={setSelectedMembers}
+          limit={true}
+          onSubmit={() => handleOnSubmit(currDepartment.id)}
+          onBack={() => setCurrentDepartment(undefined)}
+          title={"设置" + currDepartment.name + "招新管理员"}
+        />
+      );
+    }
+  } else {
+    return (
+      <IonPage>
+        <div>Loading</div>
+      </IonPage>
+    );
+  }
+};
