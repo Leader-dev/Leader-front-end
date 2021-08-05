@@ -9,7 +9,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import OrgCard from "@/components/OrgCard";
+import OrgCard from "@/pages/Org/components/OrgCard";
 import ApplyForm from "./components/ApplyForm";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { chevronBack } from "ionicons/icons";

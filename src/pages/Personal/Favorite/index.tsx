@@ -14,8 +14,8 @@ import {
 import { chevronBack } from "ionicons/icons";
 import { useState } from "react";
 import { useFavoriteOrg } from "@/services/org/favorite";
-import OrgCardSkeleton from "@/components/OrgCardSkeleton";
-import OrgCard from "@/components/OrgCard";
+import OrgCardSkeleton from "@/pages/Org/components/OrgCardSkeleton";
+import OrgCard from "@/pages/Org/components/OrgCard";
 
 export default () => {
   const { data: favoriteOrgs, error: favoriteOrgsErr } = useFavoriteOrg();
