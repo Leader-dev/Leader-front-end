@@ -45,14 +45,13 @@ export interface OrgApplication {
   status: string;
 }
 
-interface OrgDetails extends OrgInfo {
+export interface OrgDetails extends OrgInfo {
   introduction: string;
   phone: string[];
   email: string[];
   address: string;
   status: string;
   applicationScheme: OrgApplicationScheme;
-  /** 社长名称 */
 }
 
 export interface OrgDetailsResult {
@@ -64,7 +63,19 @@ export interface OrgDetailsResult {
    */
 }
 
+export interface OrgPublicInfo {
+  name: string;
+  address: string;
+  instituteName: string;
+  introduction: string;
+  phone: string[];
+  email: string[];
+  typeAliases: string[];
+  posterUrl: string;
+}
+
 export interface MemberInfo {
+  avatarUrl: string;
   name: string;
   numberId: number;
   title: string | null;
