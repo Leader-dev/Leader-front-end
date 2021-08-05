@@ -1,13 +1,14 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
+import { OrgMember } from "@/types/organization";
 
 interface RecruitMangerInfo {
-  memberId: string;
+  manager: OrgMember;
   departments: {
     id: string;
     name: string;
     recruitManagerCount: number;
-  };
+  }[];
 }
 
 export const useRecruitManagerInfo = ({
@@ -15,10 +16,13 @@ export const useRecruitManagerInfo = ({
   departmentId,
 }: {
   orgId: string;
-  departmentId: string;
+  departmentId: string | null;
 }) => {
   return useSWR(
-    [`/org/manage/apply/setting/get-scheme?orgId=${orgId}`, departmentId],
+    [
+      `/org/manage/apply/setting/get-recruit-manager-info?orgId=${orgId}`,
+      departmentId,
+    ],
     (url, departmentId) => {
       return axios
         .post(url, { departmentId: departmentId })
