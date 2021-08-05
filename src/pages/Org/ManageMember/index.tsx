@@ -6,7 +6,6 @@ import { useDepartmentList } from "@/services/org/manage/structure/listDepartmen
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import { useOrgMemberInfo } from "@/services/org/manage/structure/memberInfo";
 import { editDepartmentName } from "@/services/org/manage/structure/renameDepartment";
-import { MemberInfo } from "@/types/organization";
 import { useToast } from "@/utils/toast";
 import {
   IonAvatar,
@@ -19,6 +18,7 @@ import {
   IonImg,
   IonInput,
   IonItem,
+  IonItemDivider,
   IonItemOption,
   IonItemOptions,
   IonItemSliding,
@@ -27,14 +27,16 @@ import {
   IonListHeader,
   IonPage,
   IonRouterOutlet,
+  IonRow,
   IonSearchbar,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonAlert,
   useIonModal,
   useIonRouter,
 } from "@ionic/react";
-import { add } from "ionicons/icons";
+import { add, addCircle } from "ionicons/icons";
 import { string } from "joi";
 import { useEffect, useState } from "react";
 import {
@@ -44,6 +46,8 @@ import {
   useLocation,
   useParams,
 } from "react-router";
+import * as React from "react";
+import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -55,14 +59,26 @@ const Breadcrumb = ({
   path: { name: string; onClick?: () => void }[];
 }) => {
   return (
-    <>
-      {path.map(({ name, onClick }, i) => (
-        <>
-          <span onClick={onClick}>{name}</span>
-          {i !== path.length - 1 ? " > " : ""}
-        </>
-      ))}
-    </>
+    <IonItem>
+      {path.map(({ name, onClick }, i) => {
+        if (i !== path.length - 1) {
+          return (
+            <>
+              <span onClick={onClick}>{name}</span>
+              <span style={{ marginLeft: "3px", marginRight: "3px" }}>
+                {" > "}
+              </span>
+            </>
+          );
+        } else {
+          return (
+            <IonText color={"primary"} onClick={onClick}>
+              {name}
+            </IonText>
+          );
+        }
+      })}
+    </IonItem>
   );
 };
 
@@ -76,11 +92,11 @@ const NewDepartment = ({
   const [name, setName] = useState("");
   return (
     <div>
-      <IonItem>
-        <IonLabel>
-          <h1>添加子部门</h1>
-        </IonLabel>
-      </IonItem>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>添加子部门</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonItem>
         <IonLabel>部门名称：</IonLabel>
         <IonInput
@@ -331,18 +347,13 @@ const ManageMemberPage = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton />
-          </IonButtons>
-          <IonTitle>{departmentName}</IonTitle>
-        </IonToolbar>
+        <ToolbarWithBackButton title={departmentName} />
         <IonToolbar>
           <IonSearchbar />
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <div style={{ padding: "8px 18px" }}>
+        <IonList>
           <Breadcrumb
             path={[
               {
@@ -363,8 +374,7 @@ const ManageMemberPage = () => {
               ),
             ]}
           />
-        </div>
-        <IonList>
+          <IonItemDivider />
           <IonListHeader>
             <IonLabel>子部门</IonLabel>
           </IonListHeader>
@@ -444,10 +454,18 @@ const ManageMemberPage = () => {
             })}
 
           <IonListHeader>
-            <IonLabel>{departmentId ? "管理员" : "直隶管理员"}</IonLabel>
-            <IonButton fill="solid">
-              <IonIcon icon={add} />
-            </IonButton>
+            <IonRow className="ion-align-items-center">
+              <IonLabel>{departmentId ? "管理员" : "直隶管理员"}</IonLabel>
+              <IonIcon
+                color={"primary"}
+                style={{
+                  fontSize: "120%",
+                  marginRight: "15px",
+                  marginLeft: "5px",
+                }}
+                icon={addCircle}
+              />
+            </IonRow>
           </IonListHeader>
           {memberList
             ?.filter(
