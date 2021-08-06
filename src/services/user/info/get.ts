@@ -13,3 +13,11 @@ export const useUserInfo = () => {
     axios(d).then((res) => res.data.data.info as UserInfoResult)
   );
 };
+
+export const useAuthed = () => {
+  const { data, error, isValidating } = useUserInfo();
+  return {
+    isLoading: isValidating,
+    isAuthed: isValidating ? null : data && !error,
+  };
+};
