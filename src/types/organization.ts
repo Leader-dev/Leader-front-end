@@ -95,6 +95,7 @@ export interface OrgTypes {
 
 export interface OrgMember {
   id: string;
+  numberId: number;
   name: string;
   title: string;
   avatarUrl: string;
