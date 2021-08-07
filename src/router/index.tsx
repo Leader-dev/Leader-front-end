@@ -32,12 +32,14 @@ import PersonalFavorite from "@/pages/Personal/Favorite";
 import OrgSearch from "@/pages/Org/Search";
 import ManageMemberPage from "@/pages/Org/ManageMember";
 import AccountRouter from "@/pages/Personal/Account";
+import trendsIcon from "../icon/trends.svg";
 
 const TabsRoute: React.FC = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path="/tabs/trends" component={Trends} />
+        <Redirect exact from={"/tabs"} to={"/tabs/trends"} />
         <Route exact path="/tabs/org-display" component={OrgDisplay} />
         <Route exact path="/tabs/management" component={Management} />
         <Route exact path="/tabs/coop" component={Coop} />
@@ -45,7 +47,8 @@ const TabsRoute: React.FC = () => {
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="trends" href="/tabs/trends">
-          <IonIcon icon={triangle} />
+          {/*<IonIcon icon={triangle} />*/}
+          <IonIcon src={trendsIcon} />
           <IonLabel> 动态 </IonLabel>
         </IonTabButton>
         <IonTabButton tab="orgs" href="/tabs/org-display">
@@ -76,11 +79,12 @@ export const AppRouter: React.FC = () => {
         <Route exact path="/notab" component={NoTabPage} />
         <Route path="/tabs" component={TabsRoute} />
         <Route path="/signup" component={SignUp} />
+        <Redirect exact from={"/"} to={"/signup"} />
         <Route path="/trends/new" component={NewTrend} />
         <Route path="/org/create" component={OrgCreate} />
         <Route path="/org/search" component={OrgSearch} />
         <Route path="/org/:orgId/detail" component={OrgDetail} />
-        <Route path="/org/:ordId/apply" component={OrgApply} />
+        <Route path="/org/:orgId/apply" component={OrgApply} />
         <Route path="/org/:orgId/members" component={Member} />
         <Route path="/org/:orgId/manage-members" component={ManageMemberPage} />
         <Route path="/org/:orgId/recruit" component={RecruitManage} />
