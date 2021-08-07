@@ -42,6 +42,7 @@ import * as React from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { Square } from "@/components/square";
 
 const Item = ({
   name,
@@ -56,31 +57,33 @@ const Item = ({
 }) => {
   return (
     <IonCol style={{ textAlign: "center", padding: "16px" }} size="3">
-      <Link
-        to={link || "/"}
-        style={{ textDecoration: "none", color: "inherit" }}
-      >
-        <div
-          style={{
-            borderRadius: "12px",
-            background: background ?? "var(--ion-color-primary)",
-            aspectRatio: "1/1",
-            display: "flex",
-            marginBottom: "6px",
-            padding: "8px",
-          }}
+      <Square>
+        <Link
+          to={link || "/"}
+          style={{ textDecoration: "none", color: "inherit" }}
         >
-          <IonIcon
-            icon={icon}
+          <div
             style={{
-              color: "white",
-              margin: "auto",
-              fontSize: "180%",
+              borderRadius: "12px",
+              background: background ?? "var(--ion-color-primary)",
+              aspectRatio: "1/1",
+              display: "flex",
+              marginBottom: "6px",
+              padding: "8px",
             }}
-          />
-        </div>
-        <span style={{ fontSize: "85%", margin: "0 -4px" }}>{name}</span>
-      </Link>
+          >
+            <IonIcon
+              icon={icon}
+              style={{
+                color: "white",
+                margin: "auto",
+                fontSize: "180%",
+              }}
+            />
+          </div>
+          <span style={{ fontSize: "85%", margin: "0 -4px" }}>{name}</span>
+        </Link>
+      </Square>
     </IonCol>
   );
 };
@@ -89,7 +92,7 @@ export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: startUrl } = useStartUrl();
   const { data: orgDetails } = useOrgPublicInfo({ orgId });
-  const { data: userInfo } = useUserInfo();
+  const { data: userInfo } = useUserInfo(); // TODO useMemberInfo
   const [tab, setTab] = useState<"user" | "manage">("user");
   const { data: timeline } = useOrgTimeline({ orgId });
   const isIos = isPlatform("ios");
@@ -98,7 +101,9 @@ export default () => {
     <IonPage>
       <IonHeader style={{ height: "65vw" }}>
         <div style={{ color: "white", position: "relative", height: "100%" }}>
-          <IonToolbar style={{ "--background": "none" }}>
+          <IonToolbar
+            style={{ "--background": "none", "--border-style": "none" }}
+          >
             <IonButtons slot="start">
               <IonBackButton
                 style={{ width: "38", "--color": "white" }}
@@ -216,7 +221,7 @@ export default () => {
         ) : (
           <div>
             <IonGrid style={{ gap: "1rem" }}>
-              <IonRow>
+              <IonRow style={{ marginBottom: "25px" }}>
                 <Item name="公告管理" icon={megaphone} background="#5bc44c" />
                 <Item name="任务管理" icon={list} background="#5bc44c" />
                 <Item name="考勤管理" icon={stopwatch} background="#5bc44c" />
@@ -245,7 +250,12 @@ export default () => {
                   link="manage-members"
                   background="#434343"
                 />
-                <Item name="对外资料" icon={reader} background="#434343" />
+                <Item
+                  name="对外资料"
+                  icon={reader}
+                  background="#434343"
+                  link="public-info"
+                />
                 <Item
                   name="核心认证"
                   icon={shieldCheckmark}
