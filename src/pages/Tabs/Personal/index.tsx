@@ -101,9 +101,10 @@ const ProfileMain: React.FC = () => {
 interface CuboidLinkProps {
   icon: string;
   title: string;
+  onClick?: () => void;
 }
 
-const CuboidLink: React.FC<CuboidLinkProps> = ({ icon, title }) => {
+const CuboidLink: React.FC<CuboidLinkProps> = ({ icon, title, onClick }) => {
   return (
     <div
       style={{
@@ -118,6 +119,7 @@ const CuboidLink: React.FC<CuboidLinkProps> = ({ icon, title }) => {
           padding: "12px 14px",
           color: "#2183f3",
         }}
+        onClick={onClick}
       >
         <IonIcon
           style={{
@@ -140,6 +142,7 @@ const CuboidLink: React.FC<CuboidLinkProps> = ({ icon, title }) => {
 };
 
 const ProfileItems: React.FC = () => {
+  const history = useIonRouter();
   return (
     <IonGrid>
       <IonRow>
@@ -147,7 +150,11 @@ const ProfileItems: React.FC = () => {
           <CuboidLink title="我的履历" icon={libraryOutline} />
         </IonCol>
         <IonCol size="4">
-          <CuboidLink title="我的收藏" icon={heartOutline} />
+          <CuboidLink
+            title="我的收藏"
+            icon={heartOutline}
+            onClick={() => history.push("/person/favorite")}
+          />
         </IonCol>
         <IonCol size="4">
           <CuboidLink title="我的名片" icon={personOutline} />
@@ -155,7 +162,11 @@ const ProfileItems: React.FC = () => {
       </IonRow>
       <IonRow>
         <IonCol offset="2" size="4">
-          <CuboidLink title="我的设置" icon={settingsOutline} />
+          <CuboidLink
+            title="我的设置"
+            icon={settingsOutline}
+            onClick={() => history.push("/person/account")}
+          />
         </IonCol>
         <IonCol size="4">
           <CuboidLink title="官方通知" icon={notificationsOutline} />
