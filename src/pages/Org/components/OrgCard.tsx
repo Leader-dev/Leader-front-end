@@ -10,6 +10,7 @@ import {
 import { checkmarkCircle, helpCircle, peopleSharp } from "ionicons/icons";
 import { OrgInfo } from "@/types/organization";
 import { useHistory } from "react-router";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 export default ({
   info,
@@ -19,6 +20,8 @@ export default ({
   interactive: boolean;
 }) => {
   let authIcon, authColor;
+  const { data: startUrl } = useStartUrl();
+
   if (info.instituteAuth === "school") {
     authIcon = (
       <IonIcon icon={checkmarkCircle} style={{ marginRight: "2px" }} />
@@ -48,7 +51,7 @@ export default ({
                 objectFit: "cover",
                 overflow: "hidden",
               }}
-              src={info.posterUrl}
+              src={startUrl + info.posterUrl}
             />
           </IonCol>
           <IonCol
