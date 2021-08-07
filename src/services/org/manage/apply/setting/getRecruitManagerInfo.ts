@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { OrgMember } from "@/types/organization";
 
 interface RecruitMangerInfo {
-  manager: OrgMember;
+  memberInfo: OrgMember;
   departments: {
     id: string;
     name: string;
