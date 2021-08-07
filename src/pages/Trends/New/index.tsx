@@ -169,8 +169,9 @@ const NewTrend = () => {
                 marginBottom: "-12px",
                 paddingBottom: "-12px",
                 width: "100%",
-                height: typing ? "90vh" : "100%",
-                transition: "height 0.2s ease-in",
+                // height: typing ? "90vh" : "100%",
+                height: "100%",
+                // transition: "height 0.2s ease-in",
                 position: "absolute",
                 bottom: "0",
               }}
