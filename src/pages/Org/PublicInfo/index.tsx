@@ -18,7 +18,7 @@ import {
   useIonLoading,
   useIonRouter,
 } from "@ionic/react";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import { useState } from "react";
 import FlexibleInputFields from "@/components/FlexibleInputFields";
 import { OrgTypes } from "@/types/organization";
@@ -351,7 +351,7 @@ export default () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"对外资料"} />
+        <ToolbarWithBackButton title={"对外资料"} border={false} />
         <IonToolbar>
           <IonSegment
             value={tab}

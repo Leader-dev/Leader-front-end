@@ -8,7 +8,7 @@ export default ({
 }: {
   title: string;
   submit: boolean;
-  onClick?: any;
+  onClick?: () => void;
 }) => {
   return (
     <>
@@ -27,7 +27,6 @@ export default ({
             style={{ margin: "15px 5vw", width: "100%" }}
             expand={"block"}
             type={"submit"}
-            onClick={onClick}
           >
             {title}
           </IonButton>
@@ -35,6 +34,7 @@ export default ({
           <IonButton
             style={{ margin: "15px 5vw", width: "100%" }}
             expand={"block"}
+            onClick={onClick}
           >
             {title}
           </IonButton>
