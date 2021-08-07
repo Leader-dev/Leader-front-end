@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IonContent, IonHeader, IonLoading, IonPage } from "@ionic/react";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import ReactMarkdown from "react-markdown";
 import { usePrivacyAgreement } from "@/services/app/privacy";
 
@@ -13,7 +13,7 @@ export default () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"隐私政策"} />
+        <ToolbarWithBackButton title={"隐私政策"} border={true} />
       </IonHeader>
       <IonContent fullscreen>
         <ReactMarkdown>{data}</ReactMarkdown>

@@ -47,7 +47,7 @@ import {
   useParams,
 } from "react-router";
 import * as React from "react";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -347,7 +347,7 @@ const ManageMemberPage = () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={departmentName} />
+        <ToolbarWithBackButton title={departmentName} border={false} />
         <IonToolbar>
           <IonSearchbar />
         </IonToolbar>

@@ -42,26 +42,27 @@ import { sendApplicationNotification } from "@/services/org/manage/apply/sendNot
 import { useToast } from "@/utils/toast";
 import * as React from "react";
 import DepartmentSettings from "./Settings/components/DepartmentSettings";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
+import SelectMembers from "./Settings/components/SelectMembers";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
   const [tab, setTab] = useState<"pending" | "reviewed">("pending");
-  // const { data: applications } = useOrgReceivedApplications({ orgId });
-  const applications: OrgApplication[] = [
-    {
-      id: "19cb8f16a",
-      name: "张三",
-      applicantId: "1c6a7e",
-      applicantInfo: {
-        id: "1c6a7e",
-        uid: 114514,
-        nickname: "散散三",
-      },
-      sendDate: 1626766070,
-      status: "pending",
-    },
-  ];
+  const { data: applications } = useOrgReceivedApplications({ orgId });
+  // const applications: OrgApplication[] = [
+  //   {
+  //     id: "19cb8f16a",
+  //     name: "张三",
+  //     applicantId: "1c6a7e",
+  //     applicantInfo: {
+  //       id: "1c6a7e",
+  //       uid: 114514,
+  //       nickname: "散散三",
+  //     },
+  //     sendDate: 1626766070,
+  //     status: "pending",
+  //   },
+  // ];
   const pendingApplications = useMemo(() => {
     if (!applications) return [];
     return applications.filter((a) => a.status === "pending");
@@ -77,7 +78,7 @@ const RecruitManage = () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"招新管理"} />
+        <ToolbarWithBackButton title={"招新管理"} border={true} />
       </IonHeader>
       <IonContent>
         <IonSegment
@@ -208,7 +209,7 @@ const AppDetail = () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"加入申请"} />
+        <ToolbarWithBackButton title={"加入申请"} border={true} />
       </IonHeader>
       <IonContent fullscreen>
         <div
@@ -320,7 +321,7 @@ export const AddNotification = () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"发布通知"} />
+        <ToolbarWithBackButton title={"发布通知"} border={true} />
       </IonHeader>
       <IonContent>
         <IonList style={{ paddingTop: "24px", marginBottom: "24px" }}>
@@ -454,8 +455,13 @@ export default () => {
           component={RecruitSettings}
         />
         <Route
+          exact
           path="/org/:orgId/recruit/settings/departments"
           component={DepartmentSettings}
+        />
+        <Route
+          path="/org/:orgId/recruit/settings/departments/:departmentId"
+          component={SelectMembers}
         />
       </IonRouterOutlet>
     </IonPage>

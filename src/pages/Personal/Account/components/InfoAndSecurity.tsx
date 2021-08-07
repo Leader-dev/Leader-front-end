@@ -16,7 +16,7 @@ import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import ImageSelect from "@/components/imageSelect";
 import { useState } from "react";
 import { updateUserPortrait } from "@/services/user/info/updateAvatar";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 
 export default () => {
   const { data: userInfo, error } = useUserInfo();
@@ -80,7 +80,7 @@ export default () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"账号与安全"} />
+        <ToolbarWithBackButton title={"账号与安全"} border={true} />
       </IonHeader>
       <IonContent fullscreen>{content}</IonContent>
     </IonPage>

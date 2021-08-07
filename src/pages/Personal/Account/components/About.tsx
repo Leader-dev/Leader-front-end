@@ -1,12 +1,12 @@
 import * as React from "react";
 import { IonContent, IonHeader, IonPage, IonText } from "@ionic/react";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 
 export default () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"关于麒者"} />
+        <ToolbarWithBackButton title={"关于麒者"} border={true} />
       </IonHeader>
       <IonContent fullscreen>
         <div style={{ padding: "20px" }}>

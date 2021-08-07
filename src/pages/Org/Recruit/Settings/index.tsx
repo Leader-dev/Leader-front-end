@@ -3,7 +3,7 @@ import { IonContent, IonHeader, IonPage } from "@ionic/react";
 import { useOrgApplicationSetting } from "@/services/org/manage/apply/setting/getScheme";
 import { useParams } from "react-router";
 import SettingForm from "./components/SettingForm";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -18,7 +18,7 @@ export default () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"招新设置"} />
+        <ToolbarWithBackButton title={"招新设置"} border={true} />
       </IonHeader>
       <IonContent fullscreen>{content}</IonContent>
     </IonPage>

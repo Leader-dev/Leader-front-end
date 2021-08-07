@@ -9,7 +9,7 @@ import {
   IonPage,
   useIonRouter,
 } from "@ionic/react";
-import { ToolbarWithBackButton } from "@/components/ToolbarWithBackButton";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import { useState } from "react";
 import { sendPhoneAuthCode } from "@/services/user";
 import { useToast } from "@/utils/toast";
@@ -195,7 +195,7 @@ export default () => {
   return (
     <IonPage>
       <IonHeader>
-        <ToolbarWithBackButton title={"更新密码"} />
+        <ToolbarWithBackButton title={"更新密码"} border={true} />
       </IonHeader>
       <IonContent fullscreen>{content}</IonContent>
     </IonPage>
