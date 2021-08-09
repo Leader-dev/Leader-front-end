@@ -8,7 +8,7 @@ type FetchMyApplicationListResult = Array<{
   orgInfo: OrgInfo;
   sendDate: number;
   unreadCount: number;
-  status: string;
+  status: "accepted" | "rejected" | "pending" | "passed" | "declined";
 }>;
 
 export const fetchMyApplicationList = async () => {
