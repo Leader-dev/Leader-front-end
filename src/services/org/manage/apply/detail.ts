@@ -1,6 +1,7 @@
-import { ApplicationForm, Timestamp, UserOverview } from "@/types/organization";
+import { Timestamp, UserOverview } from "@/types/organization";
 import axios from "@/utils/request";
 import useSWR from "swr";
+import { ApplicationForm } from "@/types/organization";
 
 interface UseOrgApplicationDetail {
   id: string;

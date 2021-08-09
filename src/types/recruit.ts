@@ -1,11 +1,11 @@
-export interface OrgRecruitSetting {
+export interface OrgRecruitScheme {
   open: boolean;
   maximumApplication: number;
   appointDepartment: boolean;
   questions: { question: string; required: boolean }[];
 }
 
-export interface useOrgRecruitSetting {
-  scheme: OrgRecruitSetting;
+export interface OrgRecruitSchemeInfo {
+  scheme: OrgRecruitScheme;
   receivedApplicationCount: number;
 }

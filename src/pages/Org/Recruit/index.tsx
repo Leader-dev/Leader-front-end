@@ -37,7 +37,7 @@ import {
 } from "@ionic/react";
 import { add, settings } from "ionicons/icons";
 import { Fragment, useMemo, useState } from "react";
-import { Route, Switch, useParams } from "react-router";
+import { Route, useParams } from "react-router";
 import { sendApplicationNotification } from "@/services/org/manage/apply/sendNotification";
 import { useToast } from "@/utils/toast";
 import * as React from "react";
@@ -49,20 +49,7 @@ const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
   const [tab, setTab] = useState<"pending" | "reviewed">("pending");
   const { data: applications } = useOrgReceivedApplications({ orgId });
-  // const applications: OrgApplication[] = [
-  //   {
-  //     id: "19cb8f16a",
-  //     name: "张三",
-  //     applicantId: "1c6a7e",
-  //     applicantInfo: {
-  //       id: "1c6a7e",
-  //       uid: 114514,
-  //       nickname: "散散三",
-  //     },
-  //     sendDate: 1626766070,
-  //     status: "pending",
-  //   },
-  // ];
+
   const pendingApplications = useMemo(() => {
     if (!applications) return [];
     return applications.filter((a) => a.status === "pending");
@@ -98,7 +85,7 @@ const RecruitManage = () => {
                 <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
                   <IonLabel>
                     <h2>{a.name}</h2>
-                    <div>申请人：{a.applicantInfo.nickname}</div>
+                    <div>申请人：{a.applicantUserInfo.nickname}</div>
                     <div>
                       提交时间：
                       {`${time.getFullYear()}-${
@@ -119,7 +106,7 @@ const RecruitManage = () => {
                 <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
                   <IonLabel>
                     <h2>{a.name}</h2>
-                    <div>申请人：{a.applicantInfo.nickname}</div>
+                    <div>申请人：{a.applicantUserInfo.nickname}</div>
                     <div>
                       提交时间：
                       {`${time.getFullYear()}-${
@@ -157,39 +144,10 @@ const AppDetail = () => {
       orgId: string;
     }>();
   const [loading, setLoading] = useState(false);
-  // const { data: details } = useOrgApplicationDetail({ orgId, applicationId });
+  const { data: details } = useOrgApplicationDetail({ orgId, applicationId });
   type Details = NonNullable<
     ReturnType<typeof useOrgApplicationDetail>["data"]
   >;
-  const details: Details = {
-    id: "iuhlkbefnwm",
-    name: "张三",
-    sendDate: 1626771767,
-    status: "pending",
-    applicationForm: [{ question: "What's your name", answer: "I don't know" }],
-    applicantUserId: "oyighb",
-    applicantUserInfo: {
-      id: "i1uhljkb",
-      uid: 114514,
-      nickname: "散散三",
-    },
-    departmentId: "o12yuihljk",
-    departmentInfo: {
-      id: "yay",
-      name: "摸鱼部",
-    },
-    notifications: [
-      {
-        id: "12dcs",
-        applicantId: "3uihqlekj",
-        title: "面试通知",
-        content: "请在明天下午到418号教室进行面试",
-        imageUrls: [],
-        unread: true,
-        sendDate: 1626771767,
-      },
-    ],
-  };
 
   if (!details) {
     return (

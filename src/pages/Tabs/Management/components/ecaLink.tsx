@@ -2,7 +2,6 @@ import {
   IonBadge,
   IonButton,
   IonCard,
-  IonCardContent,
   IonChip,
   IonCol,
   IonGrid,
@@ -14,25 +13,42 @@ import {
 import * as React from "react";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { OrgInfo } from "@/types/organization";
-import { ellipse, peopleSharp } from "ionicons/icons";
+import {
+  checkmarkCircle,
+  ellipse,
+  helpCircle,
+  peopleSharp,
+} from "ionicons/icons";
 
 interface ECACardInfo extends OrgInfo {
   notificationCount: number;
 }
 
-interface ECARequestCardInfo extends OrgInfo {
+interface ECARequestCardInfo {
+  orgInfo: OrgInfo;
   notificationCount: number;
   status: string;
 }
 
 export const ECACard = ({ info }: { info: ECACardInfo }) => {
   const { data: startUrl } = useStartUrl();
+  let authIcon, authColor;
+  if (info.instituteAuth === "official") {
+    authIcon = (
+      <IonIcon icon={checkmarkCircle} style={{ marginRight: "2px" }} />
+    );
+    authColor = "var(--ion-color-primary)";
+  } else {
+    authIcon = <IonIcon icon={helpCircle} style={{ marginRight: "2px" }} />;
+    authColor = "var(--ion-color-warning)";
+  }
+
   return (
     <IonCard style={{ margin: "10px 0" }}>
       <IonGrid style={{ padding: "12px" }}>
         <IonRow>
           <IonCol size="5">
-            <IonImg // TODO: Fix aspect ratio & height problems
+            <IonImg
               style={{
                 borderRadius: "8px",
                 width: "100%",
@@ -48,13 +64,26 @@ export const ECACard = ({ info }: { info: ECACardInfo }) => {
             size="4"
             style={{ fontSize: "85%", color: "black", lineHeight: "150%" }}
           >
-            <div style={{ fontSize: "120%", fontWeight: "bold" }}>
+            <div
+              style={{
+                fontSize: "120%",
+                fontWeight: "bold",
+                lineHeight: "160%",
+              }}
+            >
               {info.name}
             </div>
             <div style={{ color: "var(--ion-color-medium)", fontSize: "100%" }}>
               {info.numberId}
             </div>
-            <div style={{ color: "var(--ion-color-primary" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: authColor,
+              }}
+            >
+              {authIcon}
               {info.instituteName}
             </div>
             <div>
@@ -101,12 +130,24 @@ export const ECACard = ({ info }: { info: ECACardInfo }) => {
 
 export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
   const { data: startUrl } = useStartUrl();
+  let authIcon, authColor;
+  if (info.orgInfo.instituteAuth === "official") {
+    authIcon = (
+      <IonIcon icon={checkmarkCircle} style={{ marginRight: "2px" }} />
+    );
+    authColor = "var(--ion-color-primary)";
+  } else {
+    authIcon = <IonIcon icon={helpCircle} style={{ marginRight: "2px" }} />;
+    authColor = "var(--ion-color-warning)";
+  }
+  console.log(info);
+
   return (
     <IonCard style={{ margin: "10px 0" }}>
       <IonGrid style={{ padding: "12px" }}>
         <IonRow>
           <IonCol size="5">
-            <IonImg // TODO: Fix aspect ratio & height problems
+            <IonImg
               style={{
                 borderRadius: "8px",
                 width: "100%",
@@ -114,27 +155,40 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
                 objectFit: "cover",
                 overflow: "hidden",
               }}
-              src={startUrl + info.posterUrl}
+              src={startUrl + info.orgInfo.posterUrl}
             />
           </IonCol>
           <IonCol
             className="ion-align-self-center"
             size="4"
-            style={{ fontSize: "85%", color: "black", lineHeight: "160%" }}
+            style={{ fontSize: "85%", color: "black", lineHeight: "150%" }}
           >
-            <div style={{ fontSize: "120%", fontWeight: "bold" }}>
-              {info.name}
+            <div
+              style={{
+                fontSize: "120%",
+                fontWeight: "bold",
+                lineHeight: "160%",
+              }}
+            >
+              {info.orgInfo.name}
             </div>
             <div style={{ color: "var(--ion-color-medium)", fontSize: "100%" }}>
-              {info.numberId}
+              {info.orgInfo.numberId}
             </div>
-            <div style={{ color: "var(--ion-color-primary" }}>
-              {info.instituteName}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: authColor,
+              }}
+            >
+              {authIcon}
+              {info.orgInfo.instituteName}
             </div>
             <div>
               负责人:{" "}
               <span style={{ color: "var(--ion-color-primary)" }}>
-                {info.presidentName}
+                {info.orgInfo.presidentName}
               </span>
             </div>
             <div
@@ -145,27 +199,32 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
               }}
             >
               <IonIcon icon={peopleSharp} style={{ marginRight: "2px" }} />
-              成员数 {info.memberCount}
+              成员数 {info.orgInfo.memberCount}
             </div>
           </IonCol>
           <IonCol
-            className="ion-align-self-center"
+            // className="ion-align-items-center"
             size="3"
-            style={{ textAlign: "right" }}
+            style={{ position: "relative" }}
           >
             {/*<div>*/}
             {/*  {info.notificationCount && (*/}
             {/*    <IonBadge color="danger">{info.notificationCount}</IonBadge>*/}
             {/*  )}*/}
             {/*</div>*/}
-            <IonButton fill="outline" size="small">
+            <IonButton
+              fill="outline"
+              size="small"
+              style={{ position: "absolute", top: "35%", right: "0" }}
+            >
               查看详情
             </IonButton>
+
             <IonLabel
               color={
                 info.status === "rejected"
                   ? "danger"
-                  : info.status === "accepted"
+                  : info.status === "passed"
                   ? "success"
                   : "warning"
               }
@@ -174,12 +233,19 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
                 alignItems: "center",
                 justifyContent: "flex-end",
                 fontSize: "80%",
+                marginTop: "5px",
+                position: "absolute",
+                bottom: "8px",
+                right: "4px",
               }}
             >
-              <IonIcon style={{ marginRight: "2px" }} icon={ellipse} />
+              <IonIcon
+                style={{ marginRight: "2px", fontSize: "80%" }}
+                icon={ellipse}
+              />
               {info.status === "rejected"
                 ? "已拒绝"
-                : info.status === "accepted"
+                : info.status === "passed"
                 ? "已通过"
                 : "审核中"}
             </IonLabel>

@@ -2,9 +2,11 @@ import * as React from "react";
 import { IonSlides, IonSlide, IonImg } from "@ionic/react";
 import { AdInfo } from "@/types/organization";
 import { useHistory } from "react-router";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 export default ({ info }: { info: AdInfo[] }) => {
   const history = useHistory();
+  const { data: startUrl } = useStartUrl();
   let advertisementList = info.map((info) => (
     <IonSlide
       style={{
@@ -18,7 +20,7 @@ export default ({ info }: { info: AdInfo[] }) => {
       }}
     >
       <IonImg
-        src={info.posterUrl}
+        src={startUrl + info.posterUrl}
         style={{
           width: "100%",
           height: "100%",

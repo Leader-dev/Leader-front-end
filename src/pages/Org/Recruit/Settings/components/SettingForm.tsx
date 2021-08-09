@@ -13,33 +13,58 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { checkmarkCircle, chevronForward } from "ionicons/icons";
-import { useOrgRecruitSetting } from "@/types/recruit";
+import { OrgRecruitSchemeInfo } from "@/types/recruit";
 import RecruitQuestions from "./RecruitQuestions";
 import { setOrgRecruitSetting } from "@/services/org/manage/apply/setting/setScheme";
 import { useParams } from "react-router";
+import BottomConfirm from "@/components/BottomConfirm";
 
-export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
+export default ({
+  recruitInfo,
+  hasDepartments,
+}: {
+  recruitInfo: OrgRecruitSchemeInfo;
+  hasDepartments: boolean;
+}) => {
   const { orgId } = useParams<{ orgId: string }>();
   const { scheme, receivedApplicationCount } = recruitInfo;
   const [open, setOpen] = useState<boolean>(scheme.open);
   const [maximumApplication, setMaximumApplication] = useState<number>(
-    scheme.maximumApplication === -1 ? 0 : scheme.maximumApplication
+    scheme.maximumApplication
   );
   const [limitChecked, setLimitChecked] = useState<boolean>(
-    scheme.maximumApplication !== -1
+    scheme.maximumApplication > 0
   );
   const [questions, setQuestions] = useState<
     { question: string; required: boolean }[]
   >(scheme.questions);
   const [received, setReceived] = useState<number>(receivedApplicationCount);
   const [appointDepartment, setAppointDepartment] = useState<boolean>(
-    scheme.appointDepartment
+    hasDepartments ? scheme.appointDepartment : false
   );
 
   const history = useIonRouter();
 
   return (
-    <IonList>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        setOrgRecruitSetting({
+          orgId: orgId,
+          scheme: {
+            open: open,
+            maximumApplication: open
+              ? limitChecked
+                ? maximumApplication
+                : -1
+              : 0,
+            appointDepartment: appointDepartment,
+            questions: questions ?? [],
+          },
+          resetReceivedApplicationCount: received === 0,
+        }).then(() => history.goBack());
+      }}
+    >
       <IonItem>
         <IonLabel>是否开启主页申请通道</IonLabel>
         <IonNote slot={"end"}>
@@ -55,6 +80,9 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
                 checked={limitChecked}
                 onIonChange={(e) => {
                   setLimitChecked(e.detail.checked);
+                  setMaximumApplication(
+                    maximumApplication > 0 ? maximumApplication : 30
+                  );
                 }}
               />
             </IonNote>
@@ -64,6 +92,8 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
               <IonItem>
                 <IonLabel>招新人数上限：</IonLabel>
                 <IonInput
+                  min={"1"}
+                  required={true}
                   style={{ marginLeft: "-7px" }}
                   value={maximumApplication}
                   inputmode={"numeric"}
@@ -87,15 +117,13 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
                 </IonNote>
               </IonItem>
             </>
-          ) : (
-            ""
-          )}
+          ) : null}
 
           <IonListHeader style={{ marginTop: 20, marginBottom: 0 }}>
             <h5>申请者审核:</h5>
           </IonListHeader>
 
-          <IonItem>
+          <IonItem lines={"full"}>
             <IonLabel style={{ color: "primary", marginLeft: 25 }}>
               1.
               <span style={{ marginLeft: 6 }}>您的姓名</span>
@@ -115,17 +143,19 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
 
           <RecruitQuestions questions={questions} setQuestions={setQuestions} />
 
-          <IonItem style={{ marginTop: "5px" }}>
-            <IonLabel>申请者是否需要选择部门</IonLabel>
-            <IonNote slot={"end"}>
-              <IonToggle
-                checked={appointDepartment}
-                onIonChange={(e) => {
-                  setAppointDepartment(e.detail.checked);
-                }}
-              />
-            </IonNote>
-          </IonItem>
+          {hasDepartments ? (
+            <IonItem style={{ marginTop: "5px" }}>
+              <IonLabel>申请者是否需要选择部门</IonLabel>
+              <IonNote slot={"end"}>
+                <IonToggle
+                  checked={appointDepartment}
+                  onIonChange={(e) => {
+                    setAppointDepartment(e.detail.checked);
+                  }}
+                />
+              </IonNote>
+            </IonItem>
+          ) : null}
 
           {appointDepartment ? (
             <IonItem>
@@ -135,32 +165,10 @@ export default ({ recruitInfo }: { recruitInfo: useOrgRecruitSetting }) => {
                 <IonIcon icon={chevronForward} />
               </IonButton>
             </IonItem>
-          ) : (
-            ""
-          )}
-
-          <IonButton
-            style={{ margin: "25px 15px" }}
-            expand="block"
-            onClick={() => {
-              setOrgRecruitSetting({
-                orgId: orgId,
-                scheme: {
-                  open: open,
-                  maximumApplication: limitChecked ? maximumApplication : -1,
-                  appointDepartment: appointDepartment,
-                  questions: questions,
-                },
-                resetReceivedApplicationCount: received === 0,
-              }).then(() => history.goBack());
-            }}
-          >
-            确认
-          </IonButton>
+          ) : null}
         </>
-      ) : (
-        ""
-      )}
-    </IonList>
+      ) : null}
+      <BottomConfirm title={"确认修改"} submit={true} />
+    </form>
   );
 };

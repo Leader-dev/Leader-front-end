@@ -22,7 +22,7 @@ export default ({
   let authIcon, authColor;
   const { data: startUrl } = useStartUrl();
 
-  if (info.instituteAuth === "school") {
+  if (info.instituteAuth === "official") {
     authIcon = (
       <IonIcon icon={checkmarkCircle} style={{ marginRight: "2px" }} />
     );
@@ -57,12 +57,13 @@ export default ({
           <IonCol
             className="ion-align-self-center"
             size="6"
-            style={{ fontSize: "80%", color: "black", lineHeight: "150%" }}
+            style={{ fontSize: "85%", color: "black", lineHeight: "150%" }}
           >
             <div
               style={{
                 fontSize: "120%",
                 fontWeight: "bold",
+                lineHeight: "160%",
               }}
             >
               {info.name}

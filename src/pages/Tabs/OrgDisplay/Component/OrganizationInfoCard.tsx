@@ -3,8 +3,10 @@ import { IonCard, IonIcon, IonImg, IonCardContent } from "@ionic/react";
 import { personSharp } from "ionicons/icons";
 import { OrgInfo } from "@/types/organization";
 import { useHistory } from "react-router";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 export default ({ info, size }: { info: OrgInfo; size: string }) => {
+  const { data: startUrl } = useStartUrl();
   const {
     id,
     name,
@@ -42,7 +44,7 @@ export default ({ info, size }: { info: OrgInfo; size: string }) => {
         }}
       >
         <IonImg
-          src={posterUrl}
+          src={startUrl + posterUrl}
           style={{
             width: "100%",
             height: "100%",
