@@ -3,13 +3,8 @@ import { useDepartmentList } from "@/services/org/manage/structure/listDepartmen
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import * as React from "react";
 import {
-  IonAvatar,
-  IonBackButton,
-  IonButton,
-  IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonItem,
   IonItemDivider,
   IonLabel,
@@ -48,7 +43,9 @@ const MemberManagement = () => {
   let content;
   if (currentOrg && departments && memberList) {
     const managers = memberList.filter((member) =>
-      !departmentId ? ["general-manager", "president"] : ["department-manager"]
+      !departmentId
+        ? ["general-manager", "president"]
+        : ["department-manager"].includes(member.roleName)
     );
     const members = memberList.filter((member) => member.roleName === "member");
 

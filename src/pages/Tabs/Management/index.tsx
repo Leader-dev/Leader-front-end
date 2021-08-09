@@ -73,6 +73,7 @@ const Management: React.FC = () => {
           : applicationList?.map((application) => (
               <ECARequestCard
                 info={{
+                  id: application.id,
                   orgInfo: application.orgInfo,
                   status: application.status,
                   notificationCount: application.unreadCount,

@@ -1,8 +1,6 @@
 import {
-  IonBadge,
   IonButton,
   IonCard,
-  IonChip,
   IonCol,
   IonGrid,
   IonIcon,
@@ -25,9 +23,10 @@ interface ECACardInfo extends OrgInfo {
 }
 
 interface ECARequestCardInfo {
+  id: string;
   orgInfo: OrgInfo;
   notificationCount: number;
-  status: string;
+  status: "passed" | "accepted" | "declined" | "rejected" | "pending";
 }
 
 export const ECACard = ({ info }: { info: ECACardInfo }) => {
@@ -216,6 +215,7 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
               fill="outline"
               size="small"
               style={{ position: "absolute", top: "35%", right: "0" }}
+              routerLink={`/org/application/${info.id}`}
             >
               查看详情
             </IonButton>
@@ -224,7 +224,7 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
               color={
                 info.status === "rejected"
                   ? "danger"
-                  : info.status === "passed"
+                  : info.status === "passed" || "accepted" || "declined"
                   ? "success"
                   : "warning"
               }
@@ -245,7 +245,7 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
               />
               {info.status === "rejected"
                 ? "已拒绝"
-                : info.status === "passed"
+                : info.status === "passed" || "accepted" || "declined"
                 ? "已通过"
                 : "审核中"}
             </IonLabel>
