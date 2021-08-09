@@ -11,115 +11,188 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
+  IonItemDivider,
   IonLabel,
   IonList,
+  IonListHeader,
   IonPage,
   IonSearchbar,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { chevronBack, chevronBackOutline } from "ionicons/icons";
-import {
-  useLocation,
-  useParams,
-  useHistory,
-  Route,
-  Switch,
-} from "react-router";
+import { useParams, Route, Switch } from "react-router";
 import { useOrgMemberInfo } from "@/services/org/manage/structure/memberInfo";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
+import { useState } from "react";
+import Breadcrumb from "@/pages/Org/components/Breadcrumb";
+import MemberCard from "@/pages/Org/components/MemberCard";
 
 const MemberManagement = () => {
-  const history = useHistory();
   const { orgId } = useParams<{ orgId: string }>();
-  const departmentId = useQuery().get("department") || undefined;
+
+  const [crumb, setCrumb] = useState<
+    (undefined | { name: string; id: string })[]
+  >([undefined]);
+  const departmentId = crumb[crumb.length - 1]?.id;
+  const departmentName = crumb[crumb.length - 1]?.name ?? "组织架构";
+
   const { data: currentOrg } = useOrgDetails({ orgId });
-  const {
-    data: departments,
-    error,
-    isValidating,
-  } = useDepartmentList({
+  const { data: departments } = useDepartmentList({
     orgId,
     parentId: departmentId,
   });
   const { data: memberList } = useOrgMemberList({
     orgId,
-    departmentId: departmentId === "none" ? undefined : departmentId,
+    departmentId: departmentId,
   });
-  const loading = !error && isValidating;
-  console.log({ currentOrg });
+
+  let content;
+  if (currentOrg && departments && memberList) {
+    const managers = memberList.filter((member) =>
+      !departmentId ? ["general-manager", "president"] : ["department-manager"]
+    );
+    const members = memberList.filter((member) => member.roleName === "member");
+
+    content = (
+      <IonList>
+        <Breadcrumb
+          path={[
+            {
+              name: currentOrg?.detail.name!,
+              onClick: () => {
+                setCrumb([undefined]);
+              },
+            },
+            ...(crumb.slice(1) as { name: string; id: string }[]).map(
+              (item, index) => {
+                return {
+                  ...item,
+                  onClick: () => {
+                    setCrumb((s) => s.slice(0, index + 2));
+                  },
+                };
+              }
+            ),
+          ]}
+        />
+        <IonItemDivider />
+
+        <IonListHeader>
+          <h5>子部门：</h5>
+        </IonListHeader>
+        {departments.length ? (
+          departments.map((d) => (
+            <IonItem
+              detail
+              key={d.id}
+              onClick={() => {
+                setCrumb((c) => [...c, d]);
+              }}
+            >
+              {d.name}
+            </IonItem>
+          ))
+        ) : (
+          <IonItem lines={"none"}>
+            <IonLabel>无</IonLabel>
+          </IonItem>
+        )}
+
+        <IonListHeader>
+          <h5>{departmentId ? "管理员" : "直隶管理员"}：</h5>
+        </IonListHeader>
+        {managers.length ? (
+          managers.map((member) => (
+            <MemberCard
+              memberInfo={member}
+              routerLink={`members/${member.id}`}
+            />
+          ))
+        ) : (
+          <IonItem lines={"none"}>
+            <IonLabel>无</IonLabel>
+          </IonItem>
+        )}
+
+        <IonListHeader>
+          <h5>{departmentId ? "成员" : "无部门成员"}：</h5>
+        </IonListHeader>
+        {members.length ? (
+          members.map((member) => (
+            <MemberCard
+              memberInfo={member}
+              routerLink={`members/${member.id}`}
+            />
+          ))
+        ) : (
+          <IonItem lines={"none"}>
+            <IonLabel>无</IonLabel>
+          </IonItem>
+        )}
+      </IonList>
+    );
+  } else {
+    content = <div>Skeleton</div>;
+  }
+
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            {departmentId ? (
-              <IonButton
-                onClick={() => {
-                  history.push({ search: `?` });
-                }}
-              >
-                <IonIcon icon={chevronBack} />
-              </IonButton>
-            ) : (
-              <IonBackButton defaultHref={`/org/${orgId}/home`} />
-            )}
-          </IonButtons>
-          <IonTitle>咨询成员</IonTitle>
-        </IonToolbar>
+        <ToolbarWithBackButton
+          title={"咨询成员"}
+          border={false}
+          defaultHref={`/org/${orgId}/home`}
+        />
         <IonToolbar>
           <IonSearchbar />
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {departmentId ? (
-          <IonList>
-            {memberList?.map((member) => {
-              console.log({ member });
-              return (
-                <IonItem
-                  key={member.id}
-                  routerLink={`/org/${orgId}/members/${member.id}`}
-                >
-                  {member.avatarUrl && (
-                    <IonAvatar slot="start">
-                      <img src={member.avatarUrl} />
-                    </IonAvatar>
-                  )}
-                  <IonLabel>{member.name}</IonLabel>
-                </IonItem>
-              );
-            })}
-          </IonList>
-        ) : (
-          <IonList>
-            <IonItem
-              detail
-              onClick={() => {
-                history.push({ search: `?department=none` });
-              }}
-            >
-              <IonLabel>{currentOrg?.detail.name}</IonLabel>
-            </IonItem>
-            {loading
-              ? null
-              : departments?.map((dp) => {
-                  return (
-                    <IonItem
-                      detail
-                      onClick={() => {
-                        history.push({ search: `?department=${dp.id}` });
-                      }}
-                    >
-                      <IonLabel>{dp.name}</IonLabel>
-                    </IonItem>
-                  );
-                })}
-          </IonList>
-        )}
+        {/*{departmentId ? (*/}
+        {/*  <IonList>*/}
+        {/*    {memberList?.map((member) => {*/}
+        {/*      console.log({ member });*/}
+        {/*      return (*/}
+        {/*        <IonItem*/}
+        {/*          key={member.id}*/}
+        {/*          routerLink={`/org/${orgId}/members/${member.id}`}*/}
+        {/*        >*/}
+        {/*          {member.avatarUrl && (*/}
+        {/*            <IonAvatar slot="start">*/}
+        {/*              <img src={member.avatarUrl} />*/}
+        {/*            </IonAvatar>*/}
+        {/*          )}*/}
+        {/*          <IonLabel>{member.name}</IonLabel>*/}
+        {/*        </IonItem>*/}
+        {/*      );*/}
+        {/*    })}*/}
+        {/*  </IonList>*/}
+        {/*) : (*/}
+        {/*  <IonList>*/}
+        {/*    <IonItem*/}
+        {/*      detail*/}
+        {/*      onClick={() => {*/}
+        {/*        history.push({ search: `?department=none` });*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      <IonLabel>{currentOrg?.detail.name}</IonLabel>*/}
+        {/*    </IonItem>*/}
+        {/*    {loading*/}
+        {/*      ? null*/}
+        {/*      : departments?.map((dp) => {*/}
+        {/*          return (*/}
+        {/*            <IonItem*/}
+        {/*              detail*/}
+        {/*              onClick={() => {*/}
+        {/*                history.push({ search: `?department=${dp.id}` });*/}
+        {/*              }}*/}
+        {/*            >*/}
+        {/*              <IonLabel>{dp.name}</IonLabel>*/}
+        {/*            </IonItem>*/}
+        {/*          );*/}
+        {/*        })}*/}
+        {/*  </IonList>*/}
+        {/*)}*/}
+        {content}
       </IonContent>
     </IonPage>
   );
@@ -144,12 +217,7 @@ const MemberInfo = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton />
-          </IonButtons>
-          <IonTitle>{info?.departmentName ?? "无部门成员"}</IonTitle>
-        </IonToolbar>
+        <ToolbarWithBackButton title={info?.departmentName ?? "无部门成员"} />
       </IonHeader>
       {/* TODO: Check for if can modify title and has title */}
       <IonContent>

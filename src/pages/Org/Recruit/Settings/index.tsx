@@ -1,19 +1,26 @@
 import * as React from "react";
 import { IonContent, IonHeader, IonPage } from "@ionic/react";
-import { useOrgApplicationSetting } from "@/services/org/manage/apply/setting/getScheme";
+import { useOrgApplicationScheme } from "@/services/org/manage/apply/setting/getScheme";
 import { useParams } from "react-router";
 import SettingForm from "./components/SettingForm";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
+import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
-  const { data, error } = useOrgApplicationSetting({ orgId });
+  const { data: applicationScheme } = useOrgApplicationScheme({ orgId });
+  const { data: departments } = useDepartmentList({ orgId });
 
   let content;
-  if (!data) {
-    content = "";
+  if (!applicationScheme || !departments) {
+    content = <div>Skeleton</div>;
   } else {
-    content = <SettingForm recruitInfo={data} />;
+    content = (
+      <SettingForm
+        recruitInfo={applicationScheme}
+        hasDepartments={!!departments.length}
+      />
+    );
   }
   return (
     <IonPage>

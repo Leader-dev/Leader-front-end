@@ -1,102 +1,32 @@
 import {
-  IonAvatar,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonImg,
   IonItem,
   IonItemDivider,
   IonLabel,
   IonList,
   IonListHeader,
-  IonNote,
   IonPage,
   IonSearchbar,
   IonSegment,
   IonSegmentButton,
-  IonText,
   IonToolbar,
   useIonRouter,
 } from "@ionic/react";
 import * as React from "react";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { checkmarkCircle } from "ionicons/icons";
 import { useOrgDetails } from "@/services/org/detail";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import { OrgMember } from "@/types/organization";
 import BottomConfirm from "@/components/BottomConfirm";
-import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { useRecruitManagerInfo } from "@/services/org/manage/apply/setting/getRecruitManagerInfo";
 import { setRecruitMangerInfo } from "@/services/org/manage/apply/setting/setRecruitMangerInfo";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
-
-const Breadcrumb = ({
-  path,
-}: {
-  path: { name: string; onClick?: () => void }[];
-}) => {
-  return (
-    <IonItem>
-      {path.map(({ name, onClick }, i) => {
-        if (i !== path.length - 1) {
-          return (
-            <>
-              <IonText color={"primary"} onClick={onClick}>
-                {name}
-              </IonText>
-              <span style={{ marginLeft: "3px", marginRight: "3px" }}>
-                {" > "}
-              </span>
-            </>
-          );
-        } else {
-          return <span onClick={onClick}>{name}</span>;
-        }
-      })}
-    </IonItem>
-  );
-};
-
-const MemberCard = ({
-  memberInfo,
-  handleOnSelect,
-  selected,
-}: {
-  memberInfo: OrgMember;
-  handleOnSelect: () => void;
-  selected: boolean;
-}) => {
-  const { data: startUrl } = useStartUrl();
-
-  return (
-    <IonItem key={memberInfo?.id} onClick={handleOnSelect}>
-      <IonAvatar slot={"start"}>
-        <IonImg src={startUrl + memberInfo?.avatarUrl} />
-      </IonAvatar>
-      <IonLabel>
-        <h2 style={{ lineHeight: "140%" }}>
-          {memberInfo?.name}
-          <IonText color={"primary"}>{memberInfo?.title}</IonText>
-        </h2>
-        <p style={{ fontSize: "70%" }}>
-          <IonText color={"primary"}>成员号:</IonText>
-          <span style={{ marginLeft: "2px" }}>{memberInfo?.numberId}</span>
-        </p>
-      </IonLabel>
-      {selected ? (
-        <IonNote slot={"end"}>
-          <IonIcon
-            style={{ fontSize: "130%" }}
-            color={"primary"}
-            icon={checkmarkCircle}
-          />
-        </IonNote>
-      ) : null}
-    </IonItem>
-  );
-};
+import MemberCard from "@/pages/Org/components/MemberCard";
+import Breadcrumb from "@/pages/Org/components/Breadcrumb";
+import { man } from "ionicons/icons";
 
 export default () => {
   const [crumb, setCrumb] = useState<
@@ -156,6 +86,11 @@ export default () => {
     departmentManager &&
     currDpList
   ) {
+    const managers = memberList.filter((member) =>
+      !childDpId ? ["general-manager", "president"] : ["department-manager"]
+    );
+    const members = memberList.filter((member) => member.roleName === "member");
+
     content = (
       <>
         <IonList>
@@ -167,7 +102,7 @@ export default () => {
               <MemberCard
                 memberInfo={member}
                 selected={true}
-                handleOnSelect={() => handleOnSelect(member, true)}
+                handleOnClick={() => handleOnSelect(member, true)}
               />
             ))
           ) : (
@@ -184,8 +119,6 @@ export default () => {
               onIonChange={(e) => {
                 setTab(e.detail.value as "currDp" | "org");
               }}
-              // style={{ width: "50%"}}
-              // className={"ion-justify-content-center"}
             >
               <IonSegmentButton value={"currDp"}>从本部门选择</IonSegmentButton>
               <IonSegmentButton value={"poster"}>
@@ -204,7 +137,7 @@ export default () => {
                   return (
                     <MemberCard
                       memberInfo={member}
-                      handleOnSelect={() => handleOnSelect(member, selected)}
+                      handleOnClick={() => handleOnSelect(member, selected)}
                       selected={selected}
                     />
                   );
@@ -264,31 +197,19 @@ export default () => {
               <IonListHeader>
                 <h5>{childDpId ? "管理员" : "直隶管理员"}：</h5>
               </IonListHeader>
-              {memberList.filter((member) =>
-                (!childDpId
-                  ? ["general-manager", "president"]
-                  : ["department-manager"]
-                ).includes(member.roleName)
-              ).length ? (
-                memberList
-                  .filter((member) =>
-                    (!childDpId
-                      ? ["general-manager", "president"]
-                      : ["department-manager"]
-                    ).includes(member.roleName)
-                  )
-                  .map((member) => {
-                    const selected = selectedMembers.some(
-                      (selectedMember) => selectedMember.id === member.id
-                    );
-                    return (
-                      <MemberCard
-                        memberInfo={member}
-                        handleOnSelect={() => handleOnSelect(member, selected)}
-                        selected={selected}
-                      />
-                    );
-                  })
+              {managers.length ? (
+                managers.map((member) => {
+                  const selected = selectedMembers.some(
+                    (selectedMember) => selectedMember.id === member.id
+                  );
+                  return (
+                    <MemberCard
+                      memberInfo={member}
+                      handleOnClick={() => handleOnSelect(member, selected)}
+                      selected={selected}
+                    />
+                  );
+                })
               ) : (
                 <IonItem lines={"none"}>
                   <IonLabel>无</IonLabel>
@@ -298,22 +219,19 @@ export default () => {
               <IonListHeader>
                 <h5>{childDpId ? "成员" : "无部门成员"}：</h5>
               </IonListHeader>
-              {memberList.filter((member) => member.roleName === "member")
-                .length ? (
-                memberList
-                  .filter((member) => member.roleName === "member")
-                  .map((member) => {
-                    const selected = selectedMembers.some(
-                      (selectedMember) => selectedMember.id === member.id
-                    );
-                    return (
-                      <MemberCard
-                        memberInfo={member}
-                        handleOnSelect={() => handleOnSelect(member, selected)}
-                        selected={selected}
-                      />
-                    );
-                  })
+              {members.length ? (
+                members.map((member) => {
+                  const selected = selectedMembers.some(
+                    (selectedMember) => selectedMember.id === member.id
+                  );
+                  return (
+                    <MemberCard
+                      memberInfo={member}
+                      handleOnClick={() => handleOnSelect(member, selected)}
+                      selected={selected}
+                    />
+                  );
+                })
               ) : (
                 <IonItem lines={"none"}>
                   <IonLabel>无</IonLabel>

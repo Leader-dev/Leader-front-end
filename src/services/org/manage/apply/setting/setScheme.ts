@@ -1,5 +1,5 @@
 import axios from "@/utils/request";
-import { OrgRecruitSetting } from "@/types/recruit";
+import { OrgRecruitScheme } from "@/types/recruit";
 import { mutate } from "swr";
 
 export const setOrgRecruitSetting = async ({
@@ -8,7 +8,7 @@ export const setOrgRecruitSetting = async ({
   resetReceivedApplicationCount,
 }: {
   orgId: string;
-  scheme: OrgRecruitSetting;
+  scheme: OrgRecruitScheme;
   resetReceivedApplicationCount: boolean;
 }) => {
   await axios.post(`/org/manage/apply/setting/set-scheme?orgId=${orgId}`, {

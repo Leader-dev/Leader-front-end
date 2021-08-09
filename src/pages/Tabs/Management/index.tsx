@@ -1,17 +1,13 @@
 import { useState } from "react";
 import * as React from "react";
 import {
-  IonContent,
   IonFab,
   IonFabButton,
-  IonHeader,
   IonIcon,
   IonLabel,
   IonPage,
   IonSegment,
   IonSegmentButton,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import "./index.css";
 import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
@@ -76,11 +72,11 @@ const Management: React.FC = () => {
           ? null
           : applicationList?.map((application) => (
               <ECARequestCard
-                info={Object.assign(
-                  application.orgInfo,
-                  application.status,
-                  application.unreadCount
-                )}
+                info={{
+                  orgInfo: application.orgInfo,
+                  status: application.status,
+                  notificationCount: application.unreadCount,
+                }}
                 key={application.id}
               />
             ))}

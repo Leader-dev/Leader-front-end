@@ -1,18 +1,24 @@
 /** unix timestamp */
 export type Timestamp = number;
 
-export interface OrgInfo {
+export interface OrgPublicInfo {
+  name: string;
+  address: string;
+  instituteName: string;
+  introduction: string;
+  phone: string[];
+  email: string[];
+  typeAliases: string[];
+  posterUrl: string;
+}
+
+export interface OrgInfo extends OrgPublicInfo {
   id: string;
   numberId: number;
-  name: string;
-  instituteName: string;
-  instituteAuth: string;
+  instituteAuth: "official" | "self" | "none";
   /**
-   * @value 如果为 “school” 则为学校认证
+   * @value 如果为 “official” 则为官方认证, "self" 为自主认证, "none" 为未认证
    */
-  typeAliases: string[];
-  /** 组织海报图片地址 url */
-  posterUrl: string;
   memberCount: number;
   presidentName: string;
 }
@@ -28,7 +34,7 @@ interface OrgApplicationScheme {
   open: boolean;
   auth: boolean;
   appointDepartment: boolean;
-  questions: { question: string; required: boolean }[];
+  questions: { question: string; required: boolean }[] | null;
 }
 
 export interface UserOverview {
@@ -36,11 +42,12 @@ export interface UserOverview {
   uid: number;
   nickname: string;
 }
+
 export interface OrgApplication {
   id: string;
   name: string;
-  applicantId: string;
-  applicantInfo: UserOverview;
+  applicantUserId: string;
+  applicantUserInfo: UserOverview;
   sendDate: Timestamp;
   status: string;
 }
@@ -61,17 +68,6 @@ export interface OrgDetailsResult {
   /**
    * @value 用户是否能申请 ("closed” | “available” | “joined" | “applied”)
    */
-}
-
-export interface OrgPublicInfo {
-  name: string;
-  address: string;
-  instituteName: string;
-  introduction: string;
-  phone: string[];
-  email: string[];
-  typeAliases: string[];
-  posterUrl: string;
 }
 
 export interface MemberInfo {
@@ -100,4 +96,9 @@ export interface OrgMember {
   title: string;
   avatarUrl: string;
   roleName: "general-manager" | "department-manager" | "member";
+}
+
+export interface OrgDepartment {
+  id: string;
+  name: string;
 }

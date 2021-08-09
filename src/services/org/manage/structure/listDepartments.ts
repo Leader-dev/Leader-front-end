@@ -1,10 +1,6 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
-
-interface Department {
-  id: string;
-  name: string;
-}
+import { OrgDepartment } from "@/types/organization";
 
 interface UseDepartmentListParams {
   orgId: string;
@@ -21,7 +17,7 @@ export const useDepartmentList = ({
       return axios(url, {
         data: { parentId: d || null },
         codeHandlers: {},
-      }).then((res) => res.data.departments as Department[]);
+      }).then((res) => res.data.departments as OrgDepartment[]);
     }
   );
 };

@@ -1,5 +1,6 @@
 import axios from "@/utils/request";
 import { uploadImage } from "@/services/external/uploadImage";
+import { mutate } from "swr";
 
 interface CreateOrgArgs {
   name: string;
@@ -36,4 +37,5 @@ export const createOrg = async ({
       posterUrl: posterUrl,
     },
   });
+  await mutate("/org/apply/list");
 };

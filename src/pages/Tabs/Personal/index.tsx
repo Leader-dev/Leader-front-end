@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   IonContent,
   IonPage,
@@ -8,11 +9,12 @@ import {
   IonRow,
   IonFab,
   IonFabButton,
-  IonBackdrop,
   IonList,
   IonItem,
   IonLabel,
   useIonRouter,
+  IonImg,
+  IonText,
 } from "@ionic/react";
 import {
   alertCircleOutline,
@@ -26,6 +28,10 @@ import {
 
 import "./index.css";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { UserInfo } from "@/types/user";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
+import { useUserInfo } from "@/services/user/info/get";
+import backIcon from "./background.svg";
 
 const useForceUpdate = () => {
   const [, setValue] = useState(0); // integer state
@@ -37,11 +43,20 @@ const BannerContainer: React.FC = ({ children }) => {
     <div style={{ background: "white" }}>
       <div
         style={{
-          height: "160px",
-          background: "grey",
+          height: "33vh",
+          background: "var(--ion-color-blue)",
           position: "relative",
         }}
       >
+        <IonImg
+          style={{
+            position: "absolute",
+            top: "5.5vh",
+            left: "0px",
+            right: "0px",
+          }}
+          src={backIcon}
+        />
         <svg
           viewBox="0 0 100 75"
           width="100%"
@@ -62,9 +77,14 @@ const BannerContainer: React.FC = ({ children }) => {
   );
 };
 
-const ProfileMain: React.FC = () => {
+interface ProfileMainProps {
+  userInfo: UserInfo;
+}
+
+const ProfileMain: React.FC<ProfileMainProps> = ({ userInfo }) => {
+  const { data: startUrl } = useStartUrl();
   return (
-    <div style={{ padding: "32px 20px 26px" }}>
+    <div style={{ padding: "35px 20px 0px" }}>
       <div
         style={{
           margin: "auto",
@@ -74,25 +94,31 @@ const ProfileMain: React.FC = () => {
           borderRadius: "16px",
         }}
       >
-        <div style={{ position: "relative", height: "24px" }}>
+        <div style={{ position: "relative", height: "10px" }}>
           <IonAvatar
             style={{
               position: "absolute",
-              top: "50%",
+              top: "25%",
               left: "50%",
               width: "128px",
               height: "128px",
               transform: "translate(-50%, -50%) translateY(-64px)",
             }}
           >
-            <img src="https://avatars.githubusercontent.com/u/45055133?v=4" />
+            <IonImg src={startUrl + userInfo.avatarUrl} />
           </IonAvatar>
         </div>
-        <div style={{ fontSize: "1.5rem" }}>吴亦凡</div>
-        <div>
-          <IonIcon icon={alertCircleOutline} />
-          待认证
-        </div>
+        <div style={{ fontSize: "1.5rem" }}> {userInfo.nickname} </div>
+        <IonRow
+          className={"ion-align-items-center"}
+          style={{ justifyContent: "center", marginTop: "5px" }}
+        >
+          <IonIcon color={"primary"} icon={alertCircleOutline} />
+          <IonText color={"primary"} style={{ marginLeft: "2px" }}>
+            {" "}
+            待认证{" "}
+          </IonText>
+        </IonRow>
       </div>
     </div>
   );
@@ -144,35 +170,46 @@ const CuboidLink: React.FC<CuboidLinkProps> = ({ icon, title, onClick }) => {
 const ProfileItems: React.FC = () => {
   const history = useIonRouter();
   return (
-    <IonGrid>
-      <IonRow>
-        <IonCol size="4">
-          <CuboidLink title="我的履历" icon={libraryOutline} />
-        </IonCol>
-        <IonCol size="4">
-          <CuboidLink
-            title="我的收藏"
-            icon={heartOutline}
-            onClick={() => history.push("/person/favorite")}
-          />
-        </IonCol>
-        <IonCol size="4">
-          <CuboidLink title="我的名片" icon={personOutline} />
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol offset="2" size="4">
-          <CuboidLink
-            title="我的设置"
-            icon={settingsOutline}
-            onClick={() => history.push("/person/account")}
-          />
-        </IonCol>
-        <IonCol size="4">
-          <CuboidLink title="官方通知" icon={notificationsOutline} />
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+      <IonGrid
+        style={{
+          position: "absolute",
+          width: "96%",
+          top: "30%",
+          marginTop: "-50%",
+          left: "50%",
+          marginLeft: "-48%",
+        }}
+      >
+        <IonRow>
+          <IonCol size="4">
+            <CuboidLink title="我的履历" icon={libraryOutline} />
+          </IonCol>
+          <IonCol size="4">
+            <CuboidLink
+              title="我的收藏"
+              icon={heartOutline}
+              onClick={() => history.push("/person/favorite")}
+            />
+          </IonCol>
+          <IonCol size="4">
+            <CuboidLink title="我的名片" icon={personOutline} />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol offset="2" size="4">
+            <CuboidLink
+              title="我的设置"
+              icon={settingsOutline}
+              onClick={() => history.push("/person/account")}
+            />
+          </IonCol>
+          <IonCol size="4">
+            <CuboidLink title="官方通知" icon={notificationsOutline} />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </div>
   );
 };
 
@@ -206,7 +243,7 @@ const ContactUs: React.FC = () => {
           }
           setPopUpOpen(false);
         }}
-      ></div>
+      />
       <div
         id="placeholder"
         style={{
@@ -280,14 +317,26 @@ const ContactUs: React.FC = () => {
 };
 
 const Personal: React.FC = () => {
+  const { data: userInfo, error } = useUserInfo();
+  let content;
+  if (!userInfo) {
+    content = <div>Skeleton</div>;
+  } else {
+    content = (
+      <>
+        <BannerContainer>
+          <ProfileMain userInfo={userInfo} />
+        </BannerContainer>
+        <ProfileItems />
+        <ContactUs />
+      </>
+    );
+  }
+
   return (
     <IonPage>
       <IonContent fullscreen scrollY={false}>
-        <BannerContainer>
-          <ProfileMain />
-          <ProfileItems />
-        </BannerContainer>
-        <ContactUs />
+        {content}
       </IonContent>
     </IonPage>
   );

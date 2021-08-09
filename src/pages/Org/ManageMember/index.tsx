@@ -39,48 +39,10 @@ import {
 import { add, addCircle } from "ionicons/icons";
 import { string } from "joi";
 import { useEffect, useState } from "react";
-import {
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-  useParams,
-} from "react-router";
+import { Route, Switch, useParams } from "react-router";
 import * as React from "react";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
-const Breadcrumb = ({
-  path,
-}: {
-  path: { name: string; onClick?: () => void }[];
-}) => {
-  return (
-    <IonItem>
-      {path.map(({ name, onClick }, i) => {
-        if (i !== path.length - 1) {
-          return (
-            <>
-              <span onClick={onClick}>{name}</span>
-              <span style={{ marginLeft: "3px", marginRight: "3px" }}>
-                {" > "}
-              </span>
-            </>
-          );
-        } else {
-          return (
-            <IonText color={"primary"} onClick={onClick}>
-              {name}
-            </IonText>
-          );
-        }
-      })}
-    </IonItem>
-  );
-};
+import Breadcrumb from "@/pages/Org/components/Breadcrumb";
 
 const NewDepartment = ({
   onSubmit,
@@ -376,24 +338,30 @@ const ManageMemberPage = () => {
           />
           <IonItemDivider />
           <IonListHeader>
-            <IonLabel>子部门</IonLabel>
+            <h5>子部门：</h5>
           </IonListHeader>
-          {departments?.map((d) => {
-            return (
-              <IonItem
-                detail
-                key={d.id}
-                onClick={() => {
-                  setCrumb((c) => [...c, d]);
-                }}
-              >
-                {d.name}
-              </IonItem>
-            );
-          })}
+          {departments?.length ? (
+            departments?.map((d) => {
+              return (
+                <IonItem
+                  detail
+                  key={d.id}
+                  onClick={() => {
+                    setCrumb((c) => [...c, d]);
+                  }}
+                >
+                  {d.name}
+                </IonItem>
+              );
+            })
+          ) : (
+            <IonItem lines={"none"}>
+              <IonLabel>无</IonLabel>
+            </IonItem>
+          )}
 
           <IonListHeader>
-            <IonLabel>{departmentId ? "成员" : "无部门成员"}</IonLabel>
+            <h5>{departmentId ? "成员" : "无部门成员"}</h5>
           </IonListHeader>
           {memberList
             ?.filter((member) => member.roleName === "member")
