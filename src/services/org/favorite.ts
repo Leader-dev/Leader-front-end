@@ -1,6 +1,6 @@
 import axios from "@/utils/request";
 import { OrgInfo } from "@/types/organization";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 export const addOrgToFavorite = async (orgId: string) => {
   await axios.post("/org/add-to-favorite", { orgId });
@@ -8,6 +8,7 @@ export const addOrgToFavorite = async (orgId: string) => {
 
 export const removeOrgFromFavorite = async (orgId: string) => {
   await axios.post("/org/remove-from-favorite", { orgId });
+  await mutate("/org/list-favorite");
 };
 
 export const useFavoriteOrg = () => {
