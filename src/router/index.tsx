@@ -77,8 +77,7 @@ export const AppRouter: React.FC = () => {
       <IonRouterOutlet>
         <Route exact path="/notab" component={NoTabPage} />
         <Route path="/tabs" component={TabsRoute} />
-        <Route path="/signup" component={SignUp} />
-        <Redirect exact from={"/"} to={"/signup"} />
+        <Redirect exact from={"/"} to={"/tabs"} />
         <Route path="/trends/new" component={NewTrend} />
         <Route path="/org/create" component={OrgCreate} />
         <Route path="/org/search" component={OrgSearch} />

@@ -24,6 +24,7 @@ import axios from "@/utils/request";
 import { AppRouter } from "./router";
 import { useAuthed } from "./services/user/info/get";
 import { useEffect } from "react";
+import SignUpPage from "./pages/SignUp";
 
 const swrConfig = {
   // @ts-ignore
@@ -47,7 +48,7 @@ const Protection: React.FC = ({ children }) => {
   if (isAuthed) {
     return <>{children}</>;
   } else {
-    return <>Waiting for log in </>;
+    return <SignUpPage />;
   }
 };
 
