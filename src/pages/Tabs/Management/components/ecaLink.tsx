@@ -224,7 +224,7 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
               color={
                 info.status === "rejected"
                   ? "danger"
-                  : info.status === "passed" || "accepted" || "declined"
+                  : ["passed", "accepted", "declined"].includes(info.status)
                   ? "success"
                   : "warning"
               }
@@ -245,7 +245,7 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
               />
               {info.status === "rejected"
                 ? "已拒绝"
-                : info.status === "passed" || "accepted" || "declined"
+                : ["passed", "accepted", "declined"].includes(info.status)
                 ? "已通过"
                 : "审核中"}
             </IonLabel>
