@@ -236,7 +236,7 @@ export default () => {
                   name="招新管理"
                   icon={people}
                   link="recruit"
-                  background="#5bc44c"
+                  background="#FDCC00"
                 />
               </IonRow>
               <IonRow>
