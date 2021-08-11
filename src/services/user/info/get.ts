@@ -1,5 +1,6 @@
 import axios from "@/utils/request";
 import useSWR from "swr";
+import { useUserId } from "@/services/user/userid";
 
 interface UserInfoResult {
   id: string;
@@ -15,7 +16,7 @@ export const useUserInfo = () => {
 };
 
 export const useAuthed = () => {
-  const { data, error, isValidating } = useUserInfo();
+  const { data, error, isValidating } = useUserId();
   return {
     isLoading: isValidating,
     isAuthed: isValidating ? null : data && !error,

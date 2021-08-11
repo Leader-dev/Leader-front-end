@@ -11,16 +11,15 @@ import {
   createAnimation,
   AnimationBuilder,
   useIonModal,
-  IonFooter,
   IonToolbar,
   IonTitle,
   IonHeader,
   IonButtons,
 } from "@ionic/react";
+import * as React from "react";
 import { MouseEventHandler, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Joi from "joi";
-
 import { useToast } from "@/utils/toast";
 import {
   changePassword,
@@ -33,6 +32,7 @@ import coffeeImage from "./coffee.jpg";
 import { checkAuthcode } from "@/services/user/changePassword";
 import { usePrivacyAgreement } from "@/services/app/privacy";
 import { useUserAgreement } from "@/services/app/agreement";
+import { mutate } from "swr";
 
 interface SVGIndicatorProps {
   position: 0 | 1;
@@ -553,32 +553,40 @@ const Login: React.VFC = () => {
     case Stat.Pswd:
       return (
         <LoginByPass
-          cb={() => {
+          cb={async () => {
             present({ message: "登录成功" });
-            push(
-              "/tabs/trends",
-              undefined,
-              undefined,
-              undefined,
-              signupPageAnimationBuilder
-            );
+            await mutate("/user/userid");
           }}
+          // cb={() => {
+          //   present({ message: "登录成功" });
+          //   push(
+          //     "/tabs/trends",
+          //     undefined,
+          //     undefined,
+          //     undefined,
+          //     signupPageAnimationBuilder
+          //   );
+          // }}
           onStatChange={setStatus}
         />
       );
     case Stat.Auth:
       return (
         <LoginByAuth
-          cb={() => {
+          cb={async () => {
             present({ message: "登录成功" });
-            push(
-              "/tabs/trends",
-              undefined,
-              undefined,
-              undefined,
-              signupPageAnimationBuilder
-            );
+            await mutate("/user/userid");
           }}
+          // cb={() => {
+          //   present({ message: "登录成功" });
+          //   push(
+          //     "/tabs/trends",
+          //     undefined,
+          //     undefined,
+          //     undefined,
+          //     signupPageAnimationBuilder
+          //   );
+          // }}
           onStatChange={setStatus}
         />
       );
