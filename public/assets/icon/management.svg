@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="243.686" height="152.874" viewBox="0 0 243.686 152.874">
+  <g id="组_2373" data-name="组 2373" transform="translate(3.857)">
+    <g id="组_2276" data-name="组 2276" transform="translate(0 0)">
+      <g id="组_2275" data-name="组 2275" transform="translate(0 12.368)">
+        <path id="路径_688" data-name="路径 688" d="M113.8-4.447-1.333,36.505,113.8,79.044,234.67,36.505,157.146,4.818" transform="translate(1.333 4.447)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+        <path id="路径_689" data-name="路径 689" d="M113.8,35.1l96.45-33.944" transform="translate(25.756 69.058)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+        <path id="路径_825" data-name="路径 825" d="M-1.333,1.156,113.8,43.7,234.67,1.156" transform="translate(1.333 93.811)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+        <path id="路径_826" data-name="路径 826" d="M-1.333,1.156,109.29,42.268" transform="translate(1.333 69.672)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+      </g>
+      <g id="椭圆_157" data-name="椭圆 157" transform="matrix(0.995, -0.105, 0.105, 0.995, 144.971, 3.538)" fill="#309fff" stroke="#2680eb" stroke-width="6">
+        <ellipse cx="16.921" cy="18.049" rx="16.921" ry="18.049" stroke="none"/>
+        <ellipse cx="16.921" cy="18.049" rx="13.921" ry="15.049" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="258.16" height="156.983" viewBox="0 0 258.16 156.983">
+  <g id="组_2336" data-name="组 2336" transform="translate(0 10.207)" >
+    <path id="路径_234" data-name="路径 234" d="M0,0,143.927,38.565,130.44,68.171" transform="matrix(0.966, -0.259, 0.259, 0.966, 18.05, 31.37)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/>
+    <path id="路径_235" data-name="路径 235" d="M0,0V55.419L147.742,22.631" transform="matrix(0.966, -0.259, 0.259, 0.966, 96.874, 89.571)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/>
+    <g id="椭圆_149" data-name="椭圆 149" transform="matrix(0.995, -0.105, 0.105, 0.995, 0, 12.464)" fill="#309fff" stroke="#2680eb" stroke-width="6">
+      <ellipse cx="19.188" cy="20.468" rx="19.188" ry="20.468" stroke="none"/>
+      <ellipse cx="19.188" cy="20.468" rx="16.188" ry="17.468" fill="none"/>
+    </g>
+  </g>
+</svg>

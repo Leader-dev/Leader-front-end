@@ -7,7 +7,7 @@ export default ({
   border = true,
   defaultHref = "/",
 }: {
-  title: string;
+  title: string | undefined;
   border?: boolean;
   defaultHref?: string;
 }) => {

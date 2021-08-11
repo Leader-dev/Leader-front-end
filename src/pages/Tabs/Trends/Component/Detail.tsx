@@ -78,7 +78,7 @@ export const PostDetail = ({
           <div>{content}</div>
           {!!imageUrls.length && (
             <div
-              style={{ display: "flex", flexWrap: "wrap", marginTop: "8px" }}
+              style={{ display: "flex", flexWrap: "wrap", marginTop: "10px" }}
             >
               {imageUrls.map((url) => {
                 return (

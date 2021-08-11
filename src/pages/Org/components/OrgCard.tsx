@@ -9,7 +9,6 @@ import {
 } from "@ionic/react";
 import { checkmarkCircle, helpCircle, peopleSharp } from "ionicons/icons";
 import { OrgInfo } from "@/types/organization";
-import { useHistory } from "react-router";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 export default ({
@@ -32,14 +31,12 @@ export default ({
     authColor = "var(--ion-color-warning)";
   }
 
-  const history = useHistory();
-  const handleOnClick = () => {
-    if (!interactive) return;
-    history.push(`/org/${info.id}/detail`);
-  };
-
   return (
-    <IonCard style={{ margin: "10px 0" }} onClick={handleOnClick}>
+    <IonCard
+      button={interactive}
+      style={{ margin: "10px 0" }}
+      routerLink={interactive ? `/org/${info.id}/detail` : undefined}
+    >
       <IonGrid style={{ padding: "12px" }}>
         <IonRow>
           <IonCol size="5">

@@ -33,7 +33,6 @@ import OrgSearch from "@/pages/Org/Search";
 import ManageMemberPage from "@/pages/Org/ManageMember";
 import AccountRouter from "@/pages/Personal/Account";
 import OrgApplicationRouter from "@/pages/Org/Application";
-import trendsIcon from "../icon/trends.svg";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -48,24 +47,23 @@ const TabsRoute: React.FC = () => {
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="trends" href="/tabs/trends">
-          {/*<IonIcon icon={triangle} />*/}
-          <IonIcon src={trendsIcon} />
+          <IonIcon src={"/assets/icon/trends.svg"} />
           <IonLabel> 动态 </IonLabel>
         </IonTabButton>
         <IonTabButton tab="orgs" href="/tabs/org-display">
-          <IonIcon icon={ellipse} />
+          <IonIcon src={"/assets/icon/display.svg"} />
           <IonLabel> 展示 </IonLabel>
         </IonTabButton>
         <IonTabButton tab="management" href="/tabs/management">
-          <IonIcon icon={ellipse} />
+          <IonIcon src={"/assets/icon/management.svg"} />
           <IonLabel> 管理 </IonLabel>
         </IonTabButton>
         <IonTabButton tab="coop" href="/tabs/coop">
-          <IonIcon icon={square} />
-          <IonLabel> 合作 </IonLabel>
+          <IonIcon src={"/assets/icon/cooperation.svg"} />
+          <IonLabel> 项目 </IonLabel>
         </IonTabButton>
         <IonTabButton tab="person" href="/tabs/person">
-          <IonIcon icon={square} />
+          <IonIcon src={"/assets/icon/person.svg"} />
           <IonLabel> 个人 </IonLabel>
         </IonTabButton>
       </IonTabBar>
