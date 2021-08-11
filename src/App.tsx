@@ -22,6 +22,8 @@ import "./theme/variables.css";
 import { SWRConfig } from "swr";
 import axios from "@/utils/request";
 import { AppRouter } from "./router";
+import { useAuthed } from "./services/user/info/get";
+import { useEffect } from "react";
 
 const swrConfig = {
   // @ts-ignore
@@ -30,12 +32,32 @@ const swrConfig = {
   revalidateOnReconnect: false,
   shouldRetryOnError: false,
 };
+
+const Protection: React.FC = ({ children }) => {
+  const { isLoading, isAuthed } = useAuthed();
+
+  useEffect(() => {
+    if (typeof isAuthed === "boolean" && !isAuthed) {
+      // prompt for login modal
+    }
+  }, [isAuthed]);
+  if (isLoading) {
+    return <>Loading</>;
+  }
+  if (isAuthed) {
+    return <>{children}</>;
+  } else {
+    return <>Waiting for log in </>;
+  }
+};
+
 const App: React.FC = () => (
   <SWRConfig value={swrConfig}>
-    <IonApp>
-      <AppRouter />
-    </IonApp>
+    <Protection>
+      <IonApp>
+        <AppRouter />
+      </IonApp>
+    </Protection>
   </SWRConfig>
 );
-
 export default App;
