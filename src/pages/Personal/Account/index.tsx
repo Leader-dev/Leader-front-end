@@ -13,6 +13,7 @@ import {
   IonRouterOutlet,
   IonItemDivider,
   useIonRouter,
+  useIonAlert,
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
 import { Route } from "react-router-dom";
@@ -24,9 +25,11 @@ import About from "./components/About";
 import UpdateNickname from "./components/UpdateNickname";
 import UpdatePassword from "./components/UpdatePassword";
 import { logout } from "@/services/user";
+import { mutate } from "swr";
 
 const AccountHome = () => {
   const history = useIonRouter();
+  const [present] = useIonAlert();
   return (
     <IonPage>
       <IonHeader>
@@ -61,7 +64,21 @@ const AccountHome = () => {
           style={{ margin: "25px 15px" }}
           expand="block"
           onClick={() => {
-            logout().then(() => history.push("/signup"));
+            present({
+              message: "是否确认退出登陆",
+              buttons: [
+                "取消",
+                {
+                  text: "确认",
+                  handler: () => {
+                    logout().then(async () => {
+                      await mutate("/user/userid");
+                      history.push("/");
+                    });
+                  },
+                },
+              ],
+            });
           }}
         >
           退出登陆
