@@ -1,11 +1,10 @@
-import * as React from "react";
+/** @jsxImportSource @emotion/react */
 import {
-  IonBadge,
   IonButton,
-  IonCol,
   IonContent,
   IonHeader,
   IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
   IonList,
@@ -13,7 +12,6 @@ import {
   IonNote,
   IonPage,
   IonRouterOutlet,
-  IonRow,
   IonText,
 } from "@ionic/react";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
@@ -29,6 +27,10 @@ import OrgCard from "@/pages/Org/components/OrgCard";
 import { useState } from "react";
 import { respondToApplication } from "@/services/org/apply/reply";
 import { Route } from "react-router-dom";
+import { css } from "@emotion/react";
+import { Square } from "@/components/square";
+import { useNotificationDetail } from "@/services/org/apply/notificationDetail";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 interface NotificationOverview {
   title: string;
@@ -43,22 +45,80 @@ const NotificationItem = ({ info }: { info: NotificationOverview }) => {
       button
       detailIcon={chevronForward}
       key={info.id}
-      routerLink={`${info.id}`}
+      routerLink={`notifications/${info.id}`}
     >
       <IonLabel>
-        <h5>{info.title}</h5>
-        {new Date(info.sendDate).toLocaleDateString()}
+        <h2>{info.title}</h2>
+        <p>{new Date(info.sendDate).toLocaleDateString()}</p>
       </IonLabel>
       {info.unread ? (
         <IonNote slot={"end"}>
           <IonIcon
             color={"danger"}
-            style={{ fontSize: "120%" }}
+            style={{ fontSize: "80%" }}
             icon={ellipse}
           />
         </IonNote>
       ) : null}
     </IonItem>
+  );
+};
+
+const NotificationDetail = () => {
+  const { notificationId } = useParams<{ notificationId: string }>();
+  const { data: notificationDetail } = useNotificationDetail(notificationId);
+  const { data: startUrl } = useStartUrl();
+
+  let content;
+  if (notificationDetail) {
+    content = (
+      <div style={{ padding: "15px 5vw" }}>
+        <div style={{ textAlign: "center", color: "var(--ion-color-primary)" }}>
+          {new Date(notificationDetail.sendDate).toLocaleDateString()}
+        </div>
+        <p>{notificationDetail.content}</p>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "2%",
+            marginTop: "10px",
+          }}
+        >
+          {notificationDetail.imageUrls.map((url) => (
+            <Square
+              key={url}
+              css={{
+                width: "48%",
+              }}
+            >
+              <IonImg
+                style={{ objectFit: "crop" }}
+                src={startUrl + url}
+                css={css`
+                  height: 100%;
+                  &::part(image) {
+                    object-fit: cover;
+                    border-radius: 8px;
+                  }
+                `}
+              />
+            </Square>
+          ))}
+        </div>
+      </div>
+    );
+  } else {
+    content = <div> Skeleton </div>;
+  }
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <ToolbarWithBackButton title={notificationDetail?.title} />
+      </IonHeader>
+      <IonContent>{content}</IonContent>
+    </IonPage>
   );
 };
 
@@ -88,7 +148,9 @@ const ApplicationDetail = () => {
               color={
                 applicationDetail.status === "rejected"
                   ? "danger"
-                  : applicationDetail.status === "passed"
+                  : ["passed", "accepted", "declined"].includes(
+                      applicationDetail.status
+                    )
                   ? "success"
                   : "warning"
               }
@@ -103,7 +165,9 @@ const ApplicationDetail = () => {
               />
               {applicationDetail.status === "rejected"
                 ? "已拒绝"
-                : applicationDetail.status === "passed"
+                : ["passed", "accepted", "declined"].includes(
+                    applicationDetail.status
+                  )
                 ? "已通过"
                 : "审核中"}
             </IonText>
@@ -112,7 +176,7 @@ const ApplicationDetail = () => {
           <IonListHeader>
             <h5>申请对象：</h5>
           </IonListHeader>
-          <OrgCard info={applicationDetail.orgInfo} interactive={false} />
+          <OrgCard info={applicationDetail.orgInfo} interactive={true} />
 
           <IonListHeader>
             <h5>通知：</h5>
@@ -154,7 +218,7 @@ const ApplicationDetail = () => {
                   marginBottom: "5px",
                 }}
               >
-                三天内未作出选择将自动视为拒绝
+                七天内未做出选择，邀请自动失效
               </div>
               <div style={{ display: "flex" }}>
                 <IonButton
@@ -211,12 +275,12 @@ const ApplicationDetail = () => {
             {applicationDetail.status === "accepted" ? (
               <>
                 <IonIcon icon={checkmarkCircle} />
-                <IonText>已加入</IonText>
+                <span style={{ marginLeft: "3px" }}>已加入</span>
               </>
             ) : (
               <>
                 <IonIcon icon={closeCircle} />
-                <IonText>已拒绝</IonText>
+                <span style={{ marginLeft: "3px" }}>已拒绝</span>
               </>
             )}
           </div>
@@ -241,8 +305,13 @@ export default () => {
     <IonPage>
       <IonRouterOutlet>
         <Route
+          exact
           path={"/org/application/:applicationId"}
           component={ApplicationDetail}
+        />
+        <Route
+          path={"/org/application/notifications/:notificationId"}
+          component={NotificationDetail}
         />
       </IonRouterOutlet>
     </IonPage>
