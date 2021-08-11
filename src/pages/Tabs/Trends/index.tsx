@@ -73,7 +73,8 @@ const Trends = () => {
   return (
     <IonPage>
       <TitledSearchBarWrapper
-        title="动态"
+        noTopTitle={true}
+        title={"动态"}
         searchbarPlaceholder="搜索动态"
         value={searchText}
         onValueChange={(e) => setSearchText(e.detail.value!)}
