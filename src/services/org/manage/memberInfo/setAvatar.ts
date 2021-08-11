@@ -1,6 +1,6 @@
 import axios from "@/utils/request";
 import { mutate } from "swr";
-import { uploadImage } from "@/external/uploadImage";
+import { uploadImage } from "@/services/external/uploadImage";
 
 export const setOrgMemberAvatar = async ({
   avatarFile,
