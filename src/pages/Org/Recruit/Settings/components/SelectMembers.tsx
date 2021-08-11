@@ -26,7 +26,6 @@ import { setRecruitMangerInfo } from "@/services/org/manage/apply/setting/setRec
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import MemberCard from "@/pages/Org/components/MemberCard";
 import Breadcrumb from "@/pages/Org/components/Breadcrumb";
-import { man } from "ionicons/icons";
 
 export default () => {
   const [crumb, setCrumb] = useState<
@@ -43,7 +42,9 @@ export default () => {
   });
   useEffect(() => {
     if (departmentManager) {
-      setSelectedMembers([departmentManager.memberInfo]);
+      setSelectedMembers(
+        departmentManager.memberInfo ? [departmentManager.memberInfo] : []
+      );
     }
   }, [departmentManager]);
 

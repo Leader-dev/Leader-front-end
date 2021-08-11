@@ -1,7 +1,8 @@
 import * as React from "react";
-import { IonSlide, IonText, IonButton, IonSlides } from "@ionic/react";
+import { IonSlide, IonText, IonButton, IonSlides, IonIcon } from "@ionic/react";
 import OrganizationInfoCard from "./OrganizationInfoCard";
 import { OrgInfo } from "@/types/organization";
+import { refresh } from "ionicons/icons";
 
 export default ({ info }: { info: OrgInfo[] }) => {
   let orgList = [];
@@ -64,6 +65,7 @@ export default ({ info }: { info: OrgInfo[] }) => {
         style={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
           height: "6vh",
           padding: "1.5vh 1.5vw 1vh 4.5vw",
         }}
@@ -77,7 +79,8 @@ export default ({ info }: { info: OrgInfo[] }) => {
           推荐
         </IonText>
         <IonButton fill="clear" size="small">
-          查看更多
+          <IonIcon icon={refresh} />
+          下一批
         </IonButton>
       </div>
       <IonSlides

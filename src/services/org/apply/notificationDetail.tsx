@@ -11,16 +11,12 @@ interface NotificationDetailResult {
   sendDate: number;
 }
 
-export const useNotificationDetail = ({
-  notification,
-}: {
-  notification: string;
-}) => {
+export const useNotificationDetail = (notificationId: string) => {
   return useSWR(
-    ["/org/apply/notification-detail", notification],
-    (url, notification) =>
-      axios(url, { data: { notification }, codeHandlers: {} }).then(
-        (res) => res.data.departments as NotificationDetailResult[]
+    ["/org/apply/notification-detail", notificationId],
+    (url, notificationId) =>
+      axios(url, { data: { notificationId }, codeHandlers: {} }).then(
+        (res) => res.data.detail as NotificationDetailResult
       )
   );
 };

@@ -10,27 +10,45 @@ export default ({ info }: { info: OrgDetailsResult }) => {
   let button;
   if (applicationStatus === "closed") {
     button = (
-      <IonButton color="dark" size="small" disabled={true}>
+      <IonButton
+        style={{ height: "30px" }}
+        color="dark"
+        size="small"
+        disabled={true}
+      >
         招新关闭
       </IonButton>
     );
   } else if (applicationStatus === "available") {
     button = (
-      <Link to="apply">
-        <IonButton color="primary" size="small">
-          申请加入
-        </IonButton>
-      </Link>
+      <IonButton
+        style={{ height: "30px" }}
+        color="primary"
+        size="small"
+        routerLink={"apply"}
+      >
+        申请加入
+      </IonButton>
     );
   } else if (applicationStatus === "joined") {
     button = (
-      <IonButton color="success" size="small" disabled={true}>
+      <IonButton
+        style={{ height: "30px" }}
+        color="success"
+        size="small"
+        disabled={true}
+      >
         已加入
       </IonButton>
     );
   } else if (applicationStatus === "applied") {
     button = (
-      <IonButton color="medium" size="small" disabled={true}>
+      <IonButton
+        style={{ height: "30px" }}
+        color="medium"
+        size="small"
+        disabled={true}
+      >
         已申请
       </IonButton>
     );
@@ -52,12 +70,12 @@ export default ({ info }: { info: OrgDetailsResult }) => {
   return (
     <IonGrid>
       <IonRow>
-        <IonCol style={{ fontSize: "90%", lineHeight: "130%" }}>
+        <IonCol style={{ fontSize: "90%", lineHeight: "150%" }}>
           <div
             style={{
               fontSize: "120%",
               fontWeight: "bold",
-              lineHeight: "150%",
+              lineHeight: "160%",
             }}
           >
             {detail.name}

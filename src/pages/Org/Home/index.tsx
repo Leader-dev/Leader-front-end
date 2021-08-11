@@ -1,4 +1,3 @@
-import { useOrgPublicInfo } from "@/services/org/manage/publicInfo/get";
 import { useOrgTimeline } from "@/services/org/manage/timeline/list";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { useUserInfo } from "@/services/user/info/get";
@@ -43,6 +42,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { Square } from "@/components/square";
+import { useOrgDetails } from "@/services/org/detail";
 
 const Item = ({
   name,
@@ -91,7 +91,7 @@ const Item = ({
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: startUrl } = useStartUrl();
-  const { data: orgDetails } = useOrgPublicInfo({ orgId });
+  const { data: orgDetails } = useOrgDetails({ orgId });
   const { data: userInfo } = useUserInfo(); // TODO useMemberInfo
   const [tab, setTab] = useState<"user" | "manage">("user");
   const { data: timeline } = useOrgTimeline({ orgId });
@@ -119,7 +119,8 @@ export default () => {
           </IonToolbar>
           <img
             src={`${startUrl}${
-              orgDetails?.posterUrl || "v1_ipNqlAbA7NJpPjS8ay2KRiwKeoSuTz4h"
+              orgDetails?.detail.posterUrl ||
+              "v1_ipNqlAbA7NJpPjS8ay2KRiwKeoSuTz4h"
             }`}
             style={{
               top: 0,
@@ -139,7 +140,7 @@ export default () => {
               textAlign: "center",
             }}
           >
-            <h3>{orgDetails?.name}</h3>
+            <h3>{orgDetails?.detail.name}</h3>
           </div>
           <div
             style={{
@@ -150,7 +151,7 @@ export default () => {
               textAlign: "center",
             }}
           >
-            {userInfo?.nickname}
+            {orgDetails?.detail.presidentName}
           </div>
           <div
             style={{
@@ -161,7 +162,7 @@ export default () => {
               textAlign: "center",
             }}
           >
-            {userInfo?.uid}
+            {orgDetails?.detail.numberId}
           </div>
         </div>
       </IonHeader>
