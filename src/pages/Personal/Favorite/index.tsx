@@ -10,6 +10,7 @@ import {
   IonTitle,
   IonToolbar,
   IonBackButton,
+  IonImg,
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
 import { useState } from "react";
@@ -23,6 +24,21 @@ export default () => {
 
   if (favoriteOrgsErr) return <div>Failed to load</div>;
 
+  const NoFavoriteOrgs = (
+    <div style={{ padding: "25vh 15vw" }}>
+      <IonImg src={"/assets/icon/no-favorite-orgs.svg"} />
+      <div
+        style={{
+          marginTop: "30px",
+          textAlign: "center",
+          color: "var(--ion-color-medium)",
+        }}
+      >
+        暂无收藏
+      </div>
+    </div>
+  );
+
   let content;
   if (!favoriteOrgs) {
     content = (
@@ -35,8 +51,10 @@ export default () => {
   } else {
     content =
       tab === "org"
-        ? favoriteOrgs.map((org) => <OrgCard info={org} interactive={true} />)
-        : "";
+        ? favoriteOrgs.length
+          ? favoriteOrgs.map((org) => <OrgCard info={org} interactive={true} />)
+          : NoFavoriteOrgs
+        : NoFavoriteOrgs;
   }
 
   return (
