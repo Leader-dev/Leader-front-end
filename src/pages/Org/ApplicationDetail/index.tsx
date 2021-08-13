@@ -1,115 +1,48 @@
 /** @jsxImportSource @emotion/react */
 import {
   IonButton,
+  IonCol,
   IonContent,
   IonHeader,
   IonIcon,
-  IonImg,
   IonItem,
   IonLabel,
   IonList,
   IonListHeader,
-  IonNote,
   IonPage,
   IonRouterOutlet,
+  IonRow,
   IonText,
 } from "@ionic/react";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import { useParams } from "react-router";
 import { useApplicationDetail } from "@/services/org/apply/detail";
-import {
-  checkmarkCircle,
-  chevronForward,
-  closeCircle,
-  ellipse,
-} from "ionicons/icons";
+import { checkmarkCircle, closeCircle, ellipse } from "ionicons/icons";
 import OrgCard from "@/pages/Org/components/OrgCard";
 import { useState } from "react";
 import { respondToApplication } from "@/services/org/apply/reply";
-import { Route } from "react-router-dom";
-import { css } from "@emotion/react";
-import { Square } from "@/components/square";
+import { NotificationItem } from "@/pages/Org/components/NotificationDetail";
+import {
+  NotificationDetailContent,
+  NotificationDetailSkeleton,
+} from "@/pages/Org/components/NotificationDetail";
 import { useNotificationDetail } from "@/services/org/apply/notificationDetail";
-import { useStartUrl } from "@/services/service/image/accessStartUrl";
+import { Route } from "react-router-dom";
+import * as React from "react";
 
-interface NotificationOverview {
-  title: string;
-  id: string;
-  sendDate: number;
-  unread: boolean;
-}
-
-const NotificationItem = ({ info }: { info: NotificationOverview }) => {
-  return (
-    <IonItem
-      button
-      detailIcon={chevronForward}
-      key={info.id}
-      routerLink={`notifications/${info.id}`}
-    >
-      <IonLabel>
-        <h2>{info.title}</h2>
-        <p>{new Date(info.sendDate).toLocaleDateString()}</p>
-      </IonLabel>
-      {info.unread ? (
-        <IonNote slot={"end"}>
-          <IonIcon
-            color={"danger"}
-            style={{ fontSize: "80%" }}
-            icon={ellipse}
-          />
-        </IonNote>
-      ) : null}
-    </IonItem>
-  );
-};
-
-const NotificationDetail = () => {
+const ApplicantNotificationDetailPage = () => {
   const { notificationId } = useParams<{ notificationId: string }>();
-  const { data: notificationDetail } = useNotificationDetail(notificationId);
-  const { data: startUrl } = useStartUrl();
+  const { applicationId } = useParams<{ applicationId: string }>();
+  const { data: notificationDetail } = useNotificationDetail({
+    notificationId,
+    applicationId,
+  });
 
   let content;
   if (notificationDetail) {
-    content = (
-      <div style={{ padding: "15px 5vw" }}>
-        <div style={{ textAlign: "center", color: "var(--ion-color-primary)" }}>
-          {new Date(notificationDetail.sendDate).toLocaleDateString()}
-        </div>
-        <p>{notificationDetail.content}</p>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "2%",
-            marginTop: "10px",
-          }}
-        >
-          {notificationDetail.imageUrls.map((url) => (
-            <Square
-              key={url}
-              css={{
-                width: "48%",
-              }}
-            >
-              <IonImg
-                style={{ objectFit: "crop" }}
-                src={startUrl + url}
-                css={css`
-                  height: 100%;
-                  &::part(image) {
-                    object-fit: cover;
-                    border-radius: 8px;
-                  }
-                `}
-              />
-            </Square>
-          ))}
-        </div>
-      </div>
-    );
+    content = <NotificationDetailContent info={notificationDetail} />;
   } else {
-    content = <div> Skeleton </div>;
+    content = <NotificationDetailSkeleton />;
   }
 
   return (
@@ -129,19 +62,23 @@ const ApplicationDetail = () => {
 
   let content;
   if (applicationDetail) {
+    const time = new Date(applicationDetail.sendDate);
     content = (
       <>
         <IonList>
           <div style={{ textAlign: "center" }}>
-            <h6>加入申请</h6>
+            <h5>加入申请</h5>
           </div>
-          <IonItem lines={"none"}>
+
+          <IonItem lines={"none"} style={{ marginBottom: "-10px" }}>
             申请时间：
             <IonText color={"primary"}>
-              {new Date(applicationDetail.sendDate).toLocaleDateString()}
+              {`${time.getFullYear()}年${
+                time.getMonth() + 1
+              }月${time.getDate()}日 
+              ${time.getHours()}:${time.getMinutes()}`}
             </IonText>
           </IonItem>
-
           <IonItem lines={"none"}>
             申请状态：
             <IonText
@@ -183,7 +120,11 @@ const ApplicationDetail = () => {
           </IonListHeader>
           {applicationDetail.notifications.length ? (
             applicationDetail.notifications.map((notification) => (
-              <NotificationItem info={notification} />
+              <NotificationItem
+                info={notification}
+                showUnread={true}
+                routerLink={`${applicationId}/${notification.id}`}
+              />
             ))
           ) : (
             <IonItem lines={"none"}>
@@ -191,12 +132,16 @@ const ApplicationDetail = () => {
             </IonItem>
           )}
 
-          <IonListHeader>
-            <h5>申请部门：</h5>
-          </IonListHeader>
-          <IonItem lines={"none"}>
-            <IonLabel> {applicationDetail.departmentInfo.name} </IonLabel>
-          </IonItem>
+          {applicationDetail.departmentInfo ? (
+            <>
+              <IonListHeader style={{ marginBottom: "-4px", marginTop: "8px" }}>
+                <h5>申请部门：</h5>
+              </IonListHeader>
+              <IonItem lines={"none"}>
+                <IonLabel> {applicationDetail.departmentInfo.name} </IonLabel>
+              </IonItem>
+            </>
+          ) : null}
         </IonList>
 
         {applicationDetail.status === "passed" ? (
@@ -220,43 +165,46 @@ const ApplicationDetail = () => {
               >
                 七天内未做出选择，邀请自动失效
               </div>
-              <div style={{ display: "flex" }}>
-                <IonButton
-                  style={{ width: "50%", flexGrow: 1, marginRight: "1vw" }}
-                  onClick={() => {
-                    setLoading(true);
-                    respondToApplication({
-                      applicationId: applicationDetail.id,
-                      action: "accept",
-                    }).then(() => {
-                      setLoading(false);
-                    });
-                  }}
-                  color="primary"
-                  expand="block"
-                  disabled={loading}
-                >
-                  加入
-                </IonButton>
-                <IonButton
-                  style={{ width: "50%", flexGrow: 1, marginLeft: "1vw" }}
-                  onClick={() => {
-                    setLoading(true);
-                    respondToApplication({
-                      applicationId: applicationDetail.id,
-                      action: "decline",
-                    }).then(() => {
-                      setLoading(false);
-                    });
-                  }}
-                  color="primary"
-                  expand="block"
-                  fill="outline"
-                  disabled={loading}
-                >
-                  拒绝
-                </IonButton>
-              </div>
+              <IonRow>
+                <IonCol>
+                  <IonButton
+                    onClick={() => {
+                      setLoading(true);
+                      respondToApplication({
+                        applicationId: applicationDetail.id,
+                        action: "accept",
+                      }).then(() => {
+                        setLoading(false);
+                      });
+                    }}
+                    color="primary"
+                    expand="block"
+                    disabled={loading}
+                  >
+                    加入
+                  </IonButton>
+                </IonCol>
+
+                <IonCol>
+                  <IonButton
+                    onClick={() => {
+                      setLoading(true);
+                      respondToApplication({
+                        applicationId: applicationDetail.id,
+                        action: "decline",
+                      }).then(() => {
+                        setLoading(false);
+                      });
+                    }}
+                    color="primary"
+                    expand="block"
+                    fill="outline"
+                    disabled={loading}
+                  >
+                    拒绝
+                  </IonButton>
+                </IonCol>
+              </IonRow>
             </div>
           </div>
         ) : applicationDetail.status !== "pending" ? (
@@ -306,12 +254,12 @@ export default () => {
       <IonRouterOutlet>
         <Route
           exact
-          path={"/org/application/:applicationId"}
+          path="/org/application/:applicationId"
           component={ApplicationDetail}
         />
         <Route
-          path={"/org/application/notifications/:notificationId"}
-          component={NotificationDetail}
+          path="/org/application/:applicationId/:notificationId"
+          component={ApplicantNotificationDetailPage}
         />
       </IonRouterOutlet>
     </IonPage>

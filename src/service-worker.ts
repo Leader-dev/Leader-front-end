@@ -22,6 +22,7 @@ clientsClaim();
 // Their URLs are injected into the manifest variable below.
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
+// console.log(self.__WB_MANIFEST)
 precacheAndRoute(self.__WB_MANIFEST);
 
 // Set up App Shell-style routing, so that all navigation requests
@@ -79,3 +80,18 @@ self.addEventListener("message", (event) => {
 });
 
 // Any other custom service worker logic can go here.
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
+    caches.keys().then(function (cacheNames) {
+      return Promise.all(
+        cacheNames
+          .filter(function (cacheName) {
+            return true;
+          })
+          .map(function (cacheName) {
+            return caches.delete(cacheName);
+          })
+      );
+    })
+  );
+});

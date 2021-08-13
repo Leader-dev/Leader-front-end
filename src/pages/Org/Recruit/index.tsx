@@ -6,7 +6,6 @@ import { Square } from "@/components/square";
 import { useOrgApplicationDetail } from "@/services/org/manage/apply/detail";
 import { useOrgReceivedApplications } from "@/services/org/manage/apply/listReceived";
 import { respondToOrgApplication } from "@/services/org/manage/apply/sendResult";
-import { OrgApplication } from "@/types/organization";
 import RecruitSettings from "./Settings/index";
 import {
   IonBackButton,
@@ -15,7 +14,6 @@ import {
   IonButtons,
   IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
   IonIcon,
   IonImg,
@@ -29,12 +27,13 @@ import {
   IonRow,
   IonSegment,
   IonSegmentButton,
+  IonText,
   IonTextarea,
   IonToolbar,
   useIonRouter,
 } from "@ionic/react";
-import { add, settings } from "ionicons/icons";
-import { Fragment, useMemo, useState } from "react";
+import { addCircle, ellipse, settings } from "ionicons/icons";
+import { useMemo, useState } from "react";
 import { Route, useParams } from "react-router";
 import { sendApplicationNotification } from "@/services/org/manage/apply/sendNotification";
 import { useToast } from "@/utils/toast";
@@ -42,23 +41,111 @@ import * as React from "react";
 import DepartmentSettings from "./Settings/components/DepartmentSettings";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import SelectMembers from "./Settings/components/SelectMembers";
+import { useOrgOperatedApplications } from "@/services/org/manage/apply/listOperated";
+import { NotificationItem } from "@/pages/Org/components/NotificationDetail";
+import { useOrgNotificationDetail } from "@/services/org/manage/apply/notificationDetail";
+import {
+  NotificationDetailContent,
+  NotificationDetailSkeleton,
+} from "@/pages/Org/components/NotificationDetail";
+import formatTime from "../../../components/formatTime";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
   const [tab, setTab] = useState<"pending" | "reviewed">("pending");
-  const { data: applications } = useOrgReceivedApplications({ orgId });
+  const { data: pendingApplications } = useOrgReceivedApplications({ orgId });
+  const { data: reviewedApplications } = useOrgOperatedApplications({ orgId });
 
-  const pendingApplications = useMemo(() => {
-    if (!applications) return [];
-    return applications.filter((a) => a.status === "pending");
-  }, [applications]);
-  const reviewedApplications = useMemo(() => {
-    if (!applications) return [];
-    return applications.filter((a) => a.status !== "pending");
-  }, [applications]);
-  console.log({ applications });
-
-  const history = useIonRouter();
+  let content;
+  if (pendingApplications && reviewedApplications) {
+    content = (
+      <>
+        {tab === "pending" ? (
+          <IonList>
+            {pendingApplications.map((a) => {
+              const time = new Date(a.sendDate);
+              return (
+                <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
+                  <IonLabel>
+                    <h2>{a.name}</h2>
+                    <p
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginTop: "3px",
+                      }}
+                    >
+                      <IonIcon icon={ellipse} color={"primary"} />
+                      <IonText style={{ marginLeft: "2px" }} color={"primary"}>
+                        申请人：
+                      </IonText>
+                      {a.applicantUserInfo.nickname}
+                    </p>
+                    <p>
+                      <IonText color={"dark"}>提交时间：</IonText>
+                      {`${time.getFullYear()}年${
+                        time.getMonth() + 1
+                      }月${time.getDate()}日
+                      ${time.getHours()}:${time.getMinutes()}`}
+                    </p>
+                  </IonLabel>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        ) : (
+          <IonList>
+            {reviewedApplications.map((a) => {
+              const time = new Date(a.sendDate);
+              return (
+                <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
+                  <IonLabel>
+                    <h2>{a.name}</h2>
+                    <p
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginTop: "3px",
+                      }}
+                    >
+                      <IonIcon icon={ellipse} color={"primary"} />
+                      <IonText style={{ marginLeft: "2px" }} color={"primary"}>
+                        申请人：
+                      </IonText>
+                      {a.applicantUserInfo.nickname}
+                    </p>
+                    <p style={{ display: "flex", alignItems: "center" }}>
+                      <IonIcon icon={ellipse} color={"success"} />
+                      <IonText style={{ marginLeft: "2px" }} color={"success"}>
+                        审核人：
+                      </IonText>
+                      {a.operateMemberInfo.name}
+                    </p>
+                    <p>
+                      <IonText color={"dark"}>提交时间：</IonText>
+                      {`${time.getFullYear()}年${
+                        time.getMonth() + 1
+                      }月${time.getDate()}日
+                      ${time.getHours()}:${time.getMinutes()}`}
+                    </p>
+                  </IonLabel>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        )}
+        <IonButton
+          slot={"fixed"}
+          style={{ bottom: "25px", margin: "0 15px", width: "90vw" }}
+          routerLink={"recruit/settings"}
+        >
+          <IonIcon slot={"icon-only"} icon={settings} />
+        </IonButton>
+      </>
+    );
+  } else {
+    content = <div> Skeleton </div>;
+  }
 
   return (
     <IonPage>
@@ -74,65 +161,51 @@ const RecruitManage = () => {
           <IonSegmentButton value="pending">待处理</IonSegmentButton>
           <IonSegmentButton value="reviewed">已审批</IonSegmentButton>
         </IonSegment>
-        {tab === "pending" ? (
-          <IonList>
-            {pendingApplications.map((a) => {
-              const time = new Date(a.sendDate);
-              console.log({ time });
-              return (
-                <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
-                  <IonLabel>
-                    <h2>{a.name}</h2>
-                    <div>申请人：{a.applicantUserInfo.nickname}</div>
-                    <div>
-                      提交时间：
-                      {`${time.getFullYear()}-${
-                        time.getMonth() + 1
-                      }-${time.getDate()} ${time.getHours()}:${time.getMinutes()}`}
-                    </div>
-                  </IonLabel>
-                </IonItem>
-              );
-            })}
-          </IonList>
-        ) : (
-          <IonList>
-            {reviewedApplications.map((a) => {
-              const time = new Date(a.sendDate);
-              console.log({ time });
-              return (
-                <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
-                  <IonLabel>
-                    <h2>{a.name}</h2>
-                    <div>申请人：{a.applicantUserInfo.nickname}</div>
-                    <div>
-                      提交时间：
-                      {`${time.getFullYear()}-${
-                        time.getMonth() + 1
-                      }-${time.getDate()} ${time.getHours()}:${time.getMinutes()}`}
-                    </div>
-                  </IonLabel>
-                </IonItem>
-              );
-            })}
-          </IonList>
-        )}
-        <IonButton
-          slot={"fixed"}
-          style={{ bottom: "25px", margin: "0 15px", width: "90vw" }}
-          routerLink={"recruit/settings"}
-        >
-          <IonIcon slot={"icon-only"} icon={settings} />
-        </IonButton>
+        {content}
       </IonContent>
     </IonPage>
   );
 };
 
-const CustomLabel: React.FC<{ title: string }> = ({ children, title }) => (
-  <div style={{ margin: "8px 8px" }}>
-    <span>{title}</span>：<span>{children}</span>
-  </div>
+const ManagerNotificationDetailPage = () => {
+  const { notificationId } = useParams<{ notificationId: string }>();
+  const { orgId } = useParams<{ orgId: string }>();
+  const { data: notificationDetail } = useOrgNotificationDetail({
+    notificationId,
+    orgId,
+  });
+
+  let content;
+  if (notificationDetail) {
+    content = <NotificationDetailContent info={notificationDetail} />;
+  } else {
+    content = <NotificationDetailSkeleton />;
+  }
+  return (
+    <IonPage>
+      <IonHeader>
+        <ToolbarWithBackButton title={notificationDetail?.title} />
+      </IonHeader>
+      <IonContent>{content}</IonContent>
+    </IonPage>
+  );
+};
+
+const CustomLabel: React.FC<{ title: string; last?: boolean }> = ({
+  children,
+  title,
+  last = false,
+}) => (
+  <IonItem
+    lines={"none"}
+    style={{
+      fontSize: "95%",
+      marginLeft: "8px",
+      marginBottom: last ? "0px" : "-15px",
+    }}
+  >
+    {title}：<IonText color={"primary"}>{children}</IonText>
+  </IonItem>
 );
 
 const AppDetail = () => {
@@ -146,6 +219,7 @@ const AppDetail = () => {
   type Details = NonNullable<
     ReturnType<typeof useOrgApplicationDetail>["data"]
   >;
+  const history = useIonRouter();
 
   if (!details) {
     return (
@@ -162,99 +236,119 @@ const AppDetail = () => {
     );
   }
 
+  const operateMemberInfo = details.operateMemberInfo;
+  const bottomButtons = (
+    <div>
+      <div style={{ height: "10vh" }} />
+      <div
+        style={{
+          position: "fixed",
+          width: "100%",
+          bottom: "15px",
+          background: "white",
+          padding: "0 3vw",
+        }}
+      >
+        <IonRow>
+          <IonCol>
+            <IonButton
+              onClick={() => {
+                setLoading(true);
+                respondToOrgApplication({
+                  applicationId,
+                  orgId,
+                  result: "pass",
+                }).then(() => {
+                  setLoading(false);
+                  history.goBack();
+                });
+              }}
+              color="primary"
+              expand="block"
+              disabled={loading}
+            >
+              通过
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton
+              onClick={() => {
+                setLoading(true);
+                respondToOrgApplication({
+                  applicationId,
+                  orgId,
+                  result: "reject",
+                }).then(() => {
+                  setLoading(false);
+                });
+              }}
+              color="primary"
+              expand="block"
+              fill="outline"
+              disabled={loading}
+            >
+              拒绝
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </div>
+    </div>
+  );
   return (
     <IonPage>
       <IonHeader>
         <ToolbarWithBackButton title={"加入申请"} border={true} />
       </IonHeader>
       <IonContent fullscreen>
-        <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}
-        >
-          <div style={{ margin: "16px", flex: "1 0 auto" }}>
-            <h1 style={{ margin: "24px auto", textAlign: "center" }}>
-              加入申请
-            </h1>
-            <CustomLabel title="申请时间">
-              {new Date(details.sendDate).toLocaleDateString()}
+        <IonList>
+          <h4 style={{ margin: "24px auto", textAlign: "center" }}>加入申请</h4>
+          <CustomLabel title="申请时间">
+            {formatTime(details.sendDate)}
+          </CustomLabel>
+          <CustomLabel title="申请人" last={!operateMemberInfo}>
+            {details.name}
+          </CustomLabel>
+          {operateMemberInfo ? (
+            <CustomLabel title="审核人" last={true}>
+              {operateMemberInfo.name}
             </CustomLabel>
-            <CustomLabel title="申请人">{details.name}</CustomLabel>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                marginBottom: "6px",
-              }}
-            >
-              <h3 style={{ flexGrow: 1, margin: 0, padding: "8px 0 6px" }}>
-                通知：
-              </h3>
-              <IonButton
-                slot="end"
-                shape="round"
-                size="small"
-                routerLink={`add`}
-              >
-                <IonIcon icon={add} />
-              </IonButton>
-            </div>
-            {/* TODO: Add notifications display */}
-            <h3>申请内容：</h3>
-            {details.applicationForm.map(({ question, answer }) => {
-              return (
-                <div style={{ margin: "6px" }} key={question}>
-                  <h5 style={{ marginBottom: "3px" }}>{question}</h5>
-                  <p style={{ marginTop: "3px" }}>{answer}</p>
-                </div>
-              );
-            })}
-          </div>
-          <div>
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <IonButton
-                    onClick={() => {
-                      setLoading(true);
-                      respondToOrgApplication({
-                        applicationId,
-                        orgId,
-                        result: "pass",
-                      }).then(() => {
-                        setLoading(false);
-                      });
-                    }}
-                    color="primary"
-                    expand="block"
-                    disabled={loading}
-                  >
-                    通过
-                  </IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton
-                    onClick={() => {
-                      setLoading(true);
-                      respondToOrgApplication({
-                        applicationId,
-                        orgId,
-                        result: "reject",
-                      }).then(() => {
-                        setLoading(false);
-                      });
-                    }}
-                    color="primary"
-                    expand="block"
-                    fill="outline"
-                    disabled={loading}
-                  >
-                    拒绝
-                  </IonButton>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </div>
-        </div>
+          ) : null}
+
+          <IonListHeader className={"ion-align-items-center"}>
+            <h4>通知：</h4>
+            {operateMemberInfo ? null : (
+              <IonIcon
+                style={{ fontSize: "25px", marginTop: "5.5px" }}
+                color={"primary"}
+                icon={addCircle}
+                onClick={() => history.push(`add`)}
+              />
+            )}
+          </IonListHeader>
+          {details.notifications.map((notification) => (
+            <NotificationItem
+              info={notification}
+              showUnread={false}
+              routerLink={`notifications/${notification.id}`}
+            />
+          ))}
+          <IonListHeader>
+            <h4> 申请内容：</h4>
+          </IonListHeader>
+          {details.applicationForm.map(({ question, answer }) => {
+            return (
+              <>
+                <IonItem key={question}>
+                  <IonLabel>
+                    <h3>{question}</h3>
+                    <p>{answer}</p>
+                  </IonLabel>
+                </IonItem>
+              </>
+            );
+          })}
+        </IonList>
+        {operateMemberInfo ? null : bottomButtons}
       </IonContent>
     </IonPage>
   );
@@ -386,7 +480,6 @@ export const AddNotification = () => {
         >
           确认发布
         </IonButton>
-        {/* </IonItem> */}
       </IonContent>
     </IonPage>
   );
@@ -398,12 +491,18 @@ export default () => {
       <IonRouterOutlet>
         <Route exact path={"/org/:orgId/recruit"} component={RecruitManage} />
         <Route
+          exact
           path="/org/:orgId/recruit/:applicationId/add"
           component={AddNotification}
         />
         <Route
+          exact
           path="/org/:orgId/recruit/:applicationId/home"
           component={AppDetail}
+        />
+        <Route
+          path="/org/:orgId/recruit/:applicationId/notifications/:notificationId"
+          component={ManagerNotificationDetailPage}
         />
         <Route
           exact

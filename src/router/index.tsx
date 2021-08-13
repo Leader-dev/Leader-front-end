@@ -9,7 +9,6 @@ import {
   IonTabs,
 } from "@ionic/react";
 import { Redirect, Route } from "react-router-dom";
-import { ellipse, square, triangle } from "ionicons/icons";
 
 import NoTabPage from "@/pages/NoTabPage";
 
@@ -18,7 +17,6 @@ import OrgDisplay from "@/pages/Tabs/OrgDisplay";
 import Management from "@/pages/Tabs/Management";
 import Coop from "@/pages/Tabs/Cooperation";
 import Personal from "@/pages/Tabs/Personal";
-import SignUp from "@/pages/SignUp";
 import Member from "@/pages/Org/Member";
 import OrgDetail from "@/pages/Org/Detail";
 import OrgHome from "@/pages/Org/Home";
@@ -32,7 +30,7 @@ import PersonalFavorite from "@/pages/Personal/Favorite";
 import OrgSearch from "@/pages/Org/Search";
 import ManageMemberPage from "@/pages/Org/ManageMember";
 import AccountRouter from "@/pages/Personal/Account";
-import OrgApplicationRouter from "@/pages/Org/Application";
+import ApplicationDetail from "@/pages/Org/ApplicationDetail";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -81,7 +79,10 @@ export const AppRouter: React.FC = () => {
         <Route path="/trends/new" component={NewTrend} />
         <Route path="/org/create" component={OrgCreate} />
         <Route path="/org/search" component={OrgSearch} />
-        <Route path="/org/application" component={OrgApplicationRouter} />
+        <Route
+          path="/org/application/:applicationId"
+          component={ApplicationDetail}
+        />
         <Route path="/org/:orgId/detail" component={OrgDetail} />
         <Route path="/org/:orgId/apply" component={OrgApply} />
         <Route path="/org/:orgId/members" component={Member} />

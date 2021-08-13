@@ -59,9 +59,14 @@ const Management: React.FC = () => {
           </IonSegment>
         }
       >
-        <IonFab vertical="bottom" horizontal="center" slot="fixed">
+        <IonFab
+          vertical="bottom"
+          horizontal="center"
+          style={{ bottom: 16 }}
+          slot="fixed"
+        >
           <IonFabButton routerLink="/org/create">
-            <IonIcon icon={add} />
+            <IonIcon icon={"/assets/icon/add.svg"} />
           </IonFabButton>
         </IonFab>
         {tab === "joined"

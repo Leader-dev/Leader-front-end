@@ -121,6 +121,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
       <IonRow
         style={{
           marginTop: "5px",
+          marginBottom: "2px",
           fontSize: "120%",
           fontWeight: "bold",
           color: "#4E6B84",

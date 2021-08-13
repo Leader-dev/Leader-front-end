@@ -1,6 +1,7 @@
 import axios from "@/utils/request";
 import { ApplicationForm, OrgInfo } from "@/types/organization";
 import useSWR from "swr";
+import { NotificationOverview } from "@/types/recruit";
 
 interface GetApplicationDetailResult {
   id: string;
@@ -14,12 +15,7 @@ interface GetApplicationDetailResult {
     id: string;
     name: string;
   };
-  notifications: Array<{
-    id: string;
-    title: string;
-    unread: boolean;
-    sendDate: number;
-  }>;
+  notifications: NotificationOverview[];
 }
 
 export const getApplicationDetail = async (applicationId: string) => {
