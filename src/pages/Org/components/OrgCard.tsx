@@ -53,7 +53,7 @@ export default ({
           </IonCol>
           <IonCol
             className="ion-align-self-center"
-            size="6"
+            size="7"
             style={{ fontSize: "85%", color: "black", lineHeight: "150%" }}
           >
             <div
@@ -61,6 +61,9 @@ export default ({
                 fontSize: "120%",
                 fontWeight: "bold",
                 lineHeight: "160%",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
               }}
             >
               {info.name}
@@ -83,7 +86,13 @@ export default ({
               {authIcon}
               {info.instituteName}
             </div>
-            <div>
+            <div
+              style={{
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+              }}
+            >
               负责人：
               <span style={{ color: "var(--ion-color-primary)" }}>
                 {info.presidentName}
