@@ -1,5 +1,6 @@
 import { uploadImageList } from "@/services/external/uploadImage";
 import axios from "@/utils/request";
+import { mutate } from "swr";
 
 type SendApplicationNotificationProps = {
   applicationId: string;
@@ -27,4 +28,5 @@ export const sendApplicationNotification = async ({
       imageUrls,
     },
   });
+  await mutate([`/org/manage/apply/detail?orgId=${orgId}`, applicationId]);
 };

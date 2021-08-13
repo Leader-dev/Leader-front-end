@@ -107,7 +107,7 @@ const NewTrend = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/tabs/trends" />
+            <IonBackButton defaultHref="/tabs/trends" text={""} />
           </IonButtons>
           <IonTitle>发布动态</IonTitle>
           <IonButtons slot="end">

@@ -1,22 +1,20 @@
 import axios from "@/utils/request";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
+import { NotificationDetail } from "@/types/recruit";
 
-interface NotificationDetailResult {
-  id: string;
+export const useNotificationDetail = ({
+  notificationId,
+  applicationId,
+}: {
+  notificationId: string;
   applicationId: string;
-  title: string;
-  content: string;
-  imageUrls: string[];
-  unread: boolean;
-  sendDate: number;
-}
-
-export const useNotificationDetail = (notificationId: string) => {
+}) => {
   return useSWR(
     ["/org/apply/notification-detail", notificationId],
     (url, notificationId) =>
-      axios(url, { data: { notificationId }, codeHandlers: {} }).then(
-        (res) => res.data.detail as NotificationDetailResult
-      )
+      axios.post(url, { notificationId: notificationId }).then((res) => {
+        mutate(["/org/apply/detail", applicationId]);
+        return res.data.detail as NotificationDetail;
+      })
   );
 };

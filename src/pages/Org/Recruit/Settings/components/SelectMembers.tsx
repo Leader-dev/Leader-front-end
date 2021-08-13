@@ -71,7 +71,7 @@ export default () => {
     setRecruitMangerInfo({
       orgId: orgId,
       departmentId: departmentId,
-      memberId: selectedMembers[0].id,
+      memberId: selectedMembers[0] ? selectedMembers[0].id : null,
     }).then(() => history.goBack());
   };
 

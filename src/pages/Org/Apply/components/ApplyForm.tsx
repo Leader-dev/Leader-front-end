@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  IonButton,
   IonInput,
   IonItem,
   IonLabel,
@@ -57,7 +56,7 @@ export default ({
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        if (!selectedDepartment) {
+        if (!selectedDepartment && applicationInfo.appointDepartment) {
           present({ message: "请选择部门" });
         } else {
           applyToOrg({

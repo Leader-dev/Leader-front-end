@@ -19,9 +19,7 @@ export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: details, error: detailsError } = useOrgDetails({ orgId });
   const { data: departments, error: departmentsError } = useApplyDepartmentList(
-    {
-      orgId,
-    }
+    { orgId }
   );
 
   let content;

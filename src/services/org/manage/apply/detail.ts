@@ -2,6 +2,8 @@ import { Timestamp, UserOverview } from "@/types/organization";
 import axios from "@/utils/request";
 import useSWR from "swr";
 import { ApplicationForm } from "@/types/organization";
+import { NotificationOverview } from "@/types/recruit";
+import { MemberInfoOverview } from "@/types/organization";
 
 interface UseOrgApplicationDetail {
   id: string;
@@ -13,15 +15,9 @@ interface UseOrgApplicationDetail {
   applicantUserInfo: UserOverview;
   departmentId: string;
   departmentInfo: { id: string; name: string };
-  notifications: Array<{
-    id: string;
-    applicantId: string;
-    title: string;
-    content: string;
-    imageUrls: string[];
-    unread: boolean;
-    sendDate: Timestamp;
-  }>;
+  notifications: NotificationOverview[];
+  operateMemberId: string | null;
+  operateMemberInfo: MemberInfoOverview | null;
 }
 
 export const useOrgApplicationDetail = ({

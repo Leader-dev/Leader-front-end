@@ -70,6 +70,13 @@ export interface OrgDetailsResult {
    */
 }
 
+export interface MemberInfoOverview {
+  id: string;
+  name: string;
+  numberId: number;
+  title: string;
+}
+
 export interface MemberInfo {
   avatarUrl: string;
   name: string;

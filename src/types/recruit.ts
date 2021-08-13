@@ -9,3 +9,16 @@ export interface OrgRecruitSchemeInfo {
   scheme: OrgRecruitScheme;
   receivedApplicationCount: number;
 }
+
+export interface NotificationOverview {
+  id: string;
+  title: string;
+  unread: boolean;
+  sendDate: number;
+}
+
+export interface NotificationDetail extends NotificationOverview {
+  applicationId: string;
+  content: string;
+  imageUrls: string[];
+}

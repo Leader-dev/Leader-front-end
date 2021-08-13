@@ -37,5 +37,5 @@ export const createOrg = async ({
       posterUrl: posterUrl,
     },
   });
-  await mutate("/org/apply/list");
+  await mutate("/org/joined");
 };

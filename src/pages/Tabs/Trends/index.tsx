@@ -113,7 +113,7 @@ const Trends = () => {
           slot="fixed"
         >
           <IonFabButton routerLink={`/trends/new`}>
-            <IonIcon icon={add} />
+            <IonIcon src={"/assets/icon/quillPen.svg"} />
           </IonFabButton>
         </IonFab>
       </TitledSearchBarWrapper>

@@ -68,6 +68,9 @@ export const ECACard = ({ info }: { info: ECACardInfo }) => {
                 fontSize: "120%",
                 fontWeight: "bold",
                 lineHeight: "160%",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
               }}
             >
               {info.name}
@@ -85,7 +88,13 @@ export const ECACard = ({ info }: { info: ECACardInfo }) => {
               {authIcon}
               {info.instituteName}
             </div>
-            <div>
+            <div
+              style={{
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+              }}
+            >
               负责人:{" "}
               <span style={{ color: "var(--ion-color-primary)" }}>
                 {info.presidentName}
@@ -167,6 +176,9 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
                 fontSize: "120%",
                 fontWeight: "bold",
                 lineHeight: "160%",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
               }}
             >
               {info.orgInfo.name}
@@ -184,7 +196,13 @@ export const ECARequestCard = ({ info }: { info: ECARequestCardInfo }) => {
               {authIcon}
               {info.orgInfo.instituteName}
             </div>
-            <div>
+            <div
+              style={{
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+              }}
+            >
               负责人:{" "}
               <span style={{ color: "var(--ion-color-primary)" }}>
                 {info.orgInfo.presidentName}

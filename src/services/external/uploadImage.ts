@@ -16,6 +16,7 @@ const options: Parameters<typeof imageCompression>[1] = {
  */
 export const uploadImage = async (file: File) => {
   const url = await getImageUploadURL();
+  console.log(url);
   const image = await imageCompression(file, options);
   const k = axios.put(url, image, {
     headers: { "Content-Type": "" },
