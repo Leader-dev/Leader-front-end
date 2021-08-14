@@ -43,6 +43,7 @@ import { Route, Switch, useParams } from "react-router";
 import * as React from "react";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import Breadcrumb from "@/pages/Org/components/Breadcrumb";
+import BottomDoubleButtons from "@/components/BottomDoubleButtons";
 
 const NewDepartment = ({
   onSubmit,
@@ -67,32 +68,18 @@ const NewDepartment = ({
           onIonChange={(e) => setName(e.detail.value!)}
         />
       </IonItem>
-      <div>
-        <div
-          style={{
-            position: "fixed",
-            width: "100%",
-            bottom: 0,
-            display: "flex",
-          }}
-        >
-          <IonButton
-            style={{ width: "50%", flexGrow: 1 }}
-            fill="clear"
-            onClick={onCancel}
-          >
-            取消
-          </IonButton>
-          <IonButton
-            style={{ width: "50%", flexGrow: 1 }}
-            onClick={() => {
-              onSubmit({ name });
-            }}
-          >
-            添加
-          </IonButton>
-        </div>
-      </div>
+      <BottomDoubleButtons
+        left={{
+          title: "取消",
+          onClick: onCancel,
+          fill: "outline",
+        }}
+        right={{
+          title: "添加",
+          onClick: () => onSubmit({ name }),
+          fill: "solid",
+        }}
+      />
     </div>
   );
 };
@@ -505,29 +492,19 @@ const ManageMemberPage = () => {
             })}
         </IonList>
 
-        <div
-          style={{
-            position: "fixed",
-            width: "100%",
-            bottom: 0,
-            display: "flex",
+        <BottomDoubleButtons
+          left={{
+            title: "添加子部门",
+            onClick: () => presentNewModal(),
+            disabled: crumb.length >= 3,
+            fill: "solid",
           }}
-        >
-          <IonButton
-            style={{ width: "50%", flexGrow: 1 }}
-            onClick={() => presentNewModal()}
-            disabled={crumb.length >= 3}
-          >
-            添加子部门
-          </IonButton>
-          <IonButton
-            style={{ width: "50%", flexGrow: 1 }}
-            onClick={() => presentEditModal()}
-            // disabled={!departmentId}
-          >
-            部门管理
-          </IonButton>
-        </div>
+          right={{
+            title: "部门管理",
+            onClick: () => presentEditModal(),
+            fill: "solid",
+          }}
+        />
       </IonContent>
     </IonPage>
   );
