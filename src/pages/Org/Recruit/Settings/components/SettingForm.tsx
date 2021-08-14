@@ -17,7 +17,7 @@ import { OrgRecruitSchemeInfo } from "@/types/recruit";
 import RecruitQuestions from "./RecruitQuestions";
 import { setOrgRecruitSetting } from "@/services/org/manage/apply/setting/setScheme";
 import { useParams } from "react-router";
-import BottomConfirm from "@/components/BottomConfirm";
+import BottomButton from "@/components/BottomButton";
 
 export default ({
   recruitInfo,
@@ -168,7 +168,7 @@ export default ({
           ) : null}
         </>
       ) : null}
-      <BottomConfirm title={"确认修改"} submit={true} />
+      <BottomButton content={"确认修改"} submit={true} />
     </form>
   );
 };

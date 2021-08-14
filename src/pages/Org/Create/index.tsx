@@ -17,7 +17,6 @@ import TypeSelection from "./components/TypeSelection";
 import { useOrgTypes } from "@/services/org/types";
 import PosterSelection from "./components/PosterSelection";
 import { createOrg } from "@/services/org/create";
-import { useHistory } from "react-router";
 
 export default () => {
   const [detail, setDetail] = useState({

@@ -15,7 +15,7 @@ import { useState } from "react";
 import "./ApplyForm.css";
 import { applyToOrg } from "@/services/org/apply/send";
 import { OrgDepartment } from "@/types/organization";
-import BottomConfirm from "@/components/BottomConfirm";
+import BottomButton from "@/components/BottomButton";
 import { useToast } from "@/utils/toast";
 
 const options = {
@@ -143,7 +143,7 @@ export default ({
           </IonItem>
         ) : null}
       </IonList>
-      <BottomConfirm title={"确认提交"} submit={true} />
+      <BottomButton content={"确认提交"} submit={true} />
     </form>
   );
 };

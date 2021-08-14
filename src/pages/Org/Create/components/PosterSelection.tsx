@@ -1,7 +1,8 @@
 import * as React from "react";
-import { IonBadge, IonButton, IonImg, useIonAlert } from "@ionic/react";
+import { IonBadge, IonImg, useIonAlert } from "@ionic/react";
 import AddButton from "./AddButton.jpeg";
 import ImageSelect from "@/components/imageSelect";
+import BottomButton from "@/components/BottomButton";
 
 export default ({
   states,
@@ -37,10 +38,9 @@ export default ({
         />
       </ImageSelect>
 
-      <IonButton
-        style={{ marginTop: "25px" }}
-        type="submit"
-        expand="block"
+      <BottomButton
+        content={"申请成立"}
+        submit={true}
         onClick={() => {
           if (!poster) {
             present("请选择社团封面", [{ text: "确认" }]);
@@ -48,9 +48,7 @@ export default ({
             setStep(step + 1);
           }
         }}
-      >
-        申请成立
-      </IonButton>
+      />
     </form>
   );
 };

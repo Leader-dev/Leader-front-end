@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   IonBadge,
-  IonButton,
   IonInput,
   IonItem,
   IonLabel,
@@ -12,6 +11,7 @@ import {
 } from "@ionic/react";
 import FlexibleInputFields from "@/components/FlexibleInputFields";
 import "./BasicInfo.css";
+import BottomButton from "@/components/BottomButton";
 
 export default ({ states, setStates }: { states: any[]; setStates: any[] }) => {
   const [detail, emails, phones, step] = states;
@@ -121,9 +121,7 @@ export default ({ states, setStates }: { states: any[]; setStates: any[] }) => {
         />
       </IonList>
 
-      <IonButton style={{ margin: "25px 5vw" }} type="submit" expand="block">
-        下一步
-      </IonButton>
+      <BottomButton content={"下一步"} submit={true} />
     </form>
   );
 };
