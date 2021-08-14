@@ -8,11 +8,7 @@ import { useOrgReceivedApplications } from "@/services/org/manage/apply/listRece
 import { respondToOrgApplication } from "@/services/org/manage/apply/sendResult";
 import RecruitSettings from "./Settings/index";
 import {
-  IonBackButton,
   IonBadge,
-  IonButton,
-  IonButtons,
-  IonCol,
   IonContent,
   IonHeader,
   IonIcon,
@@ -24,12 +20,10 @@ import {
   IonListHeader,
   IonPage,
   IonRouterOutlet,
-  IonRow,
   IonSegment,
   IonSegmentButton,
   IonText,
   IonTextarea,
-  IonToolbar,
   useIonRouter,
 } from "@ionic/react";
 import { addCircle, ellipse, settings } from "ionicons/icons";
@@ -51,6 +45,7 @@ import {
 import formatTime from "@/components/formatTime";
 import BottomConfirm from "@/components/BottomButton";
 import BottomButton from "@/components/BottomButton";
+import BottomDoubleButtons from "@/components/BottomDoubleButtons";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -224,11 +219,7 @@ const AppDetail = () => {
     return (
       <IonPage>
         <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton />
-            </IonButtons>
-          </IonToolbar>
+          <ToolbarWithBackButton />
         </IonHeader>
         <IonContent>Loading...</IonContent>
       </IonPage>
@@ -237,62 +228,39 @@ const AppDetail = () => {
 
   const operateMemberInfo = details.operateMemberInfo;
   const bottomButtons = (
-    <div>
-      <div style={{ height: "10vh" }} />
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          bottom: "15px",
-          background: "white",
-          padding: "0 3vw",
-        }}
-      >
-        <IonRow>
-          <IonCol>
-            <IonButton
-              onClick={() => {
-                setLoading(true);
-                respondToOrgApplication({
-                  applicationId,
-                  orgId,
-                  result: "pass",
-                }).then(() => {
-                  setLoading(false);
-                  history.goBack();
-                });
-              }}
-              color="primary"
-              expand="block"
-              disabled={loading}
-            >
-              通过
-            </IonButton>
-          </IonCol>
-          <IonCol>
-            <IonButton
-              onClick={() => {
-                setLoading(true);
-                respondToOrgApplication({
-                  applicationId,
-                  orgId,
-                  result: "reject",
-                }).then(() => {
-                  setLoading(false);
-                });
-              }}
-              color="primary"
-              expand="block"
-              fill="outline"
-              disabled={loading}
-            >
-              拒绝
-            </IonButton>
-          </IonCol>
-        </IonRow>
-      </div>
-    </div>
+    <BottomDoubleButtons
+      left={{
+        title: "通过",
+        fill: "solid",
+        onClick: () => {
+          setLoading(true);
+          respondToOrgApplication({
+            applicationId,
+            orgId,
+            result: "pass",
+          }).then(() => {
+            setLoading(false);
+            history.goBack();
+          });
+        },
+      }}
+      right={{
+        title: "拒绝",
+        fill: "outline",
+        onClick: () => {
+          setLoading(true);
+          respondToOrgApplication({
+            applicationId,
+            orgId,
+            result: "reject",
+          }).then(() => {
+            setLoading(false);
+          });
+        },
+      }}
+    />
   );
+
   return (
     <IonPage>
       <IonHeader>
