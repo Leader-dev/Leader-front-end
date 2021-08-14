@@ -60,7 +60,6 @@ const RecruitManage = () => {
         {tab === "pending" ? (
           <IonList>
             {pendingApplications.map((a) => {
-              const time = new Date(a.sendDate);
               return (
                 <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
                   <IonLabel>
@@ -80,10 +79,7 @@ const RecruitManage = () => {
                     </p>
                     <p>
                       <IonText color={"dark"}>提交时间：</IonText>
-                      {`${time.getFullYear()}年${
-                        time.getMonth() + 1
-                      }月${time.getDate()}日
-                      ${time.getHours()}:${time.getMinutes()}`}
+                      {formatTime(a.sendDate)}
                     </p>
                   </IonLabel>
                 </IonItem>
@@ -93,7 +89,6 @@ const RecruitManage = () => {
         ) : (
           <IonList>
             {reviewedApplications.map((a) => {
-              const time = new Date(a.sendDate);
               return (
                 <IonItem key={a.id} detail routerLink={`recruit/${a.id}/home`}>
                   <IonLabel>
@@ -120,10 +115,7 @@ const RecruitManage = () => {
                     </p>
                     <p>
                       <IonText color={"dark"}>提交时间：</IonText>
-                      {`${time.getFullYear()}年${
-                        time.getMonth() + 1
-                      }月${time.getDate()}日
-                      ${time.getHours()}:${time.getMinutes()}`}
+                      {formatTime(a.sendDate)}
                     </p>
                   </IonLabel>
                 </IonItem>
