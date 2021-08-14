@@ -12,29 +12,25 @@ import {
   useIonModal,
   useIonRouter,
 } from "@ionic/react";
-import React from "react";
+import * as React from "react";
 import User, { UserInfo } from "./User";
-import {
-  arrowUp,
-  ellipse,
-  ellipseOutline,
-  ellipsisHorizontal,
-  images,
-} from "ionicons/icons";
+import { arrowUp, ellipsisHorizontal } from "ionicons/icons";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { Square } from "@/components/square";
 import { AnonymousTrend, Trend } from "@/types/trend";
 import { PostDetail } from "./Detail";
+import formatTime from "@/components/formatTime";
 
 export interface MomentInfo extends UserInfo {
   content: string;
   upCount: number;
   imageUrls: string[];
+  sendDate: number;
 }
 
 const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
   const router = useIonRouter();
-  const { content, likeCount: upCount, imageUrls } = info;
+  const { content, likeCount: upCount, imageUrls, sendDate } = info;
   const [present, dismiss] = useIonActionSheet();
   const { data: startUrl } = useStartUrl();
   const [presentPostModal, dismissPostModal] = useIonModal(PostDetail, {
@@ -131,9 +127,9 @@ const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
           </div>
         )}
       </IonCardContent>
-      <IonItem>
+      <IonItem lines={"none"}>
         <IonLabel>
-          <p>2021年</p>
+          <p>{formatTime(sendDate)}</p>
         </IonLabel>
         <div slot="end">
           <IonLabel>
