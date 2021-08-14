@@ -32,6 +32,7 @@ import { UserInfo } from "@/types/user";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { useUserInfo } from "@/services/user/info/get";
 import backIcon from "./background.svg";
+import UserAvatar from "@/components/UserAvatar";
 
 const useForceUpdate = () => {
   const [, setValue] = useState(0); // integer state
@@ -95,7 +96,8 @@ const ProfileMain: React.FC<ProfileMainProps> = ({ userInfo }) => {
         }}
       >
         <div style={{ position: "relative", height: "10px" }}>
-          <IonAvatar
+          <UserAvatar
+            src={userInfo.avatarUrl}
             style={{
               position: "absolute",
               top: "25%",
@@ -104,9 +106,7 @@ const ProfileMain: React.FC<ProfileMainProps> = ({ userInfo }) => {
               height: "128px",
               transform: "translate(-50%, -50%) translateY(-64px)",
             }}
-          >
-            <IonImg src={startUrl + userInfo.avatarUrl} />
-          </IonAvatar>
+          />
         </div>
         <div style={{ fontSize: "1.5rem" }}> {userInfo.nickname} </div>
         <IonRow
@@ -115,8 +115,7 @@ const ProfileMain: React.FC<ProfileMainProps> = ({ userInfo }) => {
         >
           <IonIcon color={"primary"} icon={alertCircleOutline} />
           <IonText color={"primary"} style={{ marginLeft: "2px" }}>
-            {" "}
-            待认证{" "}
+            待认证
           </IonText>
         </IonRow>
       </div>

@@ -1,16 +1,7 @@
-import {
-  IonAvatar,
-  IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel,
-  IonNote,
-  IonText,
-} from "@ionic/react";
+import { IonIcon, IonItem, IonLabel, IonNote, IonText } from "@ionic/react";
 import { checkmarkCircle } from "ionicons/icons";
 import * as React from "react";
 import { OrgMember } from "@/types/organization";
-import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import UserAvatar from "@/components/UserAvatar";
 
 export default ({
@@ -24,7 +15,6 @@ export default ({
   selected?: boolean;
   routerLink?: string;
 }) => {
-  const { data: startUrl } = useStartUrl();
   return (
     <IonItem
       detail={!!routerLink}
@@ -32,7 +22,7 @@ export default ({
       onClick={handleOnClick}
       routerLink={routerLink}
     >
-      <UserAvatar url={memberInfo.avatarUrl!} />
+      <UserAvatar src={memberInfo.avatarUrl!} />
       <IonLabel>
         <h2 style={{ lineHeight: "140%" }}>
           {memberInfo.name!}
