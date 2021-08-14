@@ -25,7 +25,8 @@ import { useRecruitManagerInfo } from "@/services/org/manage/apply/setting/getRe
 import { setRecruitMangerInfo } from "@/services/org/manage/apply/setting/setRecruitMangerInfo";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import MemberCard from "@/pages/Org/components/MemberCard";
-import Breadcrumb from "@/pages/Org/components/Breadcrumb";
+// import Breadcrumb from "@/pages/Org/components/Breadcrumb";
+import OrgStructure from "@/pages/Org/components/OrgStructure";
 
 export default () => {
   const [crumb, setCrumb] = useState<
@@ -150,95 +151,14 @@ export default () => {
               )}
             </>
           ) : (
-            <>
-              <Breadcrumb
-                path={[
-                  {
-                    name: currentOrg?.detail.name!,
-                    onClick: () => {
-                      setCrumb([undefined]);
-                    },
-                  },
-                  ...(crumb.slice(1) as { name: string; id: string }[]).map(
-                    (item, index) => {
-                      return {
-                        ...item,
-                        onClick: () => {
-                          setCrumb((s) => s.slice(0, index + 2));
-                        },
-                      };
-                    }
-                  ),
-                ]}
-              />
-
-              <IonListHeader>
-                <h5>子部门：</h5>
-              </IonListHeader>
-              {departments.length ? (
-                departments.map((d) => {
-                  return (
-                    <IonItem
-                      detail
-                      key={d.id}
-                      onClick={() => {
-                        setCrumb((c) => [...c, d]);
-                      }}
-                    >
-                      {d.name}
-                    </IonItem>
-                  );
-                })
-              ) : (
-                <IonItem lines={"none"}>
-                  <IonLabel>无</IonLabel>
-                </IonItem>
-              )}
-
-              <IonListHeader>
-                <h5>{childDpId ? "管理员" : "直隶管理员"}：</h5>
-              </IonListHeader>
-              {managers.length ? (
-                managers.map((member) => {
-                  const selected = selectedMembers.some(
-                    (selectedMember) => selectedMember.id === member.id
-                  );
-                  return (
-                    <MemberCard
-                      memberInfo={member}
-                      handleOnClick={() => handleOnSelect(member, selected)}
-                      selected={selected}
-                    />
-                  );
-                })
-              ) : (
-                <IonItem lines={"none"}>
-                  <IonLabel>无</IonLabel>
-                </IonItem>
-              )}
-
-              <IonListHeader>
-                <h5>{childDpId ? "成员" : "无部门成员"}：</h5>
-              </IonListHeader>
-              {members.length ? (
-                members.map((member) => {
-                  const selected = selectedMembers.some(
-                    (selectedMember) => selectedMember.id === member.id
-                  );
-                  return (
-                    <MemberCard
-                      memberInfo={member}
-                      handleOnClick={() => handleOnSelect(member, selected)}
-                      selected={selected}
-                    />
-                  );
-                })
-              ) : (
-                <IonItem lines={"none"}>
-                  <IonLabel>无</IonLabel>
-                </IonItem>
-              )}
-            </>
+            <OrgStructure
+              orgName={currentOrg?.detail.name!}
+              orgId={orgId}
+              selectedOptions={{
+                selectedMembers: selectedMembers,
+                handleOnSelect: handleOnSelect,
+              }}
+            />
           )}
         </IonList>
         <BottomButton content={"确认添加"} onClick={onSubmit} />

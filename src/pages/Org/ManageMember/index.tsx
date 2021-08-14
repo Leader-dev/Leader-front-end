@@ -42,7 +42,7 @@ import { useEffect, useState } from "react";
 import { Route, Switch, useParams } from "react-router";
 import * as React from "react";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
-import Breadcrumb from "@/pages/Org/components/Breadcrumb";
+import { Breadcrumb } from "@/pages/Org/components/OrgStructure";
 import BottomDoubleButtons from "@/components/BottomDoubleButtons";
 
 const NewDepartment = ({
@@ -171,7 +171,7 @@ const EditDepartment = ({
           </IonLabel>
         </IonItem>
         <IonListHeader>
-          <IonLabel>子部门</IonLabel>
+          <h5>子部门</h5>
         </IonListHeader>
         {child.length ? (
           child.map((i) => <IonItem key={i}>{i}</IonItem>)
@@ -214,6 +214,7 @@ const EditDepartment = ({
   );
 };
 
+// TODO Add manager
 const AddManager = ({}: { onSubmit: string; onClose: () => void }) => {
   return;
 };
