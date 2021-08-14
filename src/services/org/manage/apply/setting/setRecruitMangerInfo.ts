@@ -14,8 +14,9 @@ export const setRecruitMangerInfo = async ({
     `/org/manage/apply/setting/set-recruit-manager?orgId=${orgId}`,
     { departmentId, memberId }
   );
-  await mutate(
-    `/org/manage/apply/setting/get-recruit-manager-info?orgId=${orgId}`
-  );
+  await mutate([
+    `/org/manage/apply/setting/get-recruit-manager-info?orgId=${orgId}`,
+    null,
+  ]);
   await mutate(`/org/manage/apply/setting/get-scheme?orgId=${orgId}`);
 };
