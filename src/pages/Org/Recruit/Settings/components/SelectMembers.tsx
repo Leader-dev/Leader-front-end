@@ -20,7 +20,7 @@ import { useOrgDetails } from "@/services/org/detail";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import { OrgMember } from "@/types/organization";
-import BottomConfirm from "@/components/BottomConfirm";
+import BottomButton from "@/components/BottomButton";
 import { useRecruitManagerInfo } from "@/services/org/manage/apply/setting/getRecruitManagerInfo";
 import { setRecruitMangerInfo } from "@/services/org/manage/apply/setting/setRecruitMangerInfo";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
@@ -241,7 +241,7 @@ export default () => {
             </>
           )}
         </IonList>
-        <BottomConfirm title={"确认添加"} submit={false} onClick={onSubmit} />
+        <BottomButton content={"确认添加"} onClick={onSubmit} />
       </>
     );
   } else {

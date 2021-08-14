@@ -31,7 +31,7 @@ import { useToast } from "@/utils/toast";
 import { setOrgPublicInfo } from "@/services/org/manage/publicInfo/set";
 import { OrgPublicInfo } from "@/types/organization";
 import { setOrgPoster } from "@/services/org/manage/publicInfo/setPoster";
-import BottomConfirm from "@/components/BottomConfirm";
+import BottomButton from "@/components/BottomButton";
 
 const OrgInfo = ({
   orgInfo,
@@ -236,7 +236,7 @@ const OrgInfo = ({
           }}
         />
       </IonList>
-      <BottomConfirm title={"确认修改"} submit={true} />
+      <BottomButton content={"确认修改"} submit={true} />
     </form>
   );
 };
@@ -309,8 +309,8 @@ const OrgPoster = ({ initUrl }: { initUrl: string }) => {
         >
           确认修改
         </IonButton>
-        <BottomConfirm
-          title={"确认修改"}
+        <BottomButton
+          content={"确认修改"}
           submit={true}
           onClick={() => {
             if (poster) {

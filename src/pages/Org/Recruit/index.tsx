@@ -48,7 +48,9 @@ import {
   NotificationDetailContent,
   NotificationDetailSkeleton,
 } from "@/pages/Org/components/NotificationDetail";
-import formatTime from "../../../components/formatTime";
+import formatTime from "@/components/formatTime";
+import BottomConfirm from "@/components/BottomButton";
+import BottomButton from "@/components/BottomButton";
 
 const RecruitManage = () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -134,13 +136,10 @@ const RecruitManage = () => {
             })}
           </IonList>
         )}
-        <IonButton
-          slot={"fixed"}
-          style={{ bottom: "25px", margin: "0 15px", width: "90vw" }}
+        <BottomButton
+          content={<IonIcon slot={"icon-only"} icon={settings} />}
           routerLink={"recruit/settings"}
-        >
-          <IonIcon slot={"icon-only"} icon={settings} />
-        </IonButton>
+        />
       </>
     );
   } else {
@@ -392,6 +391,7 @@ export const AddNotification = () => {
             <IonTextarea
               rows={4}
               placeholder="可以输入多行哦"
+              autoGrow={true}
               value={content}
               onIonChange={(e) => setContent(e.detail.value!)}
             />
@@ -402,7 +402,7 @@ export const AddNotification = () => {
               <IonBadge>{images.length}/4</IonBadge>
             </IonLabel>
           </IonListHeader>
-          <IonItem>
+          <IonItem lines={"none"}>
             <div
               style={{
                 display: "flex",
@@ -455,11 +455,8 @@ export const AddNotification = () => {
             </div>
           </IonItem>
         </IonList>
-        {/* <IonItem> */}
-        <IonButton
-          fill="solid"
-          expand="block"
-          style={{ margin: "15px 25px" }}
+        <BottomConfirm
+          content={"确认发布"}
           onClick={() => {
             sendApplicationNotification({
               orgId,
@@ -477,9 +474,7 @@ export const AddNotification = () => {
 
             router.goBack();
           }}
-        >
-          确认发布
-        </IonButton>
+        />
       </IonContent>
     </IonPage>
   );

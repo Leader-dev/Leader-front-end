@@ -2,6 +2,7 @@ import * as React from "react";
 import { IonBadge, IonButton } from "@ionic/react";
 import { useState } from "react";
 import { OrgTypes } from "@/types/organization";
+import BottomButton from "@/components/BottomButton";
 
 export default ({
   states,
@@ -95,15 +96,12 @@ export default ({
       </div>
       <div>{content}</div>
 
-      <IonButton
-        style={{ marginTop: "25px" }}
-        expand="block"
+      <BottomButton
+        content={"下一步"}
         onClick={() => {
           setStep(step + 1);
         }}
-      >
-        下一步
-      </IonButton>
+      />
     </div>
   );
 };

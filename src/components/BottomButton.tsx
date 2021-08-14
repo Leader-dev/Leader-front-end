@@ -2,41 +2,39 @@ import { IonButton } from "@ionic/react";
 import * as React from "react";
 
 export default ({
-  title,
-  submit,
+  content,
+  submit = false,
   onClick,
+  routerLink,
 }: {
-  title: string;
-  submit: boolean;
+  content: string | React.ReactNode;
+  submit?: boolean;
   onClick?: () => void;
+  routerLink?: string;
 }) => {
   return (
     <>
-      <div style={{ height: "10vh" }} />
+      <div style={{ height: "5vh" }} />
       <div
         style={{
           position: "fixed",
           width: "100%",
           bottom: 0,
-          display: "flex",
+          paddingBottom: "20px",
           background: "white",
         }}
       >
         {submit ? (
-          <IonButton
-            style={{ margin: "15px 5vw", width: "100%" }}
-            expand={"block"}
-            type={"submit"}
-          >
-            {title}
+          <IonButton style={{ margin: "0 5vw", width: "90vw" }} type={"submit"}>
+            {content}
           </IonButton>
         ) : (
           <IonButton
-            style={{ margin: "15px 5vw", width: "100%" }}
-            expand={"block"}
+            style={{ margin: "0 5vw", width: "90vw" }}
             onClick={onClick}
+            routerLink={routerLink}
           >
-            {title}
+            {content}
           </IonButton>
         )}
       </div>
