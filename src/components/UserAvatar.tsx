@@ -5,7 +5,7 @@ import { CSSProperties } from "react";
 
 export default ({
   src,
-  style = { marginRight: "6px" },
+  style = { marginRight: "8px" },
 }: {
   src: string | null;
   style?: CSSProperties;
