@@ -1,14 +1,8 @@
 import * as React from "react";
-import { IonAvatar, IonIcon, IonLabel, IonText } from "@ionic/react";
+import { IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { checkmarkOutline } from "ionicons/icons";
 import { AnonymousTrend, Trend } from "@/types/trend";
-
-export interface UserInfo {
-  avatarUrl: string;
-  nickname: string;
-  title: string;
-  authed?: boolean;
-}
+import UserAvatar from "@/components/UserAvatar";
 
 type UserProps = {
   post: Trend | AnonymousTrend;
@@ -17,8 +11,7 @@ type UserProps = {
 export const populate = (info: Trend | AnonymousTrend) =>
   info.anonymous
     ? {
-        avatarUrl:
-          "http://5b0988e595225.cdn.sohucs.com/images/20180702/0a5cab43989c428286a58d5e81cf2445.png",
+        avatarUrl: null,
         nickname: "鳞者用户",
         title: `社员`,
       }
@@ -33,20 +26,18 @@ function User({ post }: UserProps) {
   const { avatarUrl, nickname, title } = populate(post);
 
   return (
-    <React.Fragment>
-      <IonAvatar style={{ marginRight: 12 }} slot="start">
-        <img src={avatarUrl} alt="" />
-      </IonAvatar>
+    <IonItem lines={"none"} className={"ion-no-padding"}>
+      <UserAvatar src={avatarUrl} />
       <IonLabel>
         <h3>{nickname}</h3>
         <p>
           {title}
           {/* <IonText color="primary">
-            {authed ? <IonIcon icon={checkmarkOutline} /> : undefined}
-          </IonText> */}
+          {authed ? <IonIcon icon={checkmarkOutline} /> : undefined}
+        </IonText> */}
         </p>
       </IonLabel>
-    </React.Fragment>
+    </IonItem>
   );
 }
 

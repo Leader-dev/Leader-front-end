@@ -13,13 +13,14 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import * as React from "react";
-import User, { UserInfo } from "./User";
+import User from "./User";
 import { arrowUp, ellipsisHorizontal } from "ionicons/icons";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { Square } from "@/components/square";
 import { AnonymousTrend, Trend } from "@/types/trend";
 import { PostDetail } from "./Detail";
 import formatTime from "@/components/formatTime";
+import { UserInfo } from "@/types/user";
 
 export interface MomentInfo extends UserInfo {
   content: string;
