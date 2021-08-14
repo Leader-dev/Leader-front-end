@@ -10,6 +10,7 @@
 
 # production
 /build
+/android/
 /ios
 
 # misc
@@ -32,3 +33,4 @@ yarn-error.log*
 .firebaserc
 my-release-key.keystore
 /firebase.json
+/.gradle/
