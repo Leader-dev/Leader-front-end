@@ -335,9 +335,7 @@ const Personal: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen scrollY={false}>
-        {content}
-      </IonContent>
+      <IonContent fullscreen>{content}</IonContent>
     </IonPage>
   );
 };

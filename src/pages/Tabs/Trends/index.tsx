@@ -14,7 +14,8 @@ import { mutateMany } from "swr-mutate-many";
 import "./index.css";
 import { add, personCircleOutline } from "ionicons/icons";
 import { RefresherEventDetail } from "@ionic/core";
-import React, { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
 
 import { TitledSearchBarWrapper } from "@/components/titledSearchbarWrapper";
 
