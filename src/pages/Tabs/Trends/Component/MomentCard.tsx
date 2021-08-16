@@ -1,21 +1,30 @@
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 import {
+  IonBackButton,
   IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
+  IonContent,
+  IonHeader,
   IonIcon,
   IonImg,
   IonItem,
   IonLabel,
+  IonList,
+  IonListHeader,
   IonText,
+  IonTextarea,
+  IonTitle,
+  IonToolbar,
   useIonActionSheet,
   useIonModal,
   useIonRouter,
 } from "@ionic/react";
-import * as React from "react";
+import React, { useState } from "react";
 import User from "./User";
-import { arrowUp, ellipsisHorizontal } from "ionicons/icons";
+import { arrowUp, chevronBack, ellipsisHorizontal } from "ionicons/icons";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { Square } from "@/components/square";
 import { AnonymousTrend, Trend } from "@/types/trend";
@@ -23,6 +32,73 @@ import { PostDetail } from "./Detail";
 import formatTime from "@/components/formatTime";
 import { UserInfo } from "@/types/user";
 import { useLiked } from "@/services/trend/like";
+import { reportPostItem } from "@/services/trend/report";
+
+const Report = ({
+  post,
+  onClose,
+}: {
+  post: Trend | AnonymousTrend;
+  onClose: () => void;
+}) => {
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  return (
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons>
+            <IonButton onClick={onClose}>
+              <IonIcon icon={chevronBack} />
+            </IonButton>
+          </IonButtons>
+          <IonTitle>举报</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <div style={{ margin: "0 18px" }}>
+          <IonList>
+            <IonListHeader>
+              <IonLabel>举报对象</IonLabel>
+            </IonListHeader>
+            <User post={post} />
+          </IonList>
+          <IonList>
+            <IonListHeader>
+              <IonLabel>举报原因</IonLabel>
+            </IonListHeader>
+            <IonItem>
+              <IonTextarea
+                value={text}
+                placeholder="请简要描述举报理由和内容"
+                autoGrow
+                rows={6}
+                onIonChange={(e) => setText(e.detail.value!)}
+              />
+            </IonItem>
+          </IonList>
+          <IonButton
+            disabled={loading}
+            expand="block"
+            fill="solid"
+            onClick={() => {
+              setLoading(true);
+              reportPostItem({
+                trendItemId: post.id,
+                description: text,
+                images: [],
+              }).then(() => {
+                onClose();
+              });
+            }}
+          >
+            提交
+          </IonButton>
+        </div>
+      </IonContent>
+    </>
+  );
+};
 
 export interface MomentInfo extends UserInfo {
   content: string;
@@ -42,6 +118,10 @@ const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
     id,
   } = info;
   const { liked, toggleLiked } = useLiked({ trendItemId: id, defaultLiked });
+  const [presentReportModal, dismissReportModal] = useIonModal(Report, {
+    post: info,
+    onClose: () => dismissReportModal(),
+  });
   const [present, dismiss] = useIonActionSheet();
   const { data: startUrl } = useStartUrl();
   const [presentPostModal, dismissPostModal] = useIonModal(PostDetail, {
@@ -62,6 +142,9 @@ const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
                     {
                       text: "举报",
                       role: "destructive",
+                      handler: () => {
+                        presentReportModal();
+                      },
                     },
                     {
                       text: "取消",
