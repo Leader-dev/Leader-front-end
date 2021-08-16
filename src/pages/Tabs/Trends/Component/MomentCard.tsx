@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonIcon,
@@ -21,6 +22,7 @@ import { AnonymousTrend, Trend } from "@/types/trend";
 import { PostDetail } from "./Detail";
 import formatTime from "@/components/formatTime";
 import { UserInfo } from "@/types/user";
+import { useLiked } from "@/services/trend/like";
 
 export interface MomentInfo extends UserInfo {
   content: string;
@@ -31,7 +33,15 @@ export interface MomentInfo extends UserInfo {
 
 const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
   const router = useIonRouter();
-  const { content, likeCount: upCount, imageUrls, sendDate } = info;
+  const {
+    content,
+    likeCount: upCount,
+    imageUrls,
+    sendDate,
+    liked: defaultLiked,
+    id,
+  } = info;
+  const { liked, toggleLiked } = useLiked({ trendItemId: id, defaultLiked });
   const [present, dismiss] = useIonActionSheet();
   const { data: startUrl } = useStartUrl();
   const [presentPostModal, dismissPostModal] = useIonModal(PostDetail, {
@@ -134,13 +144,21 @@ const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
         </IonLabel>
         <div slot="end">
           <IonLabel>
-            <IonText color="primary" onClick={() => {}}>
+            <IonButton
+              fill={liked ? "solid" : "clear"}
+              color="primary"
+              onClick={() => {
+                toggleLiked();
+              }}
+            >
               <p>
                 确实
                 <IonIcon slot="end" icon={arrowUp} />
-                {upCount}
+                {defaultLiked
+                  ? upCount - 1 + (liked ? 1 : 0)
+                  : upCount + (liked ? 1 : 0)}
               </p>
-            </IonText>
+            </IonButton>
           </IonLabel>
         </div>
       </IonItem>
