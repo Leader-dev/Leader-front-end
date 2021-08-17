@@ -31,6 +31,7 @@ import OrgSearch from "@/pages/Org/Search";
 import ManageMemberPage from "@/pages/Org/ManageMember";
 import AccountRouter from "@/pages/Personal/Account";
 import ApplicationDetail from "@/pages/Org/ApplicationDetail";
+import TimelinePage from "@/pages/Org/Timeline";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -84,6 +85,7 @@ export const AppRouter: React.FC = () => {
           component={ApplicationDetail}
         />
         <Route path="/org/:orgId/detail" component={OrgDetail} />
+        <Route path="/org/:orgId/timeline" component={TimelinePage} />
         <Route path="/org/:orgId/apply" component={OrgApply} />
         <Route path="/org/:orgId/members" component={Member} />
         <Route path="/org/:orgId/manage-members" component={ManageMemberPage} />
