@@ -26,10 +26,8 @@ import {
   IonList,
   IonListHeader,
   IonPage,
-  IonRouterOutlet,
   IonRow,
   IonSearchbar,
-  IonText,
   IonTitle,
   IonToolbar,
   useIonAlert,
@@ -44,6 +42,8 @@ import * as React from "react";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import { Breadcrumb } from "@/pages/Org/components/OrgStructure";
 import BottomDoubleButtons from "@/components/BottomDoubleButtons";
+import BottomButton from "@/components/BottomButton";
+import { MemberCardWithSliding } from "../components/MemberCard";
 
 const NewDepartment = ({
   onSubmit,
@@ -138,36 +138,38 @@ const EditDepartment = ({
           <IonLabel>基本信息</IonLabel>
         </IonListHeader>
         <IonItem>
+          <IonLabel position={"stacked"}>
+            <h2>部门名称</h2>
+          </IonLabel>
+          <IonInput
+            value={n}
+            onIonChange={(e) => {
+              setN(e.detail.value!);
+            }}
+          />
+        </IonItem>
+        <IonItem>
           <IonLabel>
-            <h3>部门名称</h3>
-            <IonInput
-              value={n}
-              onIonChange={(e) => {
-                setN(e.detail.value!);
-              }}
-            />
+            <h2>部门总人数</h2>
+            <p>{members.length}</p>
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <h3>部门总人数</h3>
-            {members.length}
+            <h2>部门管理员数</h2>
+            <p>
+              {
+                members.filter(
+                  (member) => member.roleName === "department-manager"
+                ).length
+              }
+            </p>
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <h3>部门管理员数</h3>
-            {
-              members.filter(
-                (member) => member.roleName === "department-manager"
-              ).length
-            }
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <h3>上级部门</h3>
-            {previous ?? "无"}
+            <h2>上级部门</h2>
+            <p>{previous ?? "无"}</p>
           </IonLabel>
         </IonItem>
         <IonListHeader>
@@ -179,35 +181,25 @@ const EditDepartment = ({
           <IonItem>无</IonItem>
         )}
         {previous ? (
-          <div
-            style={{
-              marginLeft: "18px",
-              marginRight: "18px",
-              marginTop: "32px",
-            }}
-          >
-            <IonButton
-              expand="block"
-              color="danger"
-              onClick={() => {
-                presentAlert({
-                  header: `注销部门`,
-                  message: `确定要注销${name}吗？`,
-                  buttons: [
-                    "取消",
-                    {
-                      text: "确定",
-                      handler: () => {
-                        onDelete();
-                      },
+          <BottomButton
+            content={"注销部门"}
+            color={"danger"}
+            onClick={() => {
+              presentAlert({
+                header: `注销部门`,
+                message: `确定要注销${name}吗？`,
+                buttons: [
+                  "取消",
+                  {
+                    text: "确定",
+                    handler: () => {
+                      onDelete();
                     },
-                  ],
-                });
-              }}
-            >
-              注销部门
-            </IonButton>
-          </div>
+                  },
+                ],
+              });
+            }}
+          />
         ) : null}
       </IonContent>
     </>
@@ -221,7 +213,6 @@ const AddManager = ({}: { onSubmit: string; onClose: () => void }) => {
 
 const ManageMemberPage = () => {
   console.log("DUH");
-  const router = useIonRouter();
   const { orgId } = useParams<{ orgId: string }>();
   console.log({ orgId });
   const [crumb, setCrumb] = useState<
@@ -432,63 +423,55 @@ const ManageMemberPage = () => {
             .map((member) => {
               console.log({ member });
               return (
-                <IonItemSliding key={member.id}>
-                  <IonItem
-                    detail
-                    routerLink={`/org/${orgId}/manage-members/${member.id}`}
-                  >
-                    {member.avatarUrl && (
-                      <IonAvatar>
-                        <IonImg src={member.avatarUrl} />
-                      </IonAvatar>
-                    )}
-                    {member.name}
-                    {member.title && `- ${member.roleName}`}
-                  </IonItem>
-                  <IonItemOptions side="end">
-                    <IonItemOption
-                      color="dark"
-                      onClick={() => console.log("unread clicked")}
-                    >
-                      转移部门
-                    </IonItemOption>
-                    <IonItemOption
-                      color="warning"
-                      onClick={() => console.log("unread clicked")}
-                    >
-                      革职
-                    </IonItemOption>
-                    <IonItemOption
-                      color="danger"
-                      onClick={() => {
-                        presentAlert({
-                          header: `确定要开除 ${member.name} 吗`,
-                          buttons: [
-                            {
-                              text: "取消",
-                            },
-                            {
-                              text: "确定",
-                              handler: () => {
-                                dismissOrgMember({
-                                  orgId,
-                                  memberId: member.id,
-                                }).then(() => {
-                                  toast({
-                                    message: "移除成功",
-                                    color: "success",
-                                  });
-                                });
+                <MemberCardWithSliding
+                  memberInfo={member}
+                  routerLink={`/org/${orgId}/manage-members/${member.id}`}
+                  itemOptions={
+                    <IonItemOptions side="end">
+                      <IonItemOption
+                        color="dark"
+                        onClick={() => console.log("unread clicked")}
+                      >
+                        转移部门
+                      </IonItemOption>
+                      <IonItemOption
+                        color="warning"
+                        onClick={() => console.log("unread clicked")}
+                      >
+                        革职
+                      </IonItemOption>
+                      <IonItemOption
+                        color="danger"
+                        onClick={() => {
+                          presentAlert({
+                            header: `确定要开除 ${member.name} 吗`,
+                            buttons: [
+                              {
+                                text: "取消",
                               },
-                            },
-                          ],
-                        });
-                      }}
-                    >
-                      开除
-                    </IonItemOption>
-                  </IonItemOptions>
-                </IonItemSliding>
+                              {
+                                text: "确定",
+                                handler: () => {
+                                  dismissOrgMember({
+                                    orgId,
+                                    memberId: member.id,
+                                  }).then(() => {
+                                    toast({
+                                      message: "移除成功",
+                                      color: "success",
+                                    });
+                                  });
+                                },
+                              },
+                            ],
+                          });
+                        }}
+                      >
+                        开除
+                      </IonItemOption>
+                    </IonItemOptions>
+                  }
+                />
               );
             })}
         </IonList>

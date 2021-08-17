@@ -7,7 +7,7 @@ import {
   IonListHeader,
   IonText,
 } from "@ionic/react";
-import MemberCard from "./MemberCard";
+import MemberCard, { MemberCardWithSliding } from "./MemberCard";
 import { useState } from "react";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
@@ -82,11 +82,13 @@ export default ({
   orgId,
   selectedOptions,
   startRouterLink,
+  itemOptions,
 }: {
   orgName: string;
   orgId: string;
   selectedOptions?: selectedOpts;
   startRouterLink?: string;
+  itemOptions?: React.ReactNode;
 }) => {
   const [crumb, setCrumb] = useState<
     (undefined | { name: string; id: string })[]
@@ -102,10 +104,55 @@ export default ({
     departmentId: childDpId,
   });
 
+  const mapMembers = (members: OrgMember[]) => {
+    if (members.length) {
+      return members.map((member) => {
+        if (selectedOptions) {
+          const selected = selectedOptions.selectedMembers.some(
+            (selectedMember) => selectedMember.id === member.id
+          );
+          return (
+            <MemberCard
+              memberInfo={member}
+              handleOnClick={() =>
+                selectedOptions.handleOnSelect(member, selected)
+              }
+              selected={selected}
+            />
+          );
+        } else if (itemOptions) {
+          return (
+            <MemberCardWithSliding
+              memberInfo={member}
+              routerLink={startRouterLink + `/${member.id}`}
+              itemOptions={itemOptions}
+            />
+          );
+        } else {
+          return (
+            <MemberCard
+              memberInfo={member}
+              routerLink={startRouterLink + `/${member.id}`}
+            />
+          );
+        }
+      });
+    } else {
+      return (
+        <IonItem lines={"none"}>
+          <IonLabel>无</IonLabel>
+        </IonItem>
+      );
+    }
+  };
+
   let content;
   if (departments && memberList) {
     const managers = memberList.filter((member) =>
-      !childDpId ? ["general-manager", "president"] : ["department-manager"]
+      (!childDpId
+        ? ["general-manager", "president"]
+        : ["department-manager"]
+      ).includes(member.roleName)
     );
     const members = memberList.filter((member) => member.roleName === "member");
     content = (
@@ -157,68 +204,12 @@ export default ({
         <IonListHeader>
           <h5>{childDpId ? "管理员" : "直隶管理员"}：</h5>
         </IonListHeader>
-        {managers.length ? (
-          managers.map((member) => {
-            if (selectedOptions) {
-              const selected = selectedOptions.selectedMembers.some(
-                (selectedMember) => selectedMember.id === member.id
-              );
-              return (
-                <MemberCard
-                  memberInfo={member}
-                  handleOnClick={() =>
-                    selectedOptions.handleOnSelect(member, selected)
-                  }
-                  selected={selected}
-                />
-              );
-            } else {
-              return (
-                <MemberCard
-                  memberInfo={member}
-                  routerLink={startRouterLink + `/${member.id}`}
-                />
-              );
-            }
-          })
-        ) : (
-          <IonItem lines={"none"}>
-            <IonLabel>无</IonLabel>
-          </IonItem>
-        )}
+        {mapMembers(managers)}
 
         <IonListHeader>
           <h5>{childDpId ? "成员" : "无部门成员"}：</h5>
         </IonListHeader>
-        {members.length ? (
-          members.map((member) => {
-            if (selectedOptions) {
-              const selected = selectedOptions.selectedMembers.some(
-                (selectedMember) => selectedMember.id === member.id
-              );
-              return (
-                <MemberCard
-                  memberInfo={member}
-                  handleOnClick={() =>
-                    selectedOptions.handleOnSelect(member, selected)
-                  }
-                  selected={selected}
-                />
-              );
-            } else {
-              return (
-                <MemberCard
-                  memberInfo={member}
-                  routerLink={startRouterLink + `/${member.id}`}
-                />
-              );
-            }
-          })
-        ) : (
-          <IonItem lines={"none"}>
-            <IonLabel>无</IonLabel>
-          </IonItem>
-        )}
+        {mapMembers(members)}
       </IonList>
     );
   } else {

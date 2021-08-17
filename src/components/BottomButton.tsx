@@ -1,4 +1,4 @@
-import { IonButton } from "@ionic/react";
+import { IonButton, IonInput } from "@ionic/react";
 import * as React from "react";
 
 export default ({
@@ -6,11 +6,13 @@ export default ({
   submit = false,
   onClick,
   routerLink,
+  color,
 }: {
   content: string | React.ReactNode;
   submit?: boolean;
   onClick?: () => void;
   routerLink?: string;
+  color?: string;
 }) => {
   return (
     <>
@@ -25,7 +27,11 @@ export default ({
         }}
       >
         {submit ? (
-          <IonButton style={{ margin: "0 5vw", width: "90vw" }} type={"submit"}>
+          <IonButton
+            style={{ margin: "0 5vw", width: "90vw" }}
+            type={"submit"}
+            color={color}
+          >
             {content}
           </IonButton>
         ) : (
@@ -33,6 +39,7 @@ export default ({
             style={{ margin: "0 5vw", width: "90vw" }}
             onClick={onClick}
             routerLink={routerLink}
+            color={color}
           >
             {content}
           </IonButton>
