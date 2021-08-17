@@ -1,4 +1,5 @@
 import axios from "@/utils/request";
+import { mutate } from "swr";
 
 export const respondToOrgApplication = async ({
   applicationId,
@@ -13,4 +14,6 @@ export const respondToOrgApplication = async ({
     applicationId,
     result,
   });
+  await mutate(`/org/manage/apply/list-operated?orgId=${orgId}`);
+  await mutate(`/org/manage/apply/list-received?orgId=${orgId}`);
 };
