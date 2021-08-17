@@ -106,8 +106,8 @@ export default ({
 
   const mapMembers = (members: OrgMember[]) => {
     if (members.length) {
-      return members.map((member) => {
-        if (selectedOptions) {
+      if (selectedOptions) {
+        return members.map((member) => {
           const selected = selectedOptions.selectedMembers.some(
             (selectedMember) => selectedMember.id === member.id
           );
@@ -120,23 +120,23 @@ export default ({
               selected={selected}
             />
           );
-        } else if (itemOptions) {
-          return (
-            <MemberCardWithSliding
-              memberInfo={member}
-              routerLink={startRouterLink + `/${member.id}`}
-              itemOptions={itemOptions}
-            />
-          );
-        } else {
-          return (
-            <MemberCard
-              memberInfo={member}
-              routerLink={startRouterLink + `/${member.id}`}
-            />
-          );
-        }
-      });
+        });
+      } else if (itemOptions) {
+        return members.map((member) => (
+          <MemberCardWithSliding
+            memberInfo={member}
+            routerLink={startRouterLink + `/${member.id}`}
+            itemOptions={itemOptions}
+          />
+        ));
+      } else {
+        return members.map((member) => (
+          <MemberCard
+            memberInfo={member}
+            routerLink={startRouterLink + `/${member.id}`}
+          />
+        ));
+      }
     } else {
       return (
         <IonItem lines={"none"}>
