@@ -29,6 +29,7 @@
     "browser-image-compression": "^1.0.14",
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-telerik-imagepicker": "^2.3.6",
+    "dayjs": "^1.10.6",
     "firebase-tools": "^9.16.0",
     "http-proxy-middleware": "^2.0.0",
     "ionicons": "^5.4.0",

@@ -107,6 +107,9 @@ const Trends = () => {
               />
             );
           })}
+        <IonButton onClick={onNext} expand="block">
+          加载更多
+        </IonButton>
         <div style={{ marginTop: 100 }} />
         <IonFab
           vertical="bottom"
