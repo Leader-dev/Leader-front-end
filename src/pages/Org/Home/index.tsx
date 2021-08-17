@@ -231,6 +231,7 @@ export default () => {
                   name="时间线管理"
                   icon={reorderFour}
                   background="#5bc44c"
+                  link="timeline"
                 />
                 <Item
                   name="招新管理"
