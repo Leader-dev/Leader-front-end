@@ -172,6 +172,7 @@ const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
           >
             {imageUrls.slice(0, 3).map((url) => (
               <Square
+                key={url}
                 style={{ width: "96px", flex: "0 0 auto", marginRight: "2px" }}
               >
                 <IonImg
