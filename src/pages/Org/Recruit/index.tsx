@@ -42,7 +42,7 @@ import {
   NotificationDetailContent,
   NotificationDetailSkeleton,
 } from "@/pages/Org/components/NotificationDetail";
-import formatTime from "@/components/formatTime";
+import formatTime from "@/utils/formatTime";
 import BottomConfirm from "@/components/BottomButton";
 import BottomButton from "@/components/BottomButton";
 import BottomDoubleButtons from "@/components/BottomDoubleButtons";
@@ -284,28 +284,40 @@ const AppDetail = () => {
               />
             )}
           </IonListHeader>
-          {details.notifications.map((notification) => (
-            <NotificationItem
-              info={notification}
-              showUnread={false}
-              routerLink={`notifications/${notification.id}`}
-            />
-          ))}
+          {details.notifications.length ? (
+            details.notifications.map((notification) => (
+              <NotificationItem
+                info={notification}
+                showUnread={false}
+                routerLink={`notifications/${notification.id}`}
+              />
+            ))
+          ) : (
+            <IonItem lines={"none"}>
+              <IonLabel>无</IonLabel>
+            </IonItem>
+          )}
           <IonListHeader>
             <h4> 申请内容：</h4>
           </IonListHeader>
-          {details.applicationForm.map(({ question, answer }) => {
-            return (
-              <>
-                <IonItem key={question}>
-                  <IonLabel>
-                    <h3>{question}</h3>
-                    <p>{answer}</p>
-                  </IonLabel>
-                </IonItem>
-              </>
-            );
-          })}
+          {details.applicationForm.length ? (
+            details.applicationForm.map(({ question, answer }) => {
+              return (
+                <>
+                  <IonItem key={question}>
+                    <IonLabel>
+                      <h3>{question}</h3>
+                      <p>{answer}</p>
+                    </IonLabel>
+                  </IonItem>
+                </>
+              );
+            })
+          ) : (
+            <IonItem lines={"none"}>
+              <IonLabel>无</IonLabel>
+            </IonItem>
+          )}
         </IonList>
         {operateMemberInfo ? null : bottomButtons}
       </IonContent>
