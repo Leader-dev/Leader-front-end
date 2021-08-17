@@ -68,7 +68,7 @@ const CheckAuth = ({
           value={authCode}
           type={"number"}
           placeholder={"请输入验证码"}
-          onIonChange={(e) => setAuthCode(parseInt(e.detail.value!, 10))}
+          onIonChange={(e) => setAuthCode(e.detail.value!)}
         >
           <IonButton
             style={{ order: 1 }}
@@ -104,8 +104,8 @@ const CheckAuth = ({
 const ChangePass = () => {
   const Joi = require("joi");
   const [present] = useToast();
-  const [checkPassword, setCheckPassword] = useState("");
-  const [password, setPassword] = useState("");
+  const [checkPassword, setCheckPassword] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const history = useIonRouter();
 
   const handleOnClick = () => {
@@ -171,7 +171,7 @@ const ChangePass = () => {
 };
 
 export default () => {
-  const [authCode, setAuthCode] = useState<number>();
+  const [authCode, setAuthCode] = useState<string>();
   const [step, setStep] = useState<number>(1);
   let { data: phone, error } = useUserPhone();
 

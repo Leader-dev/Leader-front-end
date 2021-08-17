@@ -43,7 +43,8 @@ import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import { Breadcrumb } from "@/pages/Org/components/OrgStructure";
 import BottomDoubleButtons from "@/components/BottomDoubleButtons";
 import BottomButton from "@/components/BottomButton";
-import { MemberCardWithSliding } from "../components/MemberCard";
+import { MemberCardWithSliding } from "@/pages/Org/components/MemberCard";
+import { OrgMember } from "../../../types/organization";
 
 const NewDepartment = ({
   onSubmit,
@@ -208,7 +209,8 @@ const EditDepartment = ({
 
 // TODO Add manager
 const AddManager = ({}: { onSubmit: string; onClose: () => void }) => {
-  return;
+  const [selectedMembers, setSelectedMembers] = useState<OrgMember[]>([]);
+  return <></>;
 };
 
 const ManageMemberPage = () => {

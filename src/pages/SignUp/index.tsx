@@ -874,6 +874,7 @@ const Register: React.VFC = () => {
     try {
       await register({ ...creds, authcode });
       present({ message: "注册成功！" });
+      await mutate("/user/userid");
       push(
         "/tabs/trends",
         undefined,
