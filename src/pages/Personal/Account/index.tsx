@@ -26,6 +26,7 @@ import UpdateNickname from "./components/UpdateNickname";
 import UpdatePassword from "./components/UpdatePassword";
 import { logout } from "@/services/user";
 import { mutate } from "swr";
+import DeleteUser from "./components/DeleteUser";
 
 const AccountHome = () => {
   const history = useIonRouter();
@@ -105,6 +106,7 @@ const AccountRouter: React.FC = () => {
           path="/person/account/update-password"
           component={UpdatePassword}
         />
+        <Route path="/person/account/delete-user" component={DeleteUser} />
         <Route path="/person/account/user-contract" component={UserContract} />
         <Route
           path="/person/account/privacy-policy"

@@ -70,6 +70,7 @@ export default () => {
           expand="block"
           type="submit"
           color="danger"
+          routerLink={"delete-user"}
         >
           注销账户
         </IonButton>
