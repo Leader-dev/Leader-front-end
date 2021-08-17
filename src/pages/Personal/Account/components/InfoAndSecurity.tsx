@@ -12,15 +12,14 @@ import {
   IonButton,
 } from "@ionic/react";
 import { useUserInfo } from "@/services/user/info/get";
-import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import ImageSelect from "@/components/imageSelect";
 import { useState } from "react";
 import { updateUserPortrait } from "@/services/user/info/updateAvatar";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
+import UserAvatar from "@/components/UserAvatar";
 
 export default () => {
   const { data: userInfo, error } = useUserInfo();
-  const { data: startUrl } = useStartUrl();
   const [avatar, setAvatar] = useState<File>();
 
   let content;
@@ -30,26 +29,22 @@ export default () => {
     content = (
       <>
         <IonList>
-          <ImageSelect
-            count={1}
-            onChange={(images) => {
-              updateUserPortrait(images[0]);
-              setAvatar(images[0]);
-            }}
-          >
-            <IonItem>
-              <IonLabel>头像</IonLabel>
-              <IonAvatar style={{ height: "5vh", width: "5vh" }} slot="end">
-                <IonImg
-                  src={
-                    avatar
-                      ? URL.createObjectURL(avatar)
-                      : startUrl + userInfo.avatarUrl
-                  }
-                />
-              </IonAvatar>
-            </IonItem>
-          </ImageSelect>
+          <IonItem detail={true}>
+            <IonLabel>头像</IonLabel>
+            <ImageSelect
+              count={1}
+              onChange={(images) => {
+                updateUserPortrait(images[0]);
+                setAvatar(images[0]);
+              }}
+            >
+              <UserAvatar
+                src={avatar ? URL.createObjectURL(avatar) : userInfo.avatarUrl}
+                isObjectUrl={!!avatar}
+                style={{ margin: "10px 0", height: "5vh", width: "5vh" }}
+              />
+            </ImageSelect>
+          </IonItem>
 
           <IonItem button routerLink={`update-nickname/${userInfo.nickname}`}>
             <IonLabel>昵称</IonLabel>
