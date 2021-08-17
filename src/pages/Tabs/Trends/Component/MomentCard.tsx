@@ -22,14 +22,14 @@ import {
   useIonModal,
   useIonRouter,
 } from "@ionic/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import User from "./User";
 import { arrowUp, chevronBack, ellipsisHorizontal } from "ionicons/icons";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { Square } from "@/components/square";
 import { AnonymousTrend, Trend } from "@/types/trend";
 import { PostDetail } from "./Detail";
-import formatTime from "@/components/formatTime";
+import formatTime from "@/utils/formatTime";
 import { UserInfo } from "@/types/user";
 import { useLiked } from "@/services/trend/like";
 import { reportPostItem } from "@/services/trend/report";
