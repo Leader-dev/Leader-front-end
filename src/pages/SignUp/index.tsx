@@ -33,6 +33,7 @@ import { checkAuthcode } from "@/services/user/changePassword";
 import { usePrivacyAgreement } from "@/services/app/privacy";
 import { useUserAgreement } from "@/services/app/agreement";
 import { mutate } from "swr";
+import { useStartUrl } from "@/services/service/image/accessStartUrl";
 
 interface SVGIndicatorProps {
   position: 0 | 1;
@@ -237,12 +238,13 @@ const LoginByPass: React.FC<LoginSectionProps> = ({ cb, onStatChange }) => {
   const [present] = useToast();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const { data: startUrl } = useStartUrl();
   return (
     <div style={{ textAlign: "center", padding: "32px 0" }}>
       <IonAvatar style={{ margin: "auto", height: "128px", width: "128px" }}>
         <img
           alt="avatar"
-          src="https://avatars.githubusercontent.com/u/45055133?v=4"
+          src={startUrl + "v1_kFyRFV8KphjM31x03ykLjBshXLnXrabA"}
         />
       </IonAvatar>
       <IonText color="primary">

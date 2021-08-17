@@ -50,7 +50,7 @@ const Section = ({ page, onNext }: { page: number; onNext?: () => void }) => {
   return (
     <>
       {cardList.map((info) => (
-        <MomentCard info={info} />
+        <MomentCard key={info.id} info={info} />
       ))}
     </>
   );
@@ -102,6 +102,7 @@ const Trends = () => {
             return (
               <Section
                 page={index}
+                key={index}
                 onNext={index === l - 1 ? onNext : undefined}
               />
             );
