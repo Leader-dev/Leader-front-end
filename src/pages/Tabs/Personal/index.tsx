@@ -182,7 +182,11 @@ const ProfileItems: React.FC = () => {
       >
         <IonRow>
           <IonCol size="4">
-            <CuboidLink title="我的履历" icon={libraryOutline} />
+            <CuboidLink
+              title="我的履历"
+              icon={libraryOutline}
+              onClick={() => history.push("/person/profile")}
+            />
           </IonCol>
           <IonCol size="4">
             <CuboidLink
@@ -192,7 +196,11 @@ const ProfileItems: React.FC = () => {
             />
           </IonCol>
           <IonCol size="4">
-            <CuboidLink title="我的名片" icon={personOutline} />
+            <CuboidLink
+              title="我的名片"
+              icon={personOutline}
+              onClick={() => history.push("/person/card")}
+            />
           </IonCol>
         </IonRow>
         <IonRow>
@@ -204,7 +212,11 @@ const ProfileItems: React.FC = () => {
             />
           </IonCol>
           <IonCol size="4">
-            <CuboidLink title="官方通知" icon={notificationsOutline} />
+            <CuboidLink
+              title="官方通知"
+              icon={notificationsOutline}
+              onClick={() => history.push("/person/notifications")}
+            />
           </IonCol>
         </IonRow>
       </IonGrid>
