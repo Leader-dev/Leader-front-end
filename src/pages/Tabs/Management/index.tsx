@@ -4,6 +4,7 @@ import {
   IonFab,
   IonFabButton,
   IonIcon,
+  IonImg,
   IonLabel,
   IonPage,
   IonSegment,
@@ -32,6 +33,22 @@ const Management: React.FC = () => {
   const loading =
     (!orgError && orgValidating) ||
     (!applicationError && applicationValidating);
+
+  const EmptyIcon = (
+    <div style={{ padding: "22vh 15vw" }}>
+      <IonImg src={"/assets/icon/emptyProfile.svg"} />
+      <div
+        style={{
+          marginTop: "30px",
+          textAlign: "center",
+          color: "var(--ion-color-medium)",
+        }}
+      >
+        这里是空的哦～
+      </div>
+    </div>
+  );
+
   return (
     <IonPage>
       <TitledSearchBarWrapper
@@ -72,10 +89,13 @@ const Management: React.FC = () => {
         {tab === "joined"
           ? loading
             ? null
-            : orgList?.map((org) => <ECACard info={org} key={org.id} />)
+            : orgList?.length
+            ? orgList.map((org) => <ECACard info={org} key={org.id} />)
+            : EmptyIcon
           : loading
           ? null
-          : applicationList?.map((application) => (
+          : applicationList?.length
+          ? applicationList?.map((application) => (
               <ECARequestCard
                 info={{
                   id: application.id,
@@ -85,7 +105,8 @@ const Management: React.FC = () => {
                 }}
                 key={application.id}
               />
-            ))}
+            ))
+          : EmptyIcon}
       </TitledSearchBarWrapper>
     </IonPage>
   );
