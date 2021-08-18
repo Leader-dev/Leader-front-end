@@ -31,7 +31,7 @@ function User({ post }: UserProps) {
       <IonLabel>
         <h3>{nickname}</h3>
         <p>
-          {title}
+          {title ?? "社员"}
           {/* <IonText color="primary">
           {authed ? <IonIcon icon={checkmarkOutline} /> : undefined}
         </IonText> */}
