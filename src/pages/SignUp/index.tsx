@@ -298,6 +298,12 @@ const LoginByPass: React.FC<LoginSectionProps> = ({ cb, onStatChange }) => {
                   case "user_not_exist":
                     present({ message: "手机号错误", color: "warning" });
                     break;
+                  case "need_info":
+                    present({
+                      message: "请在注册页面补充信息",
+                      color: "warning",
+                    });
+                    break;
                   default:
                     present({ message: err });
                 }
