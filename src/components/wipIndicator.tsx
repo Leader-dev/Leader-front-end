@@ -34,3 +34,25 @@ export const WIPIndicator = () => {
     </IonPage>
   );
 };
+
+export const NotPWAIndicator = () => {
+  const location = useLocation();
+  return (
+    <IonPage>
+      <IonContent fullscreen>
+        <div style={{ padding: "30vh 25vw" }}>
+          <IonImg src={"/assets/icon/no-profile.svg"} />
+          <div
+            style={{
+              marginTop: "30px",
+              textAlign: "center",
+              color: "var(--ion-color-medium)",
+            }}
+          >
+            请安装后使用
+          </div>
+        </div>
+      </IonContent>
+    </IonPage>
+  );
+};
