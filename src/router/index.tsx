@@ -32,6 +32,8 @@ import ManageMemberPage from "@/pages/Org/ManageMember";
 import AccountRouter from "@/pages/Personal/Account";
 import ApplicationDetail from "@/pages/Org/ApplicationDetail";
 import TimelinePage from "@/pages/Org/Timeline";
+import { usePWAStatus } from "@/utils/pwa";
+import { NotPWAIndicator } from "@/components/wipIndicator";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -71,6 +73,18 @@ const TabsRoute: React.FC = () => {
 };
 
 export const AppRouter: React.FC = () => {
+  const isPWA = usePWAStatus();
+  if (!isPWA && process.env.NODE_ENV !== "development") {
+    return (
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/org/:orgId/apply" component={OrgApply} />
+          <Route path="/org/:orgId/detail" component={OrgDetail} />
+          <Route component={NotPWAIndicator} />
+        </IonRouterOutlet>
+      </IonReactRouter>
+    );
+  }
   return (
     <IonReactRouter>
       <IonRouterOutlet>
