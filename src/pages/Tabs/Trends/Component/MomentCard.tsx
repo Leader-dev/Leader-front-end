@@ -14,7 +14,7 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
-  IonText,
+  IonRow,
   IonTextarea,
   IonTitle,
   IonToolbar,
@@ -24,7 +24,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import User from "./User";
-import { arrowUp, chevronBack, ellipsisHorizontal } from "ionicons/icons";
+import { chevronBack, ellipsisHorizontal } from "ionicons/icons";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
 import { Square } from "@/components/square";
 import { AnonymousTrend, Trend } from "@/types/trend";
@@ -222,26 +222,34 @@ const MomentCard = ({ info }: { info: Trend | AnonymousTrend }) => {
           </div>
         )}
       </IonCardContent>
-      <IonItem lines={"none"}>
-        <IonLabel>
+      <IonItem
+        lines={"none"}
+        style={{ marginBottom: "3px", marginTop: "-5px" }}
+      >
+        <IonLabel className={"ion-align-self-end"}>
           <p>{formatTime(sendDate)}</p>
         </IonLabel>
         <div slot="end">
           <IonLabel>
             <IonButton
-              fill={liked ? "solid" : "clear"}
-              color="primary"
+              fill={"clear"}
+              color={liked ? "primary" : "medium"}
               onClick={() => {
                 toggleLiked();
               }}
             >
-              <p>
+              <IonRow className={"ion-align-items-end"}>
                 确实
-                <IonIcon slot="end" icon={arrowUp} />
+                <IonIcon
+                  style={{ fontSize: "150%", margin: "0 -2px" }}
+                  src={
+                    liked ? "/assets/icon/like.svg" : "/assets/icon/dislike.svg"
+                  }
+                />
                 {defaultLiked
                   ? upCount - 1 + (liked ? 1 : 0)
                   : upCount + (liked ? 1 : 0)}
-              </p>
+              </IonRow>
             </IonButton>
           </IonLabel>
         </div>
