@@ -3,6 +3,6 @@ import useSWR from "swr";
 
 export const usePrivacyAgreement = () => {
   return useSWR("/app/privacy", (d) =>
-    axios(d).then((res) => res.data.md as string)
+    axios(d).then((res) => res.data.data.md as string)
   );
 };
