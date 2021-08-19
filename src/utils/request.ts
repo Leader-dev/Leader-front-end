@@ -17,8 +17,8 @@ declare module "axios" {
 }
 
 const axiosInstance = axios.create({
-  // baseURL: process.env.REACT_APP_API_ENDPOINT,
-  baseURL: "https://leader-api-test.scalysense.tech",
+  baseURL: process.env.REACT_APP_API_ENDPOINT,
+  // baseURL: "https://leader-api-test.scalysense.tech",
   codeHandlers: {},
   method: "POST",
 });
