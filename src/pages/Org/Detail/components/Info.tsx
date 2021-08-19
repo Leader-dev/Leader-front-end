@@ -1,15 +1,31 @@
 import * as React from "react";
-import { IonCol, IonGrid, IonButton, IonRow, IonIcon } from "@ionic/react";
+import {
+  IonCol,
+  IonGrid,
+  IonButton,
+  IonRow,
+  IonIcon,
+  useIonPopover,
+  IonPopover,
+} from "@ionic/react";
 import { OrgDetailsResult } from "@/types/organization";
-import { checkmarkCircle, helpCircle, peopleSharp } from "ionicons/icons";
-import { Link } from "react-router-dom";
+import {
+  checkmarkCircle,
+  helpCircle,
+  peopleSharp,
+  qrCodeOutline,
+} from "ionicons/icons";
+import { useHostName } from "@/services/app/hostname";
+import "./info.css";
+import { useState } from "react";
 
 export default ({ info }: { info: OrgDetailsResult }) => {
   const { detail, applicationStatus } = info;
+  const { data: hostName } = useHostName();
 
-  let button;
+  let applicationBtn;
   if (applicationStatus === "closed") {
-    button = (
+    applicationBtn = (
       <IonButton
         style={{ height: "30px" }}
         color="dark"
@@ -20,7 +36,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
       </IonButton>
     );
   } else if (applicationStatus === "available") {
-    button = (
+    applicationBtn = (
       <IonButton
         style={{ height: "30px" }}
         color="primary"
@@ -31,7 +47,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
       </IonButton>
     );
   } else if (applicationStatus === "joined") {
-    button = (
+    applicationBtn = (
       <IonButton
         style={{ height: "30px" }}
         color="success"
@@ -42,7 +58,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
       </IonButton>
     );
   } else if (applicationStatus === "applied") {
-    button = (
+    applicationBtn = (
       <IonButton
         style={{ height: "30px" }}
         color="medium"
@@ -53,7 +69,7 @@ export default ({ info }: { info: OrgDetailsResult }) => {
       </IonButton>
     );
   } else {
-    button = "error";
+    applicationBtn = "error";
   }
 
   let authIcon, authColor;
@@ -67,72 +83,108 @@ export default ({ info }: { info: OrgDetailsResult }) => {
     authColor = "var(--ion-color-warning)";
   }
 
+  const QRCode = require("qrcode.react");
+  const qrCodeComponent = (
+    <div style={{ padding: "20px" }}>
+      <QRCode value={`${hostName}/org/${detail.id}/detail`} />
+    </div>
+  );
+
+  const [popoverState, setShowPopover] = useState({
+    showPopover: false,
+    event: undefined,
+  });
+
   return (
-    <IonGrid>
-      <IonRow>
-        <IonCol style={{ fontSize: "90%", lineHeight: "150%" }}>
-          <div
-            style={{
-              fontSize: "120%",
-              fontWeight: "bold",
-              lineHeight: "160%",
-            }}
-          >
-            {detail.name}
-          </div>
-          <div
-            style={{
-              fontSize: "100%",
-              color: "var(--ion-color-medium)",
-              lineHeight: "140%",
-            }}
-          >
-            {detail.numberId}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              color: authColor,
-            }}
-          >
-            {authIcon}
-            {detail.instituteName}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              color: "var(--ion-color-primary)",
-            }}
-          >
-            <IonIcon icon={peopleSharp} style={{ marginRight: "2px" }} />
-            成员数 {detail.memberCount}
-          </div>
-        </IonCol>
-        <IonCol
-          size="4"
-          className="ion-align-self-center"
-          style={{ textAlign: "right" }}
-        >
-          {button}
-        </IonCol>
-      </IonRow>
-      <IonRow
-        style={{
-          marginTop: "5px",
-          marginBottom: "2px",
-          fontSize: "120%",
-          fontWeight: "bold",
-          color: "#4E6B84",
-          lineHeight: "160%",
-        }}
+    <>
+      <IonPopover
+        cssClass="my-custom-class"
+        event={popoverState.event}
+        isOpen={popoverState.showPopover}
+        onDidDismiss={() =>
+          setShowPopover({ showPopover: false, event: undefined })
+        }
       >
-        简介：
-      </IonRow>
-      <IonRow style={{ fontSize: "95%", lineHeight: "125%" }}>
-        {detail.introduction}
-      </IonRow>
-    </IonGrid>
+        <div style={{ padding: "20px" }}>
+          <QRCode value={`${hostName}/org/${detail.id}/detail`} />
+        </div>
+      </IonPopover>
+      <IonGrid>
+        <IonRow>
+          <IonCol style={{ fontSize: "90%", lineHeight: "150%" }}>
+            <div
+              style={{
+                fontSize: "120%",
+                fontWeight: "bold",
+                lineHeight: "160%",
+              }}
+            >
+              {detail.name}
+            </div>
+            <div
+              style={{
+                fontSize: "100%",
+                color: "var(--ion-color-medium)",
+                lineHeight: "140%",
+              }}
+            >
+              {detail.numberId}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: authColor,
+              }}
+            >
+              {authIcon}
+              {detail.instituteName}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "var(--ion-color-primary)",
+              }}
+            >
+              <IonIcon icon={peopleSharp} style={{ marginRight: "2px" }} />
+              成员数 {detail.memberCount}
+            </div>
+          </IonCol>
+          <IonCol
+            size="5"
+            className="ion-align-items-center"
+            style={{ textAlign: "right", display: "flex" }}
+          >
+            <IonButton
+              fill={"clear"}
+              style={{ "--padding-end": "6px" }}
+              onClick={(e: any) => {
+                e.persist();
+                setShowPopover({ showPopover: true, event: e });
+              }}
+            >
+              <IonIcon slot={"icon-only"} icon={qrCodeOutline} />
+            </IonButton>
+            {applicationBtn}
+          </IonCol>
+        </IonRow>
+        <IonRow
+          style={{
+            marginTop: "5px",
+            marginBottom: "2px",
+            fontSize: "120%",
+            fontWeight: "bold",
+            color: "#4E6B84",
+            lineHeight: "160%",
+          }}
+        >
+          简介：
+        </IonRow>
+        <IonRow style={{ fontSize: "95%", lineHeight: "125%" }}>
+          {detail.introduction}
+        </IonRow>
+      </IonGrid>
+    </>
   );
 };
