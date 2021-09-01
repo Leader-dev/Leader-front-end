@@ -15,13 +15,17 @@ import {
   peopleSharp,
   qrCodeOutline,
 } from "ionicons/icons";
-import { useHostName } from "@/services/app/hostname";
 import "./info.css";
 import { useState } from "react";
 
-export default ({ info }: { info: OrgDetailsResult }) => {
+export default ({
+  info,
+  hostName,
+}: {
+  info: OrgDetailsResult;
+  hostName: string;
+}) => {
   const { detail, applicationStatus } = info;
-  const { data: hostName } = useHostName();
 
   let applicationBtn;
   if (applicationStatus === "closed") {
@@ -84,11 +88,6 @@ export default ({ info }: { info: OrgDetailsResult }) => {
   }
 
   const QRCode = require("qrcode.react");
-  const qrCodeComponent = (
-    <div style={{ padding: "20px" }}>
-      <QRCode value={`${hostName}/org/${detail.id}/detail`} />
-    </div>
-  );
 
   const [popoverState, setShowPopover] = useState({
     showPopover: false,
