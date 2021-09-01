@@ -17,31 +17,15 @@ import {
 import { useParams, Route, Switch } from "react-router";
 import { useOrgMemberInfo } from "@/services/org/manage/structure/memberInfo";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
-import { useState } from "react";
 import OrgStructure from "@/pages/Org/components/OrgStructure";
-import UserAvatar from "../../../components/UserAvatar";
+import UserAvatar from "@/components/UserAvatar";
 
 const MemberManagement = () => {
   const { orgId } = useParams<{ orgId: string }>();
-
-  const [crumb, setCrumb] = useState<
-    (undefined | { name: string; id: string })[]
-  >([undefined]);
-  const departmentId = crumb[crumb.length - 1]?.id;
-  const departmentName = crumb[crumb.length - 1]?.name ?? "组织架构";
-
   const { data: currentOrg } = useOrgDetails({ orgId });
-  const { data: departments } = useDepartmentList({
-    orgId,
-    parentId: departmentId,
-  });
-  const { data: memberList } = useOrgMemberList({
-    orgId,
-    departmentId: departmentId,
-  });
 
   let content;
-  if (currentOrg && departments && memberList) {
+  if (currentOrg) {
     content = (
       <OrgStructure
         orgName={currentOrg.detail.name!}
