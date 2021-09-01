@@ -20,7 +20,7 @@ import {
   warningOutline,
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useOrgDetails } from "@/services/org/detail";
 import OrgDetailInfo from "./components/Info";
 import OrgDetailContact from "./components/Contact";
@@ -30,10 +30,12 @@ import {
   removeOrgFromFavorite,
 } from "@/services/org/favorite";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
+import { useHostName } from "@/services/app/hostname";
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: orgDetail, error: detailError } = useOrgDetails({ orgId });
+  const { data: hostName, error: hostNameError } = useHostName();
   const [tab, setTab] = useState<"info" | "contact">("info");
   const [favorite, setFavorite] = useState<boolean>(false);
 
@@ -44,16 +46,16 @@ export default () => {
   }, [orgDetail]);
 
   let orgContent, backgroundUrl;
-  if (detailError) {
+  if (detailError && hostNameError) {
     // Test data
     orgContent = <div>Error</div>;
   } else {
-    if (!orgDetail) {
+    if (!orgDetail || !hostName) {
       orgContent = <InfoSkeleton />;
     } else {
       orgContent =
         tab === "info" ? (
-          <OrgDetailInfo info={orgDetail} />
+          <OrgDetailInfo info={orgDetail} hostName={hostName} />
         ) : (
           <OrgDetailContact info={orgDetail} />
         );
