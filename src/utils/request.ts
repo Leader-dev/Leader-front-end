@@ -18,7 +18,6 @@ declare module "axios" {
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_ENDPOINT,
-  // baseURL: "https://leader-api-test.scalysense.tech",
   codeHandlers: {},
   method: "POST",
 });
@@ -40,6 +39,7 @@ axiosInstance.interceptors.response.use(
       data: { code },
       config,
     } = response;
+    console.log({ y: response.headers });
     if ("set-api-token" in response.headers) {
       saveKey(response.headers["set-api-token"]);
     }

@@ -25,7 +25,7 @@ specifiers:
   '@types/react-router': ^5.1.11
   '@types/react-router-dom': ^5.1.7
   autosize: ^5.0.1
-  axios: ^0.21.1
+  axios: ^0.21.4
   browser-image-compression: ^1.0.14
   cordova-plugin-crop: ^0.4.0
   cordova-plugin-telerik-imagepicker: ^2.3.6
@@ -86,7 +86,7 @@ dependencies:
   '@types/react-router': 5.1.16
   '@types/react-router-dom': 5.1.8
   autosize: 5.0.1
-  axios: 0.21.2
+  axios: 0.21.4
   browser-image-compression: 1.0.15
   cordova-plugin-crop: 0.4.0
   cordova-plugin-telerik-imagepicker: 2.3.6
@@ -3650,8 +3650,8 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /axios/0.21.2:
-    resolution: {integrity: sha512-87otirqUw3e8CzHTMO+/9kh/FSgXt/eVDvipijwDtEuwbkySWZ9SBm6VEubmJ/kLKEoLQV/POhxXFb66bfekfg==}
+  /axios/0.21.4:
+    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
       follow-redirects: 1.14.3
     transitivePeerDependencies:
