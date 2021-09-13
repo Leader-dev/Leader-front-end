@@ -5,10 +5,8 @@ import {
   IonHeader,
   IonItem,
   IonLabel,
-  IonList,
   IonListHeader,
   IonPage,
-  useIonRouter,
 } from "@ionic/react";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import { useParams } from "react-router";
@@ -16,8 +14,10 @@ import { useRecruitManagerInfo } from "@/services/org/manage/apply/setting/getRe
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
-  const { data: rootManagerInfo, error: rootMangerInfoError } =
-    useRecruitManagerInfo({ orgId: orgId, departmentId: null });
+  const { data: rootManagerInfo } = useRecruitManagerInfo({
+    orgId: orgId,
+    departmentId: null,
+  });
 
   let content;
   if (rootManagerInfo) {
