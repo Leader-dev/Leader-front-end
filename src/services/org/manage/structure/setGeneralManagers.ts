@@ -13,5 +13,8 @@ export const setGeneralManagers = async ({
   await axios.post(`/org/manage/structure/set-general-manager?orgId=${orgId}`, {
     memberIds,
   });
-  await mutate([`/org/manage/structure/list-members?orgId=${orgId}`]);
+  await mutate([
+    `/org/manage/structure/list-members?orgId=${orgId}`,
+    undefined,
+  ]);
 };
