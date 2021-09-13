@@ -7,8 +7,8 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import * as React from "react";
-import { useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { useOrgDetails } from "@/services/org/detail";
 import { OrgMember } from "@/types/organization";
 import BottomButton from "@/components/BottomButton";
@@ -16,6 +16,7 @@ import { useRecruitManagerInfo } from "@/services/org/manage/apply/setting/getRe
 import { setRecruitMangerInfo } from "@/services/org/manage/apply/setting/setRecruitMangerInfo";
 import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import OrgStructure from "@/pages/Org/components/OrgStructure";
+import { useToast } from "@/utils/toast";
 
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
@@ -38,17 +39,20 @@ export default () => {
   const { data: currentOrg } = useOrgDetails({ orgId });
 
   const history = useIonRouter();
+  const [toast] = useToast();
 
   const onSubmit = () => {
     setRecruitMangerInfo({
       orgId: orgId,
       departmentId: departmentId,
       memberId: selectedMembers[0] ? selectedMembers[0].id : null,
-    }).then(() => history.goBack());
+    }).then(() => {
+      toast({ message: "设置成功" });
+      history.goBack();
+    });
   };
 
   const handleOnSelect = (memberInfo: OrgMember, selected: boolean) => {
-    console.log(selected);
     selected ? setSelectedMembers([]) : setSelectedMembers([memberInfo]);
   };
 
