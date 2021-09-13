@@ -336,7 +336,7 @@ const Personal: React.FC = () => {
     content = (
       <>
         <BannerContainer>
-          <ProfileMain userInfo={userInfo} />
+          <ProfileMain userInfo={userInfo.info} />
         </BannerContainer>
         <ProfileItems />
         <ContactUs />
