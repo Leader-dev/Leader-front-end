@@ -16,6 +16,7 @@ import Trends from "@/pages/Tabs/Trends";
 import OrgDisplay from "@/pages/Tabs/OrgDisplay";
 import Management from "@/pages/Tabs/Management";
 import Coop from "@/pages/Tabs/Cooperation";
+import WIPIndicator from "@/pages/Tabs/Cooperation";
 import Personal from "@/pages/Tabs/Personal";
 import Member from "@/pages/Org/Member";
 import OrgDetail from "@/pages/Org/Detail";
@@ -24,7 +25,6 @@ import OrgApply from "@/pages/Org/Apply";
 import OrgCreate from "@/pages/Org/Create";
 import RecruitManage from "@/pages/Org/Recruit";
 import PublicInfoManage from "@/pages/Org/PublicInfo";
-import WIPIndicator from "@/pages/Tabs/Cooperation";
 import NewTrend from "@/pages/Trends/New";
 import PersonalFavorite from "@/pages/Personal/Favorite";
 import OrgSearch from "@/pages/Org/Search";
@@ -34,6 +34,7 @@ import ApplicationDetail from "@/pages/Org/ApplicationDetail";
 import TimelinePage from "@/pages/Org/Timeline";
 import { usePWAStatus } from "@/utils/pwa";
 import { NotPWAIndicator } from "@/components/wipIndicator";
+import { ChangeDepartmentPage } from "@/pages/Org/components/OrgStructure";
 
 const TabsRoute: React.FC = () => {
   return (
@@ -106,6 +107,10 @@ export const AppRouter: React.FC = () => {
         <Route path="/org/:orgId/recruit" component={RecruitManage} />
         <Route path="/org/:orgId/public-info" component={PublicInfoManage} />
         <Route path="/org/:orgId/home" component={OrgHome} />
+        <Route
+          path="/org/:orgId/transfer-member/:memberId"
+          component={ChangeDepartmentPage}
+        />
         <Route path="/person/favorite" component={PersonalFavorite} />
         <Route path="/person/account" component={AccountRouter} />
         <Route component={WIPIndicator} />

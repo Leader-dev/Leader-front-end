@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   IonBadge,
   IonButton,
@@ -18,18 +19,27 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonAlert,
   useIonModal,
+  useIonRouter,
 } from "@ionic/react";
-import MemberCard, { MemberCardWithSliding } from "./MemberCard";
-import { useState } from "react";
+import MemberCard from "./MemberCard";
 import { useDepartmentList } from "@/services/org/manage/structure/listDepartments";
 import { useOrgMemberList } from "@/services/org/manage/structure/listMembers";
 import { OrgMember } from "@/types/organization";
-import { addCircle } from "ionicons/icons";
-import { string } from "joi";
+import {
+  addCircle,
+  checkmarkCircle,
+  chevronForward,
+  ellipseOutline,
+} from "ionicons/icons";
 import { setDepartmentManagers } from "@/services/org/manage/structure/setDepartmentManagers";
 import { setGeneralManagers } from "@/services/org/manage/structure/setGeneralManagers";
 import { setMembers } from "@/services/org/manage/structure/setMembers";
+import { dismissOrgMember } from "@/services/org/manage/structure/dismiss";
+import { useToast } from "@/utils/toast";
+import { useParams } from "react-router";
+import { useOrgDetails } from "@/services/org/detail";
 
 export const Breadcrumb = ({
   path,
@@ -90,21 +100,159 @@ export const SelectedMembers = ({
   );
 };
 
-interface AddMemberProps {
+export const ChangeDepartmentPage = () => {
+  const { orgId } = useParams<{ orgId: string }>();
+  const { memberId } = useParams<{ memberId: string }>();
+  const [crumb, setCrumb] = useState<
+    (undefined | { name: string; id: string })[]
+  >([undefined]);
+  const departmentId = crumb[crumb.length - 1]?.id;
+  const { data: departments } = useDepartmentList({
+    orgId,
+    parentId: departmentId,
+  });
+  const { data: orgDetail } = useOrgDetails({ orgId });
+  const [selectedDp, setSelectedDp] = useState<string>();
+  const handleOnSelect = (dpId: string, selected: boolean) => {
+    selected ? setSelectedDp(undefined) : setSelectedDp(dpId);
+  };
+
+  const history = useIonRouter();
+  const [presentAlert] = useIonAlert();
+  const [toast] = useToast();
+
+  let content;
+  if (departments && orgDetail) {
+    content = (
+      <>
+        <Breadcrumb
+          path={[
+            {
+              name: orgDetail.detail.name!,
+              onClick: () => {
+                setCrumb([undefined]);
+              },
+            },
+            ...(crumb.slice(1) as { name: string; id: string }[]).map(
+              (item, index) => {
+                return {
+                  ...item,
+                  onClick: () => {
+                    setCrumb((s) => s.slice(0, index + 2));
+                  },
+                };
+              }
+            ),
+          ]}
+        />
+
+        <IonListHeader>
+          <h5>子部门：</h5>
+        </IonListHeader>
+        {departments.length ? (
+          departments.map((d) => {
+            const checked = selectedDp === d.id;
+            return (
+              <IonItem key={d.id}>
+                <IonIcon
+                  color={checked ? "primary" : "medium"}
+                  icon={checked ? checkmarkCircle : ellipseOutline}
+                  onClick={() => handleOnSelect(d.id, checked)}
+                  style={{ marginRight: "6px" }}
+                />
+                {d.name}
+                <div
+                  slot={"end"}
+                  style={{ width: "40vw", textAlign: "end" }}
+                  onClick={() => {
+                    setCrumb((c) => [...c, d]);
+                  }}
+                >
+                  <IonIcon color={"medium"} icon={chevronForward} />
+                </div>
+              </IonItem>
+            );
+          })
+        ) : (
+          <IonItem lines={"none"}>
+            <IonLabel>无</IonLabel>
+          </IonItem>
+        )}
+      </>
+    );
+  } else {
+    content = <div> Skeleton </div>;
+  }
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot={"start"}>
+            <IonButton onClick={() => history.goBack()}>取消</IonButton>
+          </IonButtons>
+          <IonTitle>选择部门</IonTitle>
+          <IonButtons slot={"end"}>
+            <IonButton
+              onClick={() => {
+                if (selectedDp) {
+                  presentAlert({
+                    message: "确定转移成员至此部门吗",
+                    buttons: [
+                      "取消",
+                      {
+                        text: "确认",
+                        handler: () => {
+                          setMembers({
+                            orgId,
+                            memberIds: [memberId],
+                            departmentId: selectedDp,
+                          }).then(() => {
+                            history.goBack();
+                            toast({
+                              message: "转移成功",
+                            });
+                          });
+                        },
+                      },
+                    ],
+                  });
+                } else {
+                  history.goBack();
+                }
+              }}
+            >
+              确认
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>{content}</IonContent>
+    </IonPage>
+  );
+};
+
+interface selectedOpts {
+  selectedMembers: OrgMember[];
+  handleOnSelect: (memberInfo: OrgMember, selected: boolean) => void;
+  currDepartmentId?: string;
+}
+
+interface SelectMemberProps {
   orgId: string;
   orgName: string;
   currDepartmentId?: string;
   onClose: () => void;
-  type: "managers" | "members";
+  onSubmit: (data: { memberIds: string[]; departmentId?: string }) => void;
 }
 
-const AddMembers = ({
+const SelectMembersModal = ({
   orgId,
   orgName,
   currDepartmentId,
   onClose,
-  type,
-}: AddMemberProps) => {
+  onSubmit,
+}: SelectMemberProps) => {
   const [selectedMembers, setSelectedMembers] = useState<OrgMember[]>([]);
   const handleOnSelect = (memberInfo: OrgMember, selected: boolean) => {
     selected
@@ -114,26 +262,12 @@ const AddMembers = ({
       : setSelectedMembers([...selectedMembers, memberInfo]);
   };
 
-  const onSubmit = () => {
-    const memberIds = selectedMembers.length
-      ? selectedMembers.map((member) => member.id)
-      : [];
-    if (type === "managers") {
-      currDepartmentId
-        ? setDepartmentManagers({
-            memberIds: memberIds,
-            orgId: orgId,
-            departmentId: currDepartmentId,
-          }).then(() => onClose())
-        : setGeneralManagers({ memberIds: memberIds, orgId: orgId }).then(() =>
-            onClose()
-          );
+  const handleOnSubmit = () => {
+    if (!selectedMembers.length) {
+      onClose();
     } else {
-      setMembers({
-        memberIds: memberIds,
-        orgId: orgId,
-        departmentId: currDepartmentId,
-      }).then(() => onClose());
+      const memberIds = selectedMembers.map((member) => member.id);
+      onSubmit({ memberIds: memberIds, departmentId: currDepartmentId });
     }
   };
 
@@ -144,13 +278,12 @@ const AddMembers = ({
           <IonButtons slot={"start"}>
             <IonButton onClick={onClose}>取消</IonButton>
           </IonButtons>
-          <IonTitle>添加为{type === "managers" ? "管理员" : "成员"}</IonTitle>
+          <IonTitle>选择成员</IonTitle>
           <IonButtons slot={"end"}>
-            <IonButton onClick={onSubmit}>确认</IonButton>
+            <IonButton onClick={handleOnSubmit}>确认</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-
       <IonContent fullscreen>
         <IonList>
           <OrgStructure
@@ -208,12 +341,6 @@ const HeaderWithAddButton = ({
   </IonRow>
 );
 
-interface selectedOpts {
-  selectedMembers: OrgMember[];
-  handleOnSelect: (memberInfo: OrgMember, selected: boolean) => void;
-  currDepartmentId?: string;
-}
-
 const OrgStructure = ({
   orgName,
   orgId,
@@ -245,8 +372,53 @@ const OrgStructure = ({
     departmentId: selectedOptions?.currDepartmentId,
   });
   const [tab, setTab] = useState<"currDp" | "org">("currDp");
+  const [presentAlert] = useIonAlert();
+  const [toast] = useToast();
+  const history = useIonRouter();
 
-  const mapMembers = (members: OrgMember[] | undefined) => {
+  const depose = (memberInfo: OrgMember, orgId: string) =>
+    presentAlert({
+      header: `确定要革职 ${memberInfo.name} 吗`,
+      buttons: [
+        "取消",
+        {
+          text: "确定",
+          handler: () => {
+            setMembers({
+              orgId,
+              memberIds: [memberInfo.id],
+            }).then(() => {
+              toast({
+                message: "革职成功",
+              });
+            });
+          },
+        },
+      ],
+    });
+
+  const dismiss = (memberInfo: OrgMember, orgId: string) =>
+    presentAlert({
+      header: `确定要开除 ${memberInfo.name} 吗`,
+      buttons: [
+        "取消",
+        {
+          text: "确定",
+          handler: () => {
+            dismissOrgMember({
+              orgId,
+              memberId: memberInfo.id,
+            }).then(() => {
+              toast({
+                message: "移除成功",
+              });
+            });
+          },
+        },
+      ],
+    });
+
+  const mapMembers = (members?: OrgMember[]) => {
     if (members?.length) {
       if (selectedOptions) {
         return members.map((member) => {
@@ -265,10 +437,27 @@ const OrgStructure = ({
         });
       } else if (manageAuth) {
         return members.map((member) => (
-          <MemberCardWithSliding
+          <MemberCard
             memberInfo={member}
             routerLink={startRouterLink + `/${member.id}`}
-            orgId={orgId}
+            itemOptions={[
+              {
+                title: "转移部门",
+                color: "dark",
+                onClick: () =>
+                  history.push(`/org/${orgId}/transfer-member/${member.id}`),
+              },
+              {
+                title: "革职",
+                color: "warning",
+                onClick: () => depose(member, orgId),
+              },
+              {
+                title: "开除",
+                color: "danger",
+                onClick: () => dismiss(member, orgId),
+              },
+            ]}
           />
         ));
       } else {
@@ -289,7 +478,7 @@ const OrgStructure = ({
   };
 
   const [presentAddManagersModal, dismissAddManagersModal] = useIonModal(
-    AddMembers,
+    SelectMembersModal,
     {
       orgId: orgId,
       orgName: orgName,
@@ -297,12 +486,28 @@ const OrgStructure = ({
       onClose: () => {
         dismissAddManagersModal();
       },
-      type: "managers",
+      onSubmit: ({
+        memberIds,
+        departmentId,
+      }: {
+        memberIds: string[];
+        departmentId: string;
+      }) => {
+        departmentId
+          ? setDepartmentManagers({
+              memberIds: memberIds,
+              orgId: orgId,
+              departmentId: departmentId,
+            }).then(() => dismissAddManagersModal())
+          : setGeneralManagers({ memberIds: memberIds, orgId: orgId }).then(
+              () => dismissAddManagersModal()
+            );
+      },
     }
   );
 
   const [presentAddMembersModal, dismissAddMembersModal] = useIonModal(
-    AddMembers,
+    SelectMembersModal,
     {
       orgId: orgId,
       orgName: orgName,
@@ -310,7 +515,19 @@ const OrgStructure = ({
       onClose: () => {
         dismissAddMembersModal();
       },
-      type: "members",
+      onSubmit: ({
+        memberIds,
+        departmentId,
+      }: {
+        memberIds: string[];
+        departmentId: string;
+      }) => {
+        setMembers({
+          memberIds: memberIds,
+          orgId: orgId,
+          departmentId: departmentId,
+        }).then(() => dismissAddMembersModal());
+      },
     }
   );
 
