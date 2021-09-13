@@ -19,13 +19,14 @@ import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 import UserAvatar from "@/components/UserAvatar";
 
 export default () => {
-  const { data: userInfo, error } = useUserInfo();
+  const { data: data, error } = useUserInfo();
   const [avatar, setAvatar] = useState<File>();
 
   let content;
-  if (!userInfo || error) {
+  if (!data || error) {
     content = <div>loading</div>;
   } else {
+    const { info: userInfo } = data;
     content = (
       <>
         <IonList>

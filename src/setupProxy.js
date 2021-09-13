@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "http://8.210.136.102:8080/",
+      target: "https://leader-api-test.scalysense.tech",
       changeOrigin: true,
       pathRewrite: {
         "^/api": "/",
