@@ -32,8 +32,8 @@ import coffeeImage from "./coffee.jpg";
 import { checkAuthcode } from "@/services/user/changePassword";
 import { usePrivacyAgreement } from "@/services/app/privacy";
 import { useUserAgreement } from "@/services/app/agreement";
-import { mutate } from "swr";
 import { useStartUrl } from "@/services/service/image/accessStartUrl";
+import { useAuthed } from "@/services/user/info/get";
 
 interface SVGIndicatorProps {
   position: 0 | 1;
@@ -557,24 +557,15 @@ const Login: React.VFC = () => {
   const [status, setStatus] = useState<Stat>(Stat.Pswd);
   const [present] = useToast();
   const { push } = useIonRouter();
+  const { revalidate } = useAuthed();
   switch (status) {
     case Stat.Pswd:
       return (
         <LoginByPass
           cb={async () => {
             present({ message: "登录成功" });
-            await mutate("/user/userid");
+            await revalidate();
           }}
-          // cb={() => {
-          //   present({ message: "登录成功" });
-          //   push(
-          //     "/tabs/trends",
-          //     undefined,
-          //     undefined,
-          //     undefined,
-          //     signupPageAnimationBuilder
-          //   );
-          // }}
           onStatChange={setStatus}
         />
       );
@@ -583,18 +574,8 @@ const Login: React.VFC = () => {
         <LoginByAuth
           cb={async () => {
             present({ message: "登录成功" });
-            await mutate("/user/userid");
+            await revalidate();
           }}
-          // cb={() => {
-          //   present({ message: "登录成功" });
-          //   push(
-          //     "/tabs/trends",
-          //     undefined,
-          //     undefined,
-          //     undefined,
-          //     signupPageAnimationBuilder
-          //   );
-          // }}
           onStatChange={setStatus}
         />
       );
@@ -847,6 +828,7 @@ const MarkdownModal = ({
 };
 
 const Register: React.VFC = () => {
+  const { revalidate } = useAuthed();
   const [stage, setStage] = useState<0 | 1 | 2>(0);
   const [creds, setCreds] = useState({
     nickname: "",
@@ -880,7 +862,7 @@ const Register: React.VFC = () => {
     try {
       await register({ ...creds, authcode });
       present({ message: "注册成功！" });
-      await mutate("/user/userid");
+      await revalidate();
       push(
         "/tabs/trends",
         undefined,
