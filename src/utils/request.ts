@@ -18,7 +18,11 @@ declare module "axios" {
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_ENDPOINT,
-  codeHandlers: {},
+  codeHandlers: {
+    500: (res) => {
+      console.log("Server error");
+    },
+  },
   method: "POST",
 });
 
@@ -78,3 +82,6 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 export default axiosInstance;
+
+// @ts-ignore
+if (process.env.NODE_ENV === "development") window.axios = axiosInstance;
