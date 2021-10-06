@@ -19,9 +19,13 @@ export const useUserInfo = () => {
 
 /** get the current auth state of the user */
 export const useAuthed = () => {
-  const { data, error, isValidating } = useUserInfo();
+  const { data, error, isValidating, mutate } = useUserInfo();
   return {
     isLoading: isValidating,
     isAuthed: isValidating ? false : !!(data && !error),
+    revalidate: async () => {
+      // should be explicitely requested to ensure auth state
+      await mutate();
+    },
   };
 };
