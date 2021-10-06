@@ -1,3 +1,4 @@
+import { deleteTimelineEvent } from "@/services/org/manage/timeline/delete";
 import { insertTimelineEvent } from "@/services/org/manage/timeline/insert";
 import { useOrgTimeline } from "@/services/org/manage/timeline/list";
 import {
@@ -18,6 +19,7 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
+  useIonAlert,
   useIonModal,
 } from "@ionic/react";
 import dayjs from "dayjs";
@@ -95,10 +97,14 @@ const NewEventModal = ({
 
 const TimelinePage = () => {
   const { orgId } = useParams<{ orgId: string }>();
-  const { data: timeline } = useOrgTimeline({ orgId });
+  const { data: timeline, mutate } = useOrgTimeline({ orgId });
+  const [alert] = useIonAlert();
 
   const [presentNewModal, dismissNewModal] = useIonModal(NewEventModal, {
-    onClose: () => dismissNewModal(),
+    onClose: () => {
+      dismissNewModal();
+      mutate();
+    },
     orgId,
   });
 
@@ -115,10 +121,48 @@ const TimelinePage = () => {
       <IonContent>
         <IonList>
           {timeline?.map((event, index) => {
+            const t = dayjs.unix(event.timestamp);
+            const passed = t < dayjs();
             return (
               <IonItem key={event.id}>
-                <IonLabel>{index}</IonLabel>
-                {event.description}
+                <IonLabel>
+                  <h4
+                    style={{
+                      color: passed ? "#777777" : undefined,
+                    }}
+                  >
+                    {event.description}
+                    {passed && " - 已完成"}
+                  </h4>
+
+                  <p>{t.format("YYYY年MM月DD号HH点MM分")}</p>
+                </IonLabel>
+                <IonButton
+                  onClick={() => {
+                    alert({
+                      message: "确定删除事件吗",
+                      buttons: [
+                        {
+                          text: "保留",
+                        },
+                        {
+                          text: "删除",
+                          role: "destructive",
+                          handler: () => {
+                            deleteTimelineEvent({
+                              orgId,
+                              timelineItemId: event.id,
+                            }).then(() => {
+                              mutate();
+                            });
+                          },
+                        },
+                      ],
+                    });
+                  }}
+                >
+                  删除
+                </IonButton>
               </IonItem>
             );
           })}

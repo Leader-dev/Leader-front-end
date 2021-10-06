@@ -6,8 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import { setupConfig } from "@ionic/react";
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
+import calendar from "dayjs/plugin/calendar";
 
 dayjs.locale("zh-cn");
+dayjs.extend(calendar);
 
 setupConfig({});
 
