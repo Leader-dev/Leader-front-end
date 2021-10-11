@@ -10,6 +10,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonItem,
   IonLabel,
   IonPage,
   IonRow,
@@ -43,35 +44,39 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { Square } from "@/components/square";
 import { useOrgDetails } from "@/services/org/detail";
+import { useOrgMemberAccess } from "@/services/org/manage/memberInfo/getAccess";
+import { clear } from "console";
 
 const Item = ({
   name,
   icon,
   link,
   background,
+  disabled = false,
 }: {
   name: string;
   icon: string;
   link?: string;
   background?: string;
+  disabled?: boolean;
 }) => {
   return (
     <IonCol style={{ textAlign: "center", padding: "16px" }} size="3">
       <Square>
-        <Link
-          to={link || "/"}
-          style={{ textDecoration: "none", color: "inherit" }}
+        <IonButton
+          disabled={disabled}
+          routerLink={link || "/"}
+          fill={"clear"}
+          style={{
+            borderRadius: "12px",
+            background: background ?? "var(--ion-color-primary)",
+            aspectRatio: "1/1",
+            display: "flex",
+            marginBottom: "6px",
+            padding: "8px",
+          }}
         >
-          <div
-            style={{
-              borderRadius: "12px",
-              background: background ?? "var(--ion-color-primary)",
-              aspectRatio: "1/1",
-              display: "flex",
-              marginBottom: "6px",
-              padding: "8px",
-            }}
-          >
+          <div>
             <IonIcon
               icon={icon}
               style={{
@@ -81,9 +86,17 @@ const Item = ({
               }}
             />
           </div>
-          <span style={{ fontSize: "85%", margin: "0 -4px" }}>{name}</span>
-        </Link>
+        </IonButton>
       </Square>
+      <div
+        style={
+          disabled
+            ? { color: "gray", fontSize: "85%", margin: "10px 0 0" }
+            : { fontSize: "85%", margin: "10px 0 0" }
+        }
+      >
+        {name}
+      </div>
     </IonCol>
   );
 };
@@ -92,7 +105,7 @@ export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: startUrl } = useStartUrl();
   const { data: orgDetails } = useOrgDetails({ orgId });
-  const { data: userInfo } = useUserInfo(); // TODO useMemberInfo
+  const { data: userAccess } = useOrgMemberAccess({ orgId });
   const [tab, setTab] = useState<"user" | "manage">("user");
   const { data: timeline } = useOrgTimeline({ orgId });
   const isIos = isPlatform("ios");
@@ -177,7 +190,7 @@ export default () => {
           <IonSegmentButton value="user">
             <IonLabel style={{ fontSize: "120%" }}>成员功能</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="manage">
+          <IonSegmentButton value="manage" disabled={!userAccess?.adminPanel}>
             <IonLabel style={{ fontSize: "120%" }}>社团管理</IonLabel>
           </IonSegmentButton>
         </IonSegment>
@@ -211,10 +224,10 @@ export default () => {
             </div>
             <IonGrid style={{ gap: "1rem" }}>
               <IonRow>
-                <Item name="公告" icon={megaphone} />
-                <Item name="任务" icon={list} />
-                <Item name="考勤" icon={stopwatch} />
-                <Item name="请假" icon={today} />
+                <Item name="公告" icon={megaphone} disabled={true} />
+                <Item name="任务" icon={list} disabled={true} />
+                <Item name="考勤" icon={stopwatch} disabled={true} />
+                <Item name="请假" icon={today} disabled={true} />
                 <Item name="社员" icon={people} link="members" />
               </IonRow>
             </IonGrid>
@@ -223,10 +236,30 @@ export default () => {
           <div>
             <IonGrid style={{ gap: "1rem" }}>
               <IonRow style={{ marginBottom: "25px" }}>
-                <Item name="公告管理" icon={megaphone} background="#5bc44c" />
-                <Item name="任务管理" icon={list} background="#5bc44c" />
-                <Item name="考勤管理" icon={stopwatch} background="#5bc44c" />
-                <Item name="请假管理" icon={today} background="#5bc44c" />
+                <Item
+                  name="公告管理"
+                  icon={megaphone}
+                  background="#5bc44c"
+                  disabled={true}
+                />
+                <Item
+                  name="任务管理"
+                  icon={list}
+                  background="#5bc44c"
+                  disabled={true}
+                />
+                <Item
+                  name="考勤管理"
+                  icon={stopwatch}
+                  background="#5bc44c"
+                  disabled={true}
+                />
+                <Item
+                  name="请假管理"
+                  icon={today}
+                  background="#5bc44c"
+                  disabled={true}
+                />
                 <Item
                   name="时间线管理"
                   icon={reorderFour}
@@ -238,6 +271,7 @@ export default () => {
                   icon={people}
                   link="recruit"
                   background="#FDCC00"
+                  disabled={!userAccess?.recruitFunctions}
                 />
               </IonRow>
               <IonRow>
@@ -245,6 +279,7 @@ export default () => {
                   name="转移本人权限"
                   icon={gitCompareOutline}
                   background="#434343"
+                  disabled={true}
                 />
                 <Item
                   name="架构与成员"
@@ -262,6 +297,7 @@ export default () => {
                   name="核心认证"
                   icon={shieldCheckmark}
                   background="#434343"
+                  disabled={true}
                 />
               </IonRow>
             </IonGrid>
