@@ -6,6 +6,7 @@ export default ({
   submit = false,
   onClick,
   routerLink,
+  disabled = false,
   color,
 }: {
   content: string | React.ReactNode;
@@ -13,10 +14,11 @@ export default ({
   onClick?: () => void;
   routerLink?: string;
   color?: string;
+  disabled?: boolean;
 }) => {
   return (
     <>
-      <div style={{ height: "5vh" }} />
+      <div style={{ height: "10vh" }} />
       <div
         style={{
           position: "fixed",
@@ -31,6 +33,7 @@ export default ({
             style={{ margin: "0 5vw", width: "90vw" }}
             type={"submit"}
             color={color}
+            disabled={disabled}
           >
             {content}
           </IonButton>
@@ -39,6 +42,7 @@ export default ({
             style={{ margin: "0 5vw", width: "90vw" }}
             onClick={onClick}
             routerLink={routerLink}
+            disabled={disabled}
             color={color}
           >
             {content}

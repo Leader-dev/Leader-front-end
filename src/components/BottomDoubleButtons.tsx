@@ -11,7 +11,7 @@ interface BtnProps {
 export default ({ left, right }: { left: BtnProps; right: BtnProps }) => {
   return (
     <>
-      <div style={{ height: "5vh" }} />
+      <div style={{ height: "10vh" }} />
       <div
         style={{
           position: "fixed",
