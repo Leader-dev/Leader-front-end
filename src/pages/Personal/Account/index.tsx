@@ -27,10 +27,12 @@ import UpdatePassword from "./components/UpdatePassword";
 import { logout } from "@/services/user";
 import { mutate } from "swr";
 import DeleteUser from "./components/DeleteUser";
+import { useAuthed } from "@/services/user/info/get";
 
 const AccountHome = () => {
   const history = useIonRouter();
   const [present] = useIonAlert();
+  const { revalidate } = useAuthed();
   return (
     <IonPage>
       <IonHeader>
@@ -73,7 +75,7 @@ const AccountHome = () => {
                   text: "确认",
                   handler: () => {
                     logout().then(async () => {
-                      await mutate("/user/userid");
+                      await revalidate();
                       history.push("/");
                     });
                   },
