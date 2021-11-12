@@ -1,3 +1,4 @@
+import BottomButton from "@/components/BottomButton";
 import { deleteTimelineEvent } from "@/services/org/manage/timeline/delete";
 import { insertTimelineEvent } from "@/services/org/manage/timeline/insert";
 import { useOrgTimeline } from "@/services/org/manage/timeline/list";
@@ -73,10 +74,9 @@ const NewEventModal = ({
             />
           </IonItem>
         </IonList>
-        <IonButton
+        <BottomButton
+          content={"完成"}
           disabled={loading}
-          fill="solid"
-          expand="block"
           onClick={() => {
             setLoading(true);
             insertTimelineEvent({
@@ -87,9 +87,7 @@ const NewEventModal = ({
               onClose();
             });
           }}
-        >
-          完成
-        </IonButton>
+        />
       </IonContent>
     </>
   );
@@ -135,7 +133,7 @@ const TimelinePage = () => {
                     {passed && " - 已完成"}
                   </h4>
 
-                  <p>{t.format("YYYY年MM月DD号HH点MM分")}</p>
+                  <p>{t.format("YYYY年MM月DD号HH点")}</p>
                 </IonLabel>
                 <IonButton
                   onClick={() => {
@@ -167,9 +165,14 @@ const TimelinePage = () => {
             );
           })}
         </IonList>
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+        <IonFab
+          vertical="bottom"
+          horizontal="center"
+          style={{ bottom: 16 }}
+          slot="fixed"
+        >
           <IonFabButton onClick={() => presentNewModal()}>
-            <IonIcon icon={add} />
+            <IonIcon src={"/assets/icon/quillPen.svg"} />
           </IonFabButton>
         </IonFab>
       </IonContent>

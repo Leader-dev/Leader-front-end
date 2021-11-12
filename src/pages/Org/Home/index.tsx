@@ -12,12 +12,15 @@ import {
   IonIcon,
   IonItem,
   IonLabel,
+  IonList,
   IonPage,
   IonRow,
   IonSegment,
   IonSegmentButton,
+  IonTitle,
   IonToolbar,
   isPlatform,
+  useIonModal,
 } from "@ionic/react";
 import {
   alertOutline,
@@ -45,7 +48,9 @@ import { Link } from "react-router-dom";
 import { Square } from "@/components/square";
 import { useOrgDetails } from "@/services/org/detail";
 import { useOrgMemberAccess } from "@/services/org/manage/memberInfo/getAccess";
-import { clear } from "console";
+import { clear, time } from "console";
+import dayjs from "dayjs";
+import ToolbarWithBackButton from "@/components/ToolbarWithBackButton";
 
 const Item = ({
   name,
@@ -101,6 +106,52 @@ const Item = ({
   );
 };
 
+const TimelineModal = ({
+  onClose,
+  orgId,
+}: {
+  onClose: () => void;
+  orgId: string;
+}) => {
+  const { data: timeline, mutate } = useOrgTimeline({ orgId });
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="end">
+            <IonButton onClick={onClose}>确定</IonButton>
+          </IonButtons>
+          <IonTitle>时间轴</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonList>
+          {timeline?.map((event) => {
+            const t = dayjs.unix(event.timestamp);
+            const passed = t < dayjs();
+            return (
+              <IonItem key={event.id}>
+                <IonLabel>
+                  <h4
+                    style={{
+                      color: passed ? "#777777" : undefined,
+                    }}
+                  >
+                    {event.description}
+                    {passed && " - 已完成"}
+                  </h4>
+
+                  <p>{t.format("YYYY年MM月DD号HH点")}</p>
+                </IonLabel>
+              </IonItem>
+            );
+          })}
+        </IonList>
+      </IonContent>
+    </IonPage>
+  );
+};
+
 export default () => {
   const { orgId } = useParams<{ orgId: string }>();
   const { data: startUrl } = useStartUrl();
@@ -108,6 +159,27 @@ export default () => {
   const { data: userAccess } = useOrgMemberAccess({ orgId });
   const [tab, setTab] = useState<"user" | "manage">("user");
   const { data: timeline } = useOrgTimeline({ orgId });
+  let dateDiff, lastEvent;
+  if (timeline) {
+    const lastTimeline = timeline.slice(-1)[0];
+    const lastTime = dayjs.unix(lastTimeline.timestamp);
+    const timeNow = dayjs();
+    console.log(lastTimeline, timeNow);
+    if (lastTime > timeNow) {
+      dateDiff = lastTime.diff(timeNow, "day") + " 天";
+      lastEvent = lastTimeline.description;
+    } else {
+      dateDiff = "无";
+      lastEvent = "无";
+    }
+  }
+
+  const [presentNewModal, dismissNewModal] = useIonModal(TimelineModal, {
+    onClose: () => {
+      dismissNewModal();
+    },
+    orgId,
+  });
   const isIos = isPlatform("ios");
   console.log({ orgDetails, startUrl });
   return (
@@ -213,13 +285,17 @@ export default () => {
                 >
                   时间线
                 </span>
-                <IonButton fill="outline" size="small">
+                <IonButton
+                  fill="outline"
+                  size="small"
+                  onClick={() => presentNewModal()}
+                >
                   查看全部
                 </IonButton>
               </div>
               <div style={{ textAlign: "center" }}>
-                <div>距离</div>
-                <div>还有</div>
+                <div>距离 {lastEvent} </div>
+                <div>还有 {dateDiff} </div>
               </div>
             </div>
             <IonGrid style={{ gap: "1rem" }}>
