@@ -85,3 +85,15 @@ export default axiosInstance;
 
 // @ts-ignore
 if (process.env.NODE_ENV === "development") window.axios = axiosInstance;
+
+function replaceAll(str: string, f: RegExp, replace: string) {
+  return str.replace(f, replace);
+}
+
+export const urlToConstant = (url: string) =>
+  replaceAll(replaceAll(url, /\//g, "_").slice(1), /-/g, "").toUpperCase();
+
+export const toKey = (url: string, args: any = {}) => ({
+  key: urlToConstant(url),
+  args,
+});
